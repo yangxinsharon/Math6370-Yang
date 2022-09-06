@@ -1,0 +1,8 @@
+-O0 original: Result from computation = 249902 Total run time = 6.58
+-O0 hand-optimized: Result from computation = 249902 Total run time = 0.08
+-O2 original: Result from computation = 249902 Total run time = 2.5
+-O2 hand-optimized: Result from computation = 249902 Total run time = 0.03
+
+Among all these four cases, -O2 auto-optimization plus hand-optimization gives the best performance.
+Hand-optimization reduces more time cost than auto-optimization.
+Hand-optimized is faster than original; -O2 is faster than -O0.
