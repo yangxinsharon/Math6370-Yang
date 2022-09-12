@@ -1,0 +1,11 @@
+#!/bin/bash
+#SBATCH -J ex1_yang       # job name to display in squeue
+#SBATCH -o ex1_out.txt    # standard output file
+#SBATCH -e ex1_err.txt     # standard error file
+#SBATCH -p development      # requested partition
+#SBATCH -t 2              # maximum runtime in minutes
+#SBATCH --mail-user xiny@smu.edu
+#SBATCH --mail-type=all
+module purge
+module load python
+python myjob.py 10000

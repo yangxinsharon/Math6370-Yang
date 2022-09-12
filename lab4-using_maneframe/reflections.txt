@@ -1,0 +1,2 @@
+A. As the number of subintervals increases by a factor of 10, the error decreases by a factor of 100, indicating the value of p is 2 (10^2=100).
+B. As the number of subintervals increases by a factor of 10, the total run time increases by a factor of 10, indicating the value of q is 1 (10^1=10).
