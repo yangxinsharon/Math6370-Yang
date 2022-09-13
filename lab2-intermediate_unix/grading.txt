@@ -1,0 +1,9 @@
+General notes:
+* all files submitted correctly
+
+Makefile:
+* the instructions clearly specified to use the "g++" compiler; while you may have completed this using other tools on your laptop, you have no assurance that the "grading" system will have "clang++"
+
+* cleans up correctly
+
+Grade: 90
