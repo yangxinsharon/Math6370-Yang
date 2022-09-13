@@ -1,11 +1,12 @@
 General (turned in correctly):
-I had specifically asked for you to include the file "vectors_new.cpp" so that I could look at the hand-optimized code, but you only have the one "vectors.cpp" file.
+* all files submitted correctly
 
 Optimization (code and commentary):
-* the code in your "vectors.cpp" file includes no hand optimization
-* good commentary, though you provided insufficient code to back up these claims.
+* codes are optimized correctly
+* good commentary
 
 Debugging:
 * correctly debugged
 
-Grade: 78
+Grade: 100
+
