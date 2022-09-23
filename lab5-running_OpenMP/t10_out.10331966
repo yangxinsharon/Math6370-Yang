@@ -1,0 +1,6 @@
+TACC:  Starting up job 10331966 
+TACC:  Starting parallel tasks... 
+ Test run using 10 OpenMP threads
+ Final rms norm = 0.2045321181289225
+ Total run time = 1.335904121
+TACC:  Shutdown complete. Exiting. 
