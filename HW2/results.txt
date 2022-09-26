@@ -1,0 +1,10 @@
+size in (m,n)		time for vec2d				time for vec2d_b
+(10000,1000)		0.41343697200000001			0.46215270600000002
+(1000,10000)		0.49986339600000002			0.56456281100000005
+(100,100000)		0.49031065499999998			0.50615727300000002
+(10,1000000)		0.411048048					0.471746993
+(100000,100)		0.48445212599999998			0.43062266900000001
+(1000000,10)		0.50741876699999999			0.42507208499999999
+
+Comments:
+For the first four cases, vec2d format performs better than vec2d_b. However, for the last two cases, where number of rows is more than a 1000 times as large as number of columns, vec2d_b format performs better. I guess this happens because C++ stores in row-major ordering.
