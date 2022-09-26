@@ -228,7 +228,7 @@ double Dot(const vec2d& x, const vec2d& y) {
   double sum = 0.0;
   for (long int i=0; i<x.nRow(); i++) {
     for (long int j=0; j<x.nCol(); j++)
-      sum += x[i][j]*x[i][j];
+      sum += x[i][j]*y[i][j];
   }
   return sum;
 }

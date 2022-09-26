@@ -2,8 +2,8 @@
    SMU Mathematics
    Math 4370 / 6370 */
 
-#ifndef vec2d_b_DEFINED__
-#define vec2d_b_DEFINED__
+#ifndef VEC2D_B_DEFINED__
+#define VEC2D_B_DEFINED__
 
 // Inclusions
 #include <stdlib.h>
@@ -57,10 +57,9 @@ class vec2d_b {
 
   // access my data -- access value by location in array,
   // returns handle to value so that it can be changed as well,
-  // does not check for legal 'i'
-  // double* operator[](long int i) const {return data[i];};
-  double& operator()(long int i) {return data[i];};
-  double operator[](long int i) const {return data[i];};
+  // does not check for legal 'i' and 'j'
+  double& operator()(long int i, long int j) {return data[i*ncol+j];};
+  double operator()(long int i, long int j) const {return data[i*ncol+j];};
 
 
   ///// Arithmetic operations defined on a vec2d_b /////

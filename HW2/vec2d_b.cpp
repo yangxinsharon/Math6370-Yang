@@ -23,7 +23,7 @@ vec2d_b::vec2d_b(long int m, long int n) {
     this->length = m*n;
     this->nrow = m;
     this->ncol = n;
-    this->data = new double [m*n];
+    this->data = new double [m*n]();
   }
 }
 
@@ -224,7 +224,7 @@ double Dot(const vec2d_b& x, const vec2d_b& y) {
   double sum = 0.0;
   for (long int i=0; i<x.nRow(); i++) {
     for (long int j=0; j<x.nCol(); j++)
-      sum += x[i*x.nCol()+j] * x[i*x.nCol()+j];
+      sum += x(i,j)*y(i,j);
   }
   return sum;
 }
@@ -236,7 +236,7 @@ double TwoNorm(const vec2d_b& x) {
   double sum = 0.0;
   for (long int i=0; i<x.nRow(); i++)
     for (long int j=0; j<x.nCol(); j++)
-      sum += x[i*x.nCol()+j] * x[i*x.nCol()+j];
+      sum += x(i,j)*x(i,j);
   return sqrt(sum);
 }
 
@@ -246,7 +246,7 @@ double RmsNorm(const vec2d_b& x) {
   double sum = 0.0;
   for (long int i=0; i<x.nRow(); i++) {
     for (long int j=0; j<x.nCol(); j++)
-      sum += x[i*x.nCol()+j]*x[i*x.nCol()+j];
+      sum += x(i,j)*x(i,j);
   }
   return sqrt(sum/x.Length());
 }
@@ -257,7 +257,7 @@ double MaxNorm(const vec2d_b& x) {
   double mx = 0.0;
   for (long int i=0; i<x.nRow(); i++) {
     for (long int j=0; j<x.nCol(); j++)
-      mx = std::max(mx, std::abs(x[i*x.nCol()+j]));
+      mx = std::max(mx, std::abs(x(i,j)));
   }
   return mx;
 }

@@ -58,9 +58,8 @@ class vec2d {
   // access my data -- access value by pointer in array,
   // returns handle to pointer so that it can be changed as well,
   // does not check for legal 'i'
-  double* operator[](long int i) const {return data[i];};
   double* & operator[](long int i) {return data[i];};
-
+  double* operator[](long int i) const {return data[i];};
 
   ///// Arithmetic operations defined on a vec2d /////
 

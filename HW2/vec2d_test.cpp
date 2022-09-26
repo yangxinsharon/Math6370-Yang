@@ -16,7 +16,7 @@ int GramSchmidt2d(vec2d X[], int numvectors);
 int main(int argc, char* argv[]) {
 
   // create some vecs of size 5x3, and set some entries
-  int m = 3; // nrow
+  int m = 5; // nrow
   int n = 3; // ncol
   vec2d a(m,n), b(m,n), c(m,n);
   for (int i=0; i<b.nRow(); i++) {
@@ -37,8 +37,8 @@ int main(int argc, char* argv[]) {
   c.Write();
 
   // verify that b has length 5x3=15
-  // if (b.Length() != 15)
-  //   std::cerr << "error: incorrect vector length" << std::endl;
+  if (b.Length() != 15)
+    std::cerr << "error: incorrect vector length" << std::endl;
 
   // access a's data array, update entries, and write to file
   double **dat = a.GetData();
@@ -50,10 +50,10 @@ int main(int argc, char* argv[]) {
     dat[4][j] = 30.0;
   } 
   a.Write("a_data");
-  std::cout << "the new file 'a_data' on disk should have same row entries 10, 15, 20, 25, 30" << std::endl << std::endl;
+  std::cout << "the new file 'a_data' on disk should have entries 10, 10, 10, 15, 15, 15, ..., 30, 30, 30" << std::endl << std::endl;
 
   // access each entry of a and write to screen
-  std::cout << "entries of a, one at a time (via []): should give 10, 10, 10, 15, 15, 15, ..., 30, 30, 30" << std::endl;
+  std::cout << "entries of a, one at a time (via [][]): should give 10, 10, 10, 15, 15, 15, ..., 30, 30, 30" << std::endl;
   for (int i=0; i<a.nRow(); i++){
     for (int j=0; j<a.nCol(); j++)
       std::cout << "  " << a[i][j];
@@ -110,7 +110,7 @@ int main(int argc, char* argv[]) {
 
   std::cout << "Testing Max (should be 75):  " << c.Max() << std::endl;
 
-  std::cout << "Testing Dot (should be 1240):  " << Dot(a, c) << std::endl;
+  std::cout << "Testing Dot (should be 6200):  " << Dot(a, c) << std::endl;
 
   std::cout << "Testing Linspace, should be 0 1 2 ... 14" << std::endl;
   vec2d d = Linspace(0.0, 14.0, 5, 3);
