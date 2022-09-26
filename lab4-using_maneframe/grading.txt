@@ -1,0 +1,27 @@
+General (turned in correctly): good
+
+Exercise 1:
+* names job ex1_surname: good
+* specifies the 'development' queue: good
+* sets input to 10000: good
+* sets the maximum run time to 2 minutes: good
+* sends the standard output to a file ex1_out.txt: good
+* sends the standard error to a file ex1_err.txt: good
+* sends 'all' notifications to SMU email address: good
+
+Exercise 2:
+* names job ex2_surname: good
+* specifies the 'development' queue: good
+* sets inputs to {10, 100, 1000, 10000, 100000, 1000000, 10000000}: good
+* sets maximum run time to 10 minutes: good
+* sends stdout to ex2_out.txt: good
+* sends stderr to ex2_err.txt: good
+* sends 'all' notifications to SMU email address: good
+
+Assessing complexity:
+* estimation of algorithm accuracy: should be "-2" instead of "2"
+* explanation: good
+* estimation of algorithm complexity: good
+* explanation: good
+
+Grade: 99
