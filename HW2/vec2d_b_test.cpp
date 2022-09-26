@@ -127,7 +127,7 @@ int main(int argc, char* argv[]) {
     int m = vec_sizes[i][0]; // nrow
     int n = vec_sizes[i][1]; // ncol
   
-    std::cout << "Running GramSchmidt2d_b process" << std::endl;
+    std::cout << "Running GramSchmidt2d_b process with (" << m << "," << n << ")" << std::endl;
     vec2d_b Y[] = {Random(m,n), Random(m,n), Random(m,n), Random(m,n), Random(m,n)};
     std::chrono::time_point<std::chrono::system_clock> stime = std::chrono::system_clock::now();
     if (GramSchmidt2d_b(Y,5))
