@@ -34,12 +34,12 @@ int main (int argc, char *argv[]) {
       nested   = omp_get_nested();
 
       // Print environment information
-      printf("The number of processors available [%i\n]", procs);
-      printf("The number of threads being used [%i\n]", nthreads);
-      printf("The maximum number of threads available [%i\n]", maxt);
-      printf("If you are in a parallel region [%i\n]", inpar);
-      printf("If dynamic threads are enabled [%i\n]", dynamic);
-      printf("If nested parallelism is supported [%i\n]", nested);
+      printf("The number of processors available [%i]\n", procs);
+      printf("The number of threads being used [%i]\n", nthreads);
+      printf("The maximum number of threads available [%i]\n", maxt);
+      printf("If you are in a parallel region [%i]\n", inpar);
+      printf("If dynamic threads are enabled [%i]\n", dynamic);
+      printf("If nested parallelism is supported [%i]\n", nested);
     }
 
   }  // end parallel region  
