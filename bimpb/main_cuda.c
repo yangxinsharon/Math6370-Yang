@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
 	long int *ldw, double *h, long int *ldh, long int *iter,
 	double *resid, int (*matvec) (), int (*psolve) (), long int *info);
 
-    timer_start("TOTAL_TIME");
+    // timer_start("TOTAL_TIME");
 
 	printf("%d %s %s \n",argc,argv[0],argv[1]);
 
@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
 //    sprintf(fname,argv[0]);
 //    sprintf(density,argv[1]);
 	readin(fname,density);
-	initGPU(); //locate memory
+	// initGPU(); //locate memory
 	comp_source_wrapper(); //wraps the solvation energy computation
 
 	/* parameters for GMRES */
@@ -64,8 +64,8 @@ int main(int argc, char *argv[]) {
 
 	soleng=0.0;
 
-	comp_soleng_wrapper(soleng); //wraps the solvation energy computation
-	freeGPU();
+	// comp_soleng_wrapper(soleng); //wraps the solvation energy computation
+	// freeGPU();
 	timer_end();
 
 	/* free memory */
