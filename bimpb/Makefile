@@ -1,5 +1,5 @@
 # makefile for screened coulombic potential computation with cuda
-comp = gcc
+comp = clang
 # flag = -c -O3 -arch=sm_61 -use_fast_math
 # for -arch=sm_xx check http://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html#gpu-feature-list
 bimpb.exe: main_cuda.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_cuda.o pp_timer.o
