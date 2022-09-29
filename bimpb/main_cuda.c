@@ -42,10 +42,10 @@ int main(int argc, char *argv[]) {
 	/* read in structural information */
     sprintf(fname,"1a63");
     sprintf(density,"10");
-//    sprintf(fname,argv[0]);
-//    sprintf(density,argv[1]);
+   // sprintf(fname,argv[0]);
+   // sprintf(density,argv[1]);
 	readin(fname,density);
-	// initGPU(); //locate memory
+	initGPU(); //locate memory
 	comp_source_wrapper(); //wraps the solvation energy computation
 
 	/* parameters for GMRES */
@@ -64,8 +64,8 @@ int main(int argc, char *argv[]) {
 
 	soleng=0.0;
 
-	// comp_soleng_wrapper(soleng); //wraps the solvation energy computation
-	// freeGPU();
+	comp_soleng_wrapper(soleng); //wraps the solvation energy computation
+	freeGPU();
 	timer_end();
 
 	/* free memory */
