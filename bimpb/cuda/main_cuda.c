@@ -35,15 +35,15 @@ int main(int argc, char *argv[]) {
 	long int *ldw, double *h, long int *ldh, long int *iter,
 	double *resid, int (*matvec) (), int (*psolve) (), long int *info);
 
-    // timer_start("TOTAL_TIME");
+    timer_start("TOTAL_TIME");
 
 	printf("%d %s %s \n",argc,argv[0],argv[1]);
 
 	/* read in structural information */
     sprintf(fname,"1a63");
     sprintf(density,"10");
-   // sprintf(fname,argv[0]);
-   // sprintf(density,argv[1]);
+//    sprintf(fname,argv[0]);
+//    sprintf(density,argv[1]);
 	readin(fname,density);
 	initGPU(); //locate memory
 	comp_source_wrapper(); //wraps the solvation energy computation

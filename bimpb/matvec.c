@@ -37,17 +37,17 @@ double *tr_xyz, double *tr_q, int nface, int nchr);
 // }
 
 // get the ID from block
-void initY( double* y, int nface) {
-        int i = blockDim.x * blockIdx.x + threadIdx.x;
-        if(i<nface)
-         y[i]=0.0;
-}
+// void initY( double* y, int nface) {
+//         int i = blockDim.x * blockIdx.x + threadIdx.x;
+//         if(i<nface)
+//          y[i]=0.0;
+// }
 
 
 void matvecmul(const double *x, double *y, double *q, int nface
         ,double *tr_xyz,double *tr_q, double *tr_area,double alpha, double beta){
-
-    int i = blockDim.x * blockIdx.x + threadIdx.x;
+	int i;
+    // int i = blockDim.x * blockIdx.x + threadIdx.x;
 	int j;
 	double pre1,pre2;
 	double area, rs, irs,sumrs;
@@ -110,8 +110,8 @@ void matvecmul(const double *x, double *y, double *q, int nface
 	}
 }
 
-double *d_X, *d_Y,*d_tr_xyz,*d_tr_q,*d_tr_area,*d_atmchr,*d_chrpos,*d_chrptl,*d_xvct;
-int threadsPerBlock = 256;
+// double *d_X, *d_Y,*d_tr_xyz,*d_tr_q,*d_tr_area,*d_atmchr,*d_chrpos,*d_chrptl,*d_xvct;
+// int threadsPerBlock = 256;
 
 // void initGPU() {
 // 	checkcudaErrors(cudaMalloc((void**)&d_X,2*nface*sizeof(double))) ;
@@ -144,13 +144,15 @@ int threadsPerBlock = 256;
 
 /* This subroutine wraps the matrix-vector multiplication */
 int *matvec(double *alpha, double *x, double *beta, double *y) {
-	int blocksPerGrid = (nface + threadsPerBlock - 1) / threadsPerBlock;
+	// int blocksPerGrid = (nface + threadsPerBlock - 1) / threadsPerBlock;
     // checkcudaErrors(cudaMemcpy(d_X, x,2*nface*sizeof(double), cudaMemcpyHostToDevice));
     // checkcudaErrors(cudaMemcpy(d_Y, y,2*nface*sizeof(double), cudaMemcpyHostToDevice));
-    matvecmul<<<blocksPerGrid, threadsPerBlock>>>(d_X, d_Y,d_tr_q,nface
-            ,d_tr_xyz,d_tr_q,d_tr_area, *alpha, *beta);
+    // matvecmul<<<blocksPerGrid, threadsPerBlock>>>(d_X, d_Y,d_tr_q,nface
+    //         ,d_tr_xyz,d_tr_q,d_tr_area, *alpha, *beta);
     // getLastCudaError("kernel launch failure");
     // checkcudaErrors(cudaMemcpy(y, d_Y, 2*nface*sizeof(double), cudaMemcpyDeviceToHost));
+
+    matvecmul(X, Y, tr_q, nface, tr_xyz,tr_q, tr_area, *alpha, *beta);
     return NULL;
 }
 
@@ -159,7 +161,7 @@ int *matvec(double *alpha, double *x, double *beta, double *y) {
 void comp_soleng_wrapper(double soleng) {
     int i;
 	double *chrptl;
-	int blocksPerGrid = (nface + threadsPerBlock - 1) / threadsPerBlock;
+	// int blocksPerGrid = (nface + threadsPerBlock - 1) / threadsPerBlock;
 	double units_para=2.0;
     units_para=units_para*units_coef;
     units_para=units_para*pi;
@@ -171,10 +173,10 @@ void comp_soleng_wrapper(double soleng) {
 	// checkcudaErrors(cudaMalloc((void**)&d_xvct,2*nface*sizeof(double))) ;
  //    checkcudaErrors(cudaMemcpy(d_xvct,xvct,2*nface*sizeof(double),cudaMemcpyHostToDevice));
 
-	comp_pot<<<blocksPerGrid, threadsPerBlock>>>(d_xvct, d_atmchr, d_chrpos,
-    d_chrptl, d_tr_xyz,d_tr_q, d_tr_area, nface, nchr);
+	// comp_pot<<<blocksPerGrid, threadsPerBlock>>>(d_xvct, d_atmchr, d_chrpos,
+ //    d_chrptl, d_tr_xyz,d_tr_q, d_tr_area, nface, nchr);
     // checkcudaErrors(cudaMemcpy(chrptl,d_chrptl,nface*sizeof(double),cudaMemcpyDeviceToHost));
-
+	comp_pot(xvct, atmchr, chrpos, chrptl, tr_xyz,tr_q, tr_area, nface, nchr);
 	soleng=0.0;
 	for (i=0;i<nface;i++) soleng=soleng+chrptl[i];
 	soleng=soleng*units_para;
@@ -186,8 +188,8 @@ void comp_soleng_wrapper(double soleng) {
 /* This subroutine calculates the element-wise potential on GPU */
 void comp_pot(const double* xvct, double *atmchr, double *chrpos,
 double *ptl, double *tr_xyz,double *tr_q, double *tr_area, int nface, int nchr){
-
-	int j = blockDim.x * blockIdx.x + threadIdx.x;
+	int j;
+	// int j = blockDim.x * blockIdx.x + threadIdx.x;
     double sumrs,irs,rs,G0,Gk,kappa_rs,exp_kappa_rs;
     double cos_theta,G1,G2,L1,L2,tp1,tp2;
     int i;
@@ -226,17 +228,18 @@ double *ptl, double *tr_xyz,double *tr_q, double *tr_area, int nface, int nchr){
 
 /* This subroutine wraps the solvation energy computation */
 /* In main_cuda.c after initGPU() */
-// void comp_source_wrapper() {
-// 	double *d_bvct;
-//     // int blocksPerGrid = (nface + threadsPerBlock - 1) / threadsPerBlock;
+void comp_source_wrapper() {
+	double *d_bvct;
+    // int blocksPerGrid = (nface + threadsPerBlock - 1) / threadsPerBlock;
 
-// 	// checkcudaErrors(cudaMalloc((void**)&d_bvct,2*nface*sizeof(double))) ;
+	// checkcudaErrors(cudaMalloc((void**)&d_bvct,2*nface*sizeof(double))) ;
 
-// 	comp_source<<<blocksPerGrid, threadsPerBlock>>>(d_bvct, d_atmchr, d_chrpos,
-//     d_tr_xyz,d_tr_q, nface, nchr);
-//     // checkcudaErrors(cudaMemcpy(bvct,d_bvct,2*nface*sizeof(double),cudaMemcpyDeviceToHost));
-//     // checkcudaErrors(cudaFree(d_bvct));
-// }
+	// comp_source<<<blocksPerGrid, threadsPerBlock>>>(d_bvct, d_atmchr, d_chrpos,
+ //    d_tr_xyz,d_tr_q, nface, nchr);
+    // checkcudaErrors(cudaMemcpy(bvct,d_bvct,2*nface*sizeof(double),cudaMemcpyDeviceToHost));
+    // checkcudaErrors(cudaFree(d_bvct));
+    comp_source(bvct, atmchr, chrpos, tr_xyz,tr_q, nface, nchr);
+}
 
 
 /* This subroutine calculates the source term of the integral equation on GPU */
@@ -244,8 +247,8 @@ double *ptl, double *tr_xyz,double *tr_q, double *tr_area, int nface, int nchr){
 /* bvct be located at readin.c */
 void comp_source( double* bvct, double *atmchr, double *chrpos,
 double *tr_xyz,double *tr_q, int nface, int nchr){
-
-	int i = blockDim.x * blockIdx.x + threadIdx.x;
+	int i;
+	// int i = blockDim.x * blockIdx.x + threadIdx.x;
 	int j;
 	double sumrs,cos_theta,irs,G0,G1,tp1;
 	if (i<nface){
@@ -256,6 +259,7 @@ double *tr_xyz,double *tr_q, int nface, int nchr){
 							chrpos[3*j+1]-tr_xyz[3*i+1],
 							chrpos[3*j+2]-tr_xyz[3*i+2]};
 			sumrs= r_s.x*r_s.x + r_s.y*r_s.y+r_s.z*r_s.z; //c can't use that r_s.x
+			// sumrs= r_s.x*r_s.x + r_s.y*r_s.y+r_s.z*r_s.z; //c can't use that r_s.x
             cos_theta=tr_q[3*i]*r_s.x+tr_q[3*i+1]*r_s.y+tr_q[3*i+2]*r_s.z;
 			irs=rsqrt(sumrs);//returns reciprocal square root of scalars and vectors.
             cos_theta=cos_theta*irs;

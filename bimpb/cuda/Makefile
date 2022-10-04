@@ -1,18 +1,9 @@
 # makefile for screened coulombic potential computation with cuda
-comp = clang #nvcc
-# flag = -O0
-# flag = -c -O3 -arch=sm_61 -use_fast_math
+comp = nvcc
+flag = -c -O3 -arch=sm_61 -use_fast_math
 # for -arch=sm_xx check http://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html#gpu-feature-list
-# bimpb.exe: main_cuda.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_cuda.o pp_timer.o
-# 	$(comp) -o md_cuda.exe *.o -lm
-
-bimpb.exe: main.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec.o pp_timer.o
-	$(comp) -o md.exe *.o -lm
-matvec.o: matvec.c
-	$(comp) $(flag) matvec.c
-main.o: main.c
-	$(comp) $(flag) main.c
-
+bimpb.exe: main_cuda.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_cuda.o pp_timer.o
+	$(comp) -o md_cuda.exe *.o -lm
 matvec_cuda.o: matvec_cuda.cu
 	$(comp) $(flag) matvec_cuda.cu
 pp_timer.o: pp_timer.c
@@ -44,4 +35,4 @@ dtrsv.o: gmres/dtrsv.c
 gmres.o: gmres/gmres.c
 	$(comp) $(flag) gmres/gmres.c
 clean: 
-	\rm -rf *.o *.exe
+	\rm -rf *.o md_cuda.exe

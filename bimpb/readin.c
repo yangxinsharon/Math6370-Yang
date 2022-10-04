@@ -4,14 +4,14 @@
 #include "gl_constants.h"
 
 extern int nface, nspt, natm, nchr;
-extern int **extr_v; //[3][nspt]
-extern int **extr_f; //[2][nface]
-extern int **face,**face_copy;//[3][nface]
-extern double **vert, **snrm; //[3][nspt];
-extern double *tr_xyz, *tr_q; //[3][nface]
-extern double *tr_area,*bvct,*xvct; //[nface];
-extern double **atmpos; //[3][natm/nchr];
-extern double *atmrad, *atmchr, *chrpos; //[natm/nchr]; 
+extern int **extr_v;						//[3][nspt]
+extern int **extr_f;						//[2][nface]
+extern int **face, **face_copy;				//[3][nface]
+extern double **vert, **snrm;				//[3][nspt];
+extern double *tr_xyz, *tr_q;				//[3][nface]
+extern double *tr_area, *bvct, *xvct;		//[nface];
+extern double **atmpos;						//[3][natm/nchr];
+extern double *atmrad, *atmchr, *chrpos;	//[natm/nchr]; 
 extern double *work, *h;
 extern double *h_pot;
 extern double *dev_xp, *dev_yp, *dev_zp, *dev_q, *dev_pot;
