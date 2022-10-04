@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
 	double *resid, int (*matvec) (), int (*psolve) (), long int *info);
 
     extern void timer_start(char *n);
-	timer_start("TOTAL_TIME")
+	timer_start("TOTAL_TIME");
 	printf("%d %s %s \n", argc, argv[0], argv[1]);
 
 	/* read in structural information */
