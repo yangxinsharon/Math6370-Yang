@@ -63,7 +63,7 @@ int main(int argc, char* argv[]) {
   F = 0.0;
 
   // perform integration over n intervals in each direction
-# pragma omp parallel for collapse(2) default(shared) private(i,j,k,l)
+# pragma omp parallel for collapse(4) default(shared) private(i,j,k,l)
   for (i=0; i<n; i++) {
     for (j=0; j<n; j++) {
 
@@ -82,7 +82,7 @@ int main(int argc, char* argv[]) {
           // update numerical integral with contribution from point
           F += 0.25*h*h*w[k]*w[l]*f(a,b);
 
-	}  // end l loop
+	      }  // end l loop
       }  // end k loop
     }  // end j loop
   }  // end i loop
