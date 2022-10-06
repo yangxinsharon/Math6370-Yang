@@ -63,7 +63,7 @@ int main(int argc, char* argv[]) {
   F = 0.0;
 
   // perform integration over n intervals in each direction
-# pragma omp parallel for collapse(4) default(shared) private(i,j,k,l)
+# pragma omp parallel for collapse(4) default(shared) private(i,j)
   for (i=0; i<n; i++) {
     for (j=0; j<n; j++) {
 
