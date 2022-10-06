@@ -7,7 +7,7 @@
 ###################################################################
 
 CXX = g++
-CXXFLAGS = -O2
+CXXFLAGS = -g -O0
 OMPFLAG = -fopenmp
 
 quadrature.exe : quadrature.cpp

@@ -80,6 +80,7 @@ int main(int argc, char* argv[]) {
           b = y + 0.5*h*z[l];
 
           // update numerical integral with contribution from point
+          # pragma omp critical (sum)
           F += 0.25*h*h*w[k]*w[l]*f(a,b);
 
 	      }  // end l loop
