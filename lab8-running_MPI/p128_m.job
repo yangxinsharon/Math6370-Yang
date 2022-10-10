@@ -1,0 +1,12 @@
+#!/bin/bash
+#SBATCH -J output_maneframe_128.txt	# job name
+#SBATCH -o p128_m_out.%j			# output file
+#SBATCH -e p128_m_err.%j			# error file
+#SBATCH -N 4						# requested nodes
+#SBATCH -n 128						# requested MPI tasks
+#SBATCH -p standard-mem-s			# requested queue
+#SBATCH -t 1						# maximum runtime in minutes
+#SBATCH --exclusive					# do not share nodes
+
+srun ./driver.exe
+

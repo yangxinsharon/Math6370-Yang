@@ -1,0 +1,12 @@
+#!/bin/bash
+#SBATCH -A SMU-Math-6370			# charge account
+#SBATCH -J output_stampede_128b.txt	# job name
+#SBATCH -o p128b_s_out.%j			# output file
+#SBATCH -e p128b_s_err.%j			# error file
+#SBATCH -N 4						# requested nodes
+#SBATCH -n 128						# requested MPI tasks
+#SBATCH -p normal					# requested queue
+#SBATCH -t 1						# maximum runtime in minutes
+
+ibrun ./driver.exe
+

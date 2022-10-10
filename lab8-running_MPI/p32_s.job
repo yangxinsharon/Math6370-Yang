@@ -1,10 +1,10 @@
 #!/bin/bash
 #SBATCH -A SMU-Math-6370			# charge account
-#SBATCH -J output_stampede_1.txt	# job name
-#SBATCH -o p1_s_out.%j				# output file
-#SBATCH -e p1_s_err.%j				# error file
+#SBATCH -J output_stampede_32.txt	# job name
+#SBATCH -o p32_s_out.%j				# output file
+#SBATCH -e p32_s_err.%j				# error file
 #SBATCH -N 1						# requested nodes
-#SBATCH -n 1						# requested MPI tasks
+#SBATCH -n 32						# requested MPI tasks
 #SBATCH -p normal					# requested queue
 #SBATCH -t 1						# maximum runtime in minutes
 
