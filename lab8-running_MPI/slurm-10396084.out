@@ -1,0 +1,6 @@
+TACC:  Starting up job 10396084 
+TACC:  Starting parallel tasks... 
+ starting MPI with 50 processes
+ dot-product = 1.66666666667
+     runtime = 0.00302505493164
+TACC:  Shutdown complete. Exiting. 
