@@ -1,0 +1,23 @@
+output_stampede_1.txt			0.017030954361
+output_stampede_2.txt			0.00976800918579
+output_stampede_4.txt			0.00502705574036
+output_stampede_8.txt			0.00220894813538
+output_stampede_16.txt			0.00335907936096
+output_stampede_32.txt			0.000673055648804
+output_stampede_64.txt			0.000356912612915
+output_stampede_128a.txt		0.000618934631348
+output_stampede_128b.txt		0.00333213806152
+output_stampede_256.txt			0.00198602676392
+		
+output_maneframe_1.txt			0.0306473337114
+output_maneframe_2.txt			0.0157336238772
+output_maneframe_4.txt			0.00869369134307
+output_maneframe_8.txt			0.00490732118487
+output_maneframe_16.txt			0.003253236413
+output_maneframe_32.txt			0.00304314866662
+output_maneframe_64a.txt		0.000714517198503
+output_maneframe_64b.txt		0.00179824233055
+output_maneframe_128.txt		0.00136193074286
+output_maneframe_256.txt		0.000852169468999
+
+On Stampede2, the 128-task job surprisely performs faster using 2 nodes than using 4 nodes. On M2, the 64-task job performs faster using 4 nodes than using 2 nodes. For other identical runs on both computers, Stampede2 performs faster for most case, while M2 performs faster for 128-task job using 32 cores/node.
