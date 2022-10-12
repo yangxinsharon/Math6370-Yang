@@ -52,7 +52,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 				double r_s[3] = {sp[0]-tp[0], sp[1]-tp[1], sp[2]-tp[2]};
 				sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
 				rs = sqrt(sumrs);
-				irs = rsqrt(sumrs);
+				irs = 1.0/sqrt(sumrs) ; //rsqrt(sumrs);
 				G0 = one_over_4pi;
 				G0 = G0*irs;
 				kappa_rs = kappa*rs;
@@ -180,7 +180,7 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
             	chrpos[3*j+2]-tr_xyz[3*i+2]};
 			sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2]; //c can't use that r_s.x
             cos_theta = tr_q[3*i]*r_s[0] + tr_q[3*i+1]*r_s[1] + tr_q[3*i+2]*r_s[2];
-			irs = rsqrt(sumrs);//returns reciprocal square root of scalars and vectors.
+			irs = 1.0/sqrt(sumrs) ;//rsqrt(sumrs);//returns reciprocal square root of scalars and vectors.
             cos_theta = cos_theta*irs;
             G0 = one_over_4pi;//constant
             G0 = G0*irs;
