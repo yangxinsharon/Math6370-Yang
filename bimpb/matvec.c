@@ -39,7 +39,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	double L1, L2, L3, L4;
 
     pre1=0.50*(1.0+eps); /* const eps=80.0 */
-    pre2=0.50*(1.0+1.0/eps) //fdivide(1.0,eps)); //!!! fdivide?
+    pre2=0.50*(1.0+1.0/eps); //fdivide(1.0,eps)); //!!! fdivide?
     for (i=0; i<nface; i++) {
     	double tp[3] = {tr_xyz[3*i], tr_xyz[3*i+1], tr_xyz[3*i+2]};
 		double tq[3] = {tr_q[3*i], tr_q[3*i+1], tr_q[3*i+2]};
