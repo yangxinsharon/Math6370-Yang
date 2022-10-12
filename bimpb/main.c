@@ -20,7 +20,7 @@ extern const double eps;
 int main(int argc, char *argv[]) {
 	/*variables local to main*/
 	int i,j;
-	double s[3], pot=0.0, sum=0.0, pot_temp=0.0;
+	double s[3], pot=0.0, sum=0.0, pot_temp=0.0;	// potential
 	double ptl, soleng, t1, t2;
 	char fname[16], density[16];
 	extern void readin(char fname[16], char density[16]);
@@ -37,6 +37,7 @@ int main(int argc, char *argv[]) {
 	double *resid, int (*matvec) (), int (*psolve) (), long int *info);
 
     extern void timer_start(char *n);
+    extern void timer_end(void);
 	timer_start("TOTAL_TIME");
 	printf("%d %s %s \n", argc, argv[0], argv[1]);
 
@@ -46,7 +47,6 @@ int main(int argc, char *argv[]) {
    // sprintf(fname,argv[0]);
    // sprintf(density,argv[1]);
 	readin(fname, density);
-	// initGPU(); //locate memory
 	comp_source_wrapper(); //wraps the solvation energy computation
 
 	/* parameters for GMRES */
@@ -66,8 +66,7 @@ int main(int argc, char *argv[]) {
 	soleng=0.0;
 
 	comp_soleng_wrapper(soleng); //wraps the solvation energy computation
-	// freeGPU();
-	// timer_end();
+	timer_end();
 
 	/* free memory */
 	for(i=0;i<3;i++) {
@@ -115,11 +114,10 @@ int main(int argc, char *argv[]) {
 // ****************************************************************
 int *psolve(double *z, double *r) {
 /*r as original while z as scaled*/
-	int i;
 	double scale1,scale2;
 	scale1=0.5*(1.0+eps);
 	scale2=0.5*(1.0+1.0/eps);
-	for (i=0; i<nface; i++){
+	for (int i=0; i<nface; i++){
 		z[i]=r[i]/scale1;
 		z[i+nface]=r[i+nface]/scale2;
 	}
