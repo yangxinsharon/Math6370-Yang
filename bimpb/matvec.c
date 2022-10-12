@@ -3,6 +3,8 @@
    Project bim-pb with Weihua Geng, Jiahui Chen */
 
 /* Inclusions */
+#include <stdlib.h> //yang malloc
+#include <math.h> //yang sqrt exp 
 #include <stdio.h>
 #include "gl_variables.h"
 #include "gl_constants.h"
@@ -37,12 +39,12 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	double L1, L2, L3, L4;
 
     pre1=0.50*(1.0+eps); /* const eps=80.0 */
-    pre2=0.50*(1.0+fdivide(1.0,eps)); //!!! fdivide?
+    pre2=0.50*(1.0+1.0/eps) //fdivide(1.0,eps)); //!!! fdivide?
     for (i=0; i<nface; i++) {
     	double tp[3] = {tr_xyz[3*i], tr_xyz[3*i+1], tr_xyz[3*i+2]};
 		double tq[3] = {tr_q[3*i], tr_q[3*i+1], tr_q[3*i+2]};
 
-		double peng[2] = {0.0, 0,0};
+		double peng[2] = {0.0, 0.0};
 		for (j=0; j<nface; j++) {
         	if (j != i) {
 				double sp[3] = {tr_xyz[3*j], tr_xyz[3*j+1], tr_xyz[3*j+2]};
@@ -75,7 +77,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 				L1 = G1-eps*G2;
 				L2 = G0-Gk;
 				L3 = G4-G3;
-				L4 = G10-fdivide(G20,eps);
+				L4 = G10-G20/eps; //fdivide(G20,eps);
 	
 				double peng_old[2] = {x[j], x[j+nface]};
 				area = tr_area[j];
@@ -133,7 +135,7 @@ void comp_pot(const double* xvct, double *atmchr, double *chrpos, double *ptl,
 			double r_s[3] = {r[0]-s[0], r[1]-s[1], r[2]-s[2]};
 			sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
 			rs = sqrt(sumrs);
-			irs = rsqrt(sumrs);
+			irs = 1.0/sqrt(sumrs);
 
         	G0 = one_over_4pi;
         	G0 = G0*irs;
