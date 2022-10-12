@@ -177,7 +177,7 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
             double r_s[3] = {chrpos[3*j]-tr_xyz[3*i], chrpos[3*j+1]-tr_xyz[3*i+1], 
             	chrpos[3*j+2]-tr_xyz[3*i+2]};
 			sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2]; //c can't use that r_s.x
-            cos_theta = tr_q[3*i]*r_s[0] + tr_q[3*i+1]*r_s[y] + tr_q[3*i+2]*r_s[2];
+            cos_theta = tr_q[3*i]*r_s[0] + tr_q[3*i+1]*r_s[1] + tr_q[3*i+2]*r_s[2];
 			irs = rsqrt(sumrs);//returns reciprocal square root of scalars and vectors.
             cos_theta = cos_theta*irs;
             G0 = one_over_4pi;//constant
