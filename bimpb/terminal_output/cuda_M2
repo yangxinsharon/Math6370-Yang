@@ -1,0 +1,436 @@
+[xiny@login01 bimpb_cuda_ds]$ ls
+1a63.face  dgemv.o   gl_constants.h  Makefile        pp_timer.o
+1a63.pqr   dnrm2.o   gl_functions.h  matvec_cuda.cu  readin.c
+1a63.vert  drotg.o   gl_variables.h  matvec_cuda.o   readin.o
+1a63.xyzr  drot.o    gmres           md_cuda.exe     slurm-35556518.out
+daxpy.o    dscal.o   gmres.o         msms
+dcopy.o    d_sign.o  main_cuda.c     pp_timer.c
+ddot.o     dtrsv.o   main_cuda.o     pp_timer.h
+[xiny@login01 bimpb_cuda_ds]$ ./md_cuda.exe 
+
+1 ./md_cuda.exe (null) 
+./msms -if 1a63.xyzr -prob 1.4 -dens 20 -of 1a63 
+MSMS 2.6.1 started on login01
+Copyright M.F. Sanner (1994)
+Compilation flags -O2 -DVERBOSE -DTIMING
+INPUT  1a63.xyzr 2065 spheres 0 collision only, radii  0.225 to  2.275
+PARAM  Probe_radius  1.400 density 20.000 hdensity  3.000
+REDUCED SURFACE ...
+    RS component 0 identified 367 366 360
+WARNING: atoms 473 is completely inside atom 471
+WARNING: atoms 472 is completely inside atom 471
+WARNING: atoms 475 is completely inside atom 474
+WARNING: atoms 476 is completely inside atom 474
+WARNING: atoms 936 is completely inside atom 934
+WARNING: atoms 935 is completely inside atom 934
+WARNING: atoms 2059 is completely inside atom 2058
+WARNING: atoms 2060 is completely inside atom 2058
+WARNING: atoms 2061 is completely inside atom 2058
+WARNING: atoms 1117 is completely inside atom 1116
+WARNING: atoms 1647 is completely inside atom 1644
+WARNING: atoms 1646 is completely inside atom 1644
+WARNING: atoms 1645 is completely inside atom 1644
+    0 free edge(s) found in component 0
+    RS component  #faces  #edges #free_edges  #vertices   genus
+         0        2262     3393          0        984      74.5
+    Time Reduced Surface real: 0.06 user: 0.05 sys: 0.00
+ANALYTICAL SOLVENT EXCLUDED SURFACE...
+    Component   0
+        Time Surface real: 0.00 user: 0.01 sys: 0.00
+        Time Singularities real: 0.00 user: 0.00 sys: 0.00
+    SES comp.  #fac.  #edg. #s_edg. #vert. #s_vert. R_h C_h genus
+         0     6904  13894    126    6992      206   0   0    0
+ANALYTICAL SURFACE AREA :
+    Comp. probe_radius,   reent,    toric,   contact    SES       SAS
+      0       1.400    1579.307  2816.573  2607.352  7003.231  8515.815
+TRIANGULATION...
+    Component 0
+WARNING: geodesic which intersects odd number of edges
+WARNING: geodesic which intersects odd number of edges
+    component#, vertices,  edges,  faces, genus, density
+        0         132502  397500  265000    0    18.920
+        Time Triangulation real: 0.75 user: 0.75 sys: 0.01
+NUMERICAL VOLUMES AND AREA
+    Comp. probe_radius SES_volume SES_area)
+       0      1.40    18125.197   6989.134
+    Total ses_volume: 18125.197
+MSMS terminated normally
+Total Time real: 1.43 user: 1.32 sys: 0.02
+1a63.vert
+nspt=132502, natm=2065, den=20.000000, prob=1.400000
+finish reading vertices file...
+nface=265000, natm=2065, den=20.000000, prob=1.400000
+finish reading face file...
+finish reading position file...
+finish reading charge file...
+The 9991 th triangle has small area:0.000000e+00
+The 13954 th triangle has small area:0.000000e+00
+The 13963 th triangle has small area:0.000000e+00
+The 13964 th triangle has small area:0.000000e+00
+The 26516 th triangle has small area:0.000000e+00
+The 26517 th triangle has small area:0.000000e+00
+The 26518 th triangle has small area:0.000000e+00
+The 26519 th triangle has small area:0.000000e+00
+The 26520 th triangle has small area:0.000000e+00
+The 26521 th triangle has small area:0.000000e+00
+The 26522 th triangle has small area:0.000000e+00
+The 26523 th triangle has small area:0.000000e+00
+The 26524 th triangle has small area:0.000000e+00
+The 26529 th triangle has small area:0.000000e+00
+The 38139 th triangle has small area:0.000000e+00
+The 59731 th triangle has small area:0.000000e+00
+The 59732 th triangle has small area:0.000000e+00
+The 62346 th triangle has small area:0.000000e+00
+The 62349 th triangle has small area:0.000000e+00
+The 62350 th triangle has small area:0.000000e+00
+The 62353 th triangle has small area:0.000000e+00
+The 62516 th triangle has small area:0.000000e+00
+The 62517 th triangle has small area:0.000000e+00
+The 62518 th triangle has small area:0.000000e+00
+The 62519 th triangle has small area:0.000000e+00
+The 62520 th triangle has small area:0.000000e+00
+The 62523 th triangle has small area:0.000000e+00
+The 66692 th triangle has small area:0.000000e+00
+The 66697 th triangle has small area:0.000000e+00
+The 66698 th triangle has small area:0.000000e+00
+The 66699 th triangle has small area:0.000000e+00
+The 66700 th triangle has small area:0.000000e+00
+The 66701 th triangle has small area:0.000000e+00
+The 68529 th triangle has small area:0.000000e+00
+The 68530 th triangle has small area:0.000000e+00
+The 69835 th triangle has small area:0.000000e+00
+The 69836 th triangle has small area:0.000000e+00
+The 70067 th triangle has small area:0.000000e+00
+The 70068 th triangle has small area:0.000000e+00
+The 70122 th triangle has small area:0.000000e+00
+The 70123 th triangle has small area:0.000000e+00
+The 70124 th triangle has small area:0.000000e+00
+The 70125 th triangle has small area:0.000000e+00
+The 70126 th triangle has small area:0.000000e+00
+The 70127 th triangle has small area:0.000000e+00
+The 70128 th triangle has small area:0.000000e+00
+The 70129 th triangle has small area:0.000000e+00
+The 70130 th triangle has small area:0.000000e+00
+The 70131 th triangle has small area:0.000000e+00
+The 99601 th triangle has small area:0.000000e+00
+The 99602 th triangle has small area:0.000000e+00
+The 181134 th triangle has small area:0.000000e+00
+The 181258 th triangle has small area:0.000000e+00
+The 193273 th triangle has small area:7.071068e-07
+The 193406 th triangle has small area:0.000000e+00
+The 198237 th triangle has small area:7.071068e-07
+The 198239 th triangle has small area:0.000000e+00
+The 203304 th triangle has small area:0.000000e+00
+The 203305 th triangle has small area:7.921490e-06
+The 222260 th triangle has small area:2.915476e-06
+The 224359 th triangle has small area:0.000000e+00
+The 224468 th triangle has small area:0.000000e+00
+The 228682 th triangle has small area:0.000000e+00
+The 228989 th triangle has small area:4.123106e-06
+The 231328 th triangle has small area:0.000000e+00
+The 231334 th triangle has small area:5.000000e-07
+The 231692 th triangle has small area:0.000000e+00
+The 231815 th triangle has small area:0.000000e+00
+The 234764 th triangle has small area:0.000000e+00
+The 237689 th triangle has small area:0.000000e+00
+The 239363 th triangle has small area:2.236068e-06
+The 239364 th triangle has small area:2.236068e-06
+72 faces are deleted
+total area = 6989.438902
+matvec_cuda.cu(117) : CUDA Runtime API error 100: no CUDA-capable device is detected.
+[xiny@login01 bimpb_cuda_ds]$ 
+[xiny@login01 bimpb_cuda_ds]$ module load nvhpc-22.2
+[xiny@login01 bimpb_cuda_ds]$ srun -p v100x8 --mem=6G md_cuda.exe 1.0
+srun: NOTE: This is a multi-GPU node and no --gres flag was set requesting number of GPUs. By default you have been allocated single GPU for this request. If you need more than one GPU please cancel this jobs and request additional gpus for example: --gres=gpu:volta:4
+srun: job 37791452 queued and waiting for resources
+srun: job 37791452 has been allocated resources
+WARNING: atoms 473 is completely inside atom 471
+WARNING: atoms 472 is completely inside atom 471
+WARNING: atoms 475 is completely inside atom 474
+WARNING: atoms 476 is completely inside atom 474
+WARNING: atoms 936 is completely inside atom 934
+WARNING: atoms 935 is completely inside atom 934
+WARNING: atoms 2059 is completely inside atom 2058
+WARNING: atoms 2060 is completely inside atom 2058
+WARNING: atoms 2061 is completely inside atom 2058
+WARNING: atoms 1117 is completely inside atom 1116
+WARNING: atoms 1647 is completely inside atom 1644
+WARNING: atoms 1646 is completely inside atom 1644
+WARNING: atoms 1645 is completely inside atom 1644
+MSMS 2.6.1 started on va002
+Copyright M.F. Sanner (1994)
+Compilation flags -O2 -DVERBOSE -DTIMING
+INPUT  1a63.xyzr 2065 spheres 0 collision only, radii  0.225 to  2.275
+PARAM  Probe_radius  1.400 density 20.000 hdensity  3.000
+REDUCED SURFACE ...
+    RS component 0 identified 367 366 360
+    0 free edge(s) found in component 0
+    RS component  #faces  #edges #free_edges  #vertices   genus
+         0        2262     3393          0        984      74.5
+    Time Reduced Surface real: 0.04 user: 0.05 sys: 0.00
+ANALYTICAL SOLVENT EXCLUDED SURFACE...
+    Component   0
+        Time Surface real: 0.01 user: 0.00 sys: 0.00
+        Time Singularities real: 0.00 user: 0.01 sys: 0.00
+    SES comp.  #fac.  #edg. #s_edg. #vert. #s_vert. R_h C_h genus
+         0     6904  13894    126    6992      206   0   0    0
+ANALYTICAL SURFACE AREA :
+    Comp. probe_radius,   reent,    toric,   contact    SES       SAS
+      0       1.400    1579.307  2816.573  2607.352  7003.231  8515.815
+TRIANGULATION...
+    Component 0
+WARNING: geodesic which intersects odd number of edges
+WARNING: geodesic which intersects odd number of edges
+    component#, vertices,  edges,  faces, genus, density
+        0         132502  397500  265000    0    18.920
+        Time Triangulation real: 0.54 user: 0.53 sys: 0.01
+NUMERICAL VOLUMES AND AREA
+    Comp. probe_radius SES_volume SES_area)
+       0      1.40    18125.197   6989.134
+    Total ses_volume: 18125.197
+MSMS terminated normally
+Total Time real: 0.98 user: 0.91 sys: 0.02
+2 md_cuda.exe 1.0 
+./msms -if 1a63.xyzr -prob 1.4 -dens 20 -of 1a63 
+1a63.vert
+nspt=132502, natm=2065, den=20.000000, prob=1.400000
+finish reading vertices file...
+nface=265000, natm=2065, den=20.000000, prob=1.400000
+finish reading face file...
+finish reading position file...
+finish reading charge file...
+The 9991 th triangle has small area:0.000000e+00
+The 13954 th triangle has small area:0.000000e+00
+The 13963 th triangle has small area:0.000000e+00
+The 13964 th triangle has small area:0.000000e+00
+The 26516 th triangle has small area:0.000000e+00
+The 26517 th triangle has small area:0.000000e+00
+The 26518 th triangle has small area:0.000000e+00
+The 26519 th triangle has small area:0.000000e+00
+The 26520 th triangle has small area:0.000000e+00
+The 26521 th triangle has small area:0.000000e+00
+The 26522 th triangle has small area:0.000000e+00
+The 26523 th triangle has small area:0.000000e+00
+The 26524 th triangle has small area:0.000000e+00
+The 26529 th triangle has small area:0.000000e+00
+The 38139 th triangle has small area:0.000000e+00
+The 59731 th triangle has small area:0.000000e+00
+The 59732 th triangle has small area:0.000000e+00
+The 62346 th triangle has small area:0.000000e+00
+The 62349 th triangle has small area:0.000000e+00
+The 62350 th triangle has small area:0.000000e+00
+The 62353 th triangle has small area:0.000000e+00
+The 62516 th triangle has small area:0.000000e+00
+The 62517 th triangle has small area:0.000000e+00
+The 62518 th triangle has small area:0.000000e+00
+The 62519 th triangle has small area:0.000000e+00
+The 62520 th triangle has small area:0.000000e+00
+The 62523 th triangle has small area:0.000000e+00
+The 66692 th triangle has small area:0.000000e+00
+The 66697 th triangle has small area:0.000000e+00
+The 66698 th triangle has small area:0.000000e+00
+The 66699 th triangle has small area:0.000000e+00
+The 66700 th triangle has small area:0.000000e+00
+The 66701 th triangle has small area:0.000000e+00
+The 68529 th triangle has small area:0.000000e+00
+The 68530 th triangle has small area:0.000000e+00
+The 69835 th triangle has small area:0.000000e+00
+The 69836 th triangle has small area:0.000000e+00
+The 70067 th triangle has small area:0.000000e+00
+The 70068 th triangle has small area:0.000000e+00
+The 70122 th triangle has small area:0.000000e+00
+The 70123 th triangle has small area:0.000000e+00
+The 70124 th triangle has small area:0.000000e+00
+The 70125 th triangle has small area:0.000000e+00
+The 70126 th triangle has small area:0.000000e+00
+The 70127 th triangle has small area:0.000000e+00
+The 70128 th triangle has small area:0.000000e+00
+The 70129 th triangle has small area:0.000000e+00
+The 70130 th triangle has small area:0.000000e+00
+The 70131 th triangle has small area:0.000000e+00
+The 99601 th triangle has small area:0.000000e+00
+The 99602 th triangle has small area:0.000000e+00
+The 181134 th triangle has small area:0.000000e+00
+The 181258 th triangle has small area:0.000000e+00
+The 193273 th triangle has small area:7.071068e-07
+The 193406 th triangle has small area:0.000000e+00
+The 198237 th triangle has small area:7.071068e-07
+The 198239 th triangle has small area:0.000000e+00
+The 203304 th triangle has small area:0.000000e+00
+The 203305 th triangle has small area:7.921490e-06
+The 222260 th triangle has small area:2.915476e-06
+The 224359 th triangle has small area:0.000000e+00
+The 224468 th triangle has small area:0.000000e+00
+The 228682 th triangle has small area:0.000000e+00
+The 228989 th triangle has small area:4.123106e-06
+The 231328 th triangle has small area:0.000000e+00
+The 231334 th triangle has small area:5.000000e-07
+The 231692 th triangle has small area:0.000000e+00
+The 231815 th triangle has small area:0.000000e+00
+The 234764 th triangle has small area:0.000000e+00
+The 237689 th triangle has small area:0.000000e+00
+The 239363 th triangle has small area:2.236068e-06
+The 239364 th triangle has small area:2.236068e-06
+72 faces are deleted
+total area = 6989.438902
+529856	-0.045015	0.000000	10	529856	11	100	0.000100
+iteration no.=1, error=1.711143e-01
+iteration no.=2, error=4.728834e-02
+iteration no.=3, error=1.766682e-02
+iteration no.=4, error=7.460101e-03
+iteration no.=5, error=3.701972e-03
+iteration no.=6, error=1.939395e-03
+iteration no.=7, error=1.013362e-03
+iteration no.=8, error=4.528044e-04
+iteration no.=9, error=1.811298e-04
+iteration no.=10, error=7.510834e-05
+solvation energy on GPU = -2390.124097 kcal/mol
+TOTAL_TIME 21.487867
+ [xiny@login01 bimpb_cuda_ds]$ srun -p v100x8 --mem=6G md_cuda.exe
+srun: NOTE: This is a multi-GPU node and no --gres flag was set requesting number of GPUs. By default you have been allocated single GPU for this request. If you need more than one GPU please cancel this jobs and request additional gpus for example: --gres=gpu:volta:4
+srun: job 37791454 queued and waiting for resources
+srun: job 37791454 has been allocated resources
+WARNING: atoms 473 is completely inside atom 471
+WARNING: atoms 472 is completely inside atom 471
+WARNING: atoms 475 is completely inside atom 474
+WARNING: atoms 476 is completely inside atom 474
+WARNING: atoms 936 is completely inside atom 934
+WARNING: atoms 935 is completely inside atom 934
+WARNING: atoms 2059 is completely inside atom 2058
+WARNING: atoms 2060 is completely inside atom 2058
+WARNING: atoms 2061 is completely inside atom 2058
+WARNING: atoms 1117 is completely inside atom 1116
+WARNING: atoms 1647 is completely inside atom 1644
+WARNING: atoms 1646 is completely inside atom 1644
+WARNING: atoms 1645 is completely inside atom 1644
+MSMS 2.6.1 started on va002
+Copyright M.F. Sanner (1994)
+Compilation flags -O2 -DVERBOSE -DTIMING
+INPUT  1a63.xyzr 2065 spheres 0 collision only, radii  0.225 to  2.275
+PARAM  Probe_radius  1.400 density 20.000 hdensity  3.000
+REDUCED SURFACE ...
+    RS component 0 identified 367 366 360
+    0 free edge(s) found in component 0
+    RS component  #faces  #edges #free_edges  #vertices   genus
+         0        2262     3393          0        984      74.5
+    Time Reduced Surface real: 0.05 user: 0.04 sys: 0.00
+ANALYTICAL SOLVENT EXCLUDED SURFACE...
+    Component   0
+        Time Surface real: 0.00 user: 0.00 sys: 0.00
+        Time Singularities real: 0.00 user: 0.00 sys: 0.00
+    SES comp.  #fac.  #edg. #s_edg. #vert. #s_vert. R_h C_h genus
+         0     6904  13894    126    6992      206   0   0    0
+ANALYTICAL SURFACE AREA :
+    Comp. probe_radius,   reent,    toric,   contact    SES       SAS
+      0       1.400    1579.307  2816.573  2607.352  7003.231  8515.815
+TRIANGULATION...
+    Component 0
+WARNING: geodesic which intersects odd number of edges
+WARNING: geodesic which intersects odd number of edges
+    component#, vertices,  edges,  faces, genus, density
+        0         132502  397500  265000    0    18.920
+        Time Triangulation real: 0.53 user: 0.53 sys: 0.01
+NUMERICAL VOLUMES AND AREA
+    Comp. probe_radius SES_volume SES_area)
+       0      1.40    18125.197   6989.134
+    Total ses_volume: 18125.197
+MSMS terminated normally
+Total Time real: 0.97 user: 0.90 sys: 0.02
+1 md_cuda.exe (null) 
+./msms -if 1a63.xyzr -prob 1.4 -dens 20 -of 1a63 
+1a63.vert
+nspt=132502, natm=2065, den=20.000000, prob=1.400000
+finish reading vertices file...
+nface=265000, natm=2065, den=20.000000, prob=1.400000
+finish reading face file...
+finish reading position file...
+finish reading charge file...
+The 9991 th triangle has small area:0.000000e+00
+The 13954 th triangle has small area:0.000000e+00
+The 13963 th triangle has small area:0.000000e+00
+The 13964 th triangle has small area:0.000000e+00
+The 26516 th triangle has small area:0.000000e+00
+The 26517 th triangle has small area:0.000000e+00
+The 26518 th triangle has small area:0.000000e+00
+The 26519 th triangle has small area:0.000000e+00
+The 26520 th triangle has small area:0.000000e+00
+The 26521 th triangle has small area:0.000000e+00
+The 26522 th triangle has small area:0.000000e+00
+The 26523 th triangle has small area:0.000000e+00
+The 26524 th triangle has small area:0.000000e+00
+The 26529 th triangle has small area:0.000000e+00
+The 38139 th triangle has small area:0.000000e+00
+The 59731 th triangle has small area:0.000000e+00
+The 59732 th triangle has small area:0.000000e+00
+The 62346 th triangle has small area:0.000000e+00
+The 62349 th triangle has small area:0.000000e+00
+The 62350 th triangle has small area:0.000000e+00
+The 62353 th triangle has small area:0.000000e+00
+The 62516 th triangle has small area:0.000000e+00
+The 62517 th triangle has small area:0.000000e+00
+The 62518 th triangle has small area:0.000000e+00
+The 62519 th triangle has small area:0.000000e+00
+The 62520 th triangle has small area:0.000000e+00
+The 62523 th triangle has small area:0.000000e+00
+The 66692 th triangle has small area:0.000000e+00
+The 66697 th triangle has small area:0.000000e+00
+The 66698 th triangle has small area:0.000000e+00
+The 66699 th triangle has small area:0.000000e+00
+The 66700 th triangle has small area:0.000000e+00
+The 66701 th triangle has small area:0.000000e+00
+The 68529 th triangle has small area:0.000000e+00
+The 68530 th triangle has small area:0.000000e+00
+The 69835 th triangle has small area:0.000000e+00
+The 69836 th triangle has small area:0.000000e+00
+The 70067 th triangle has small area:0.000000e+00
+The 70068 th triangle has small area:0.000000e+00
+The 70122 th triangle has small area:0.000000e+00
+The 70123 th triangle has small area:0.000000e+00
+The 70124 th triangle has small area:0.000000e+00
+The 70125 th triangle has small area:0.000000e+00
+The 70126 th triangle has small area:0.000000e+00
+The 70127 th triangle has small area:0.000000e+00
+The 70128 th triangle has small area:0.000000e+00
+The 70129 th triangle has small area:0.000000e+00
+The 70130 th triangle has small area:0.000000e+00
+The 70131 th triangle has small area:0.000000e+00
+The 99601 th triangle has small area:0.000000e+00
+The 99602 th triangle has small area:0.000000e+00
+The 181134 th triangle has small area:0.000000e+00
+The 181258 th triangle has small area:0.000000e+00
+The 193273 th triangle has small area:7.071068e-07
+The 193406 th triangle has small area:0.000000e+00
+The 198237 th triangle has small area:7.071068e-07
+The 198239 th triangle has small area:0.000000e+00
+The 203304 th triangle has small area:0.000000e+00
+The 203305 th triangle has small area:7.921490e-06
+The 222260 th triangle has small area:2.915476e-06
+The 224359 th triangle has small area:0.000000e+00
+The 224468 th triangle has small area:0.000000e+00
+The 228682 th triangle has small area:0.000000e+00
+The 228989 th triangle has small area:4.123106e-06
+The 231328 th triangle has small area:0.000000e+00
+The 231334 th triangle has small area:5.000000e-07
+The 231692 th triangle has small area:0.000000e+00
+The 231815 th triangle has small area:0.000000e+00
+The 234764 th triangle has small area:0.000000e+00
+The 237689 th triangle has small area:0.000000e+00
+The 239363 th triangle has small area:2.236068e-06
+The 239364 th triangle has small area:2.236068e-06
+72 faces are deleted
+total area = 6989.438902
+529856	-0.045015	0.000000	10	529856	11	100	0.000100
+iteration no.=1, error=1.711143e-01
+iteration no.=2, error=4.728834e-02
+iteration no.=3, error=1.766682e-02
+iteration no.=4, error=7.460101e-03
+iteration no.=5, error=3.701972e-03
+iteration no.=6, error=1.939395e-03
+iteration no.=7, error=1.013362e-03
+iteration no.=8, error=4.528044e-04
+iteration no.=9, error=1.811298e-04
+iteration no.=10, error=7.510834e-05
+solvation energy on GPU = -2390.124097 kcal/mol
+TOTAL_TIME 21.468682
+[xiny@login01 bimpb_cuda_ds]$ client_loop: send disconnect: Broken pipe
+xinyang@Xins-MBP ~$                                                      255 ↵  

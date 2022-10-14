@@ -3,11 +3,11 @@
 #
 #  Xin (Sharon) Yang
 #  SMU Mathematics
-#  Math 6370 Project bimpb with Weihua Geng, Jiahui Chen
+#  Math 6370 Project: bimpb with Weihua Geng, Jiahui Chen
 ###################################################################
 
 # compilers
-CC = gcc 
+CC = gcc
 # CU = nvcc
 
 # flags
