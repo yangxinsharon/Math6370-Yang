@@ -41,19 +41,17 @@ int main(int argc, char *argv[]) {
 	long int *ldw, double *h, long int *ldh, long int *iter,
 	double *resid, int (*matvec) (), int (*psolve) (), long int *info);
 
-    extern void timer_start(char *n);
-    extern void timer_end(void);
+   extern void timer_start(char *n); // yang
+   extern void timer_end(void); // yang
 	timer_start("TOTAL_TIME");
 	printf("%d %s %s \n", argc, argv[0], argv[1]);
 
 	/* read in structural information */
-    sprintf(fname, "1ajj");
-    sprintf(density, "1.0");
+   sprintf(fname, "1ajj");
+   sprintf(density, "1");
    	// sprintf(fname,argv[1]);
    	// sprintf(density,argv[2]);
 	readin(fname, density);
-	printf("hahahahahahahah");
-	system("pause");
 	comp_source_wrapper(); //wraps the solvation energy computation
 
 	/* parameters for GMRES */

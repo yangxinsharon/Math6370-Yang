@@ -59,7 +59,7 @@ dtrsv.o: gmres/dtrsv.c
 gmres.o: gmres/gmres.c
 	$(CC) $(CFLAGS) gmres/gmres.c
 clean: 
-	\rm -rf *.o *.out
+	\rm -rf *.o *.out *.face *.vert
 realclean: clean
 	\rm -rf *.exe *~
 
