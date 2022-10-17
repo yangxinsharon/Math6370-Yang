@@ -67,9 +67,10 @@ void readin(char fname[16], char density[16]) {
 	fp=fopen(fname_tp,"r");
 	for (i=1;i<=2;i++){
 		c=getc(fp);
+		printf("hahahahahahahah3\n");
         while (c!='\n'){
         }
-        printf("hahahahahahahah3\n");
+        // printf("hahahahahahahah3\n");
     }
     printf("hahahahahahahah4\n");
     fscanf(fp,"%d %d %lf %lf ",&nspt,&natm,&den,&prob_rds);
