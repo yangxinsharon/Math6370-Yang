@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <math.h>
+#include <string.h>
 #include "gl_functions.h"
-// #include "gl_constants.h"
-#include <string.h> //yang memcpy
 
 extern int nface, nspt, natm, nchr;
 extern int **extr_v;						//[3][nspt]
@@ -39,7 +38,6 @@ void readin(char fname[16], char density[16]) {
     FILE *fp;
     char c;
 	char fpath[256];
-	//char fname[16],density[16];
 	char fname_tp[256];
 
     int i,j,k,i1,i2,i3,j1,j2,j3,ii,jj,kk,namelength=4,nfacenew,ichanged;
@@ -53,25 +51,27 @@ void readin(char fname[16], char density[16]) {
 
 	/*read in vertices*/
 
-	//sprintf(fpath,"C:\\Users\\wgeng\\Dropbox\\Programs\\bama_pb\\bimpb_ds_cuda\\");
 	sprintf(fpath,"");
 
-	sprintf(fname_tp,"./msms -if %s.xyzr -prob 1.4 -dens %s -of %s ",fname,density,fname);
+	sprintf(fname_tp,"msms -if %s.xyzr -prob 1.4 -dens %s -of %s ",fname,density,fname);
 	printf("%s\n",fname_tp);
 
 	system(fname_tp);
 
 	/* read in vert */
+	printf("hahahahahahahah1\n");
 	sprintf(fname_tp, "%s%s.vert",fpath,fname);	//or use "strcat(fname_tp,".vert")"
 	printf("%s\n",fname_tp);
-
+	printf("hahahahahahahah2\n");
 	/* open the file and read through the first two rows*/
 	fp=fopen(fname_tp,"r");
 	for (i=1;i<=2;i++){
 		c=getc(fp);
         while (c!='\n'){
         }
+        printf("hahahahahahahah3\n");
     }
+    printf("hahahahahahahah4\n");
     fscanf(fp,"%d %d %lf %lf ",&nspt,&natm,&den,&prob_rds);
     printf("nspt=%d, natm=%d, den=%lf, prob=%lf\n", nspt,natm,den,prob_rds);
 	/*allocate variables for vertices file*/
@@ -110,6 +110,7 @@ void readin(char fname[16], char density[16]) {
    	fp=fopen(fname_tp,"r");
 	for (i=1;i<=2;i++){
 		c=getc(fp);
+
         while (c!='\n'){
         }
     }

@@ -47,11 +47,13 @@ int main(int argc, char *argv[]) {
 	printf("%d %s %s \n", argc, argv[0], argv[1]);
 
 	/* read in structural information */
-    // sprintf(fname, "1ajj");
-    // sprintf(density, "5");
-   	sprintf(fname,argv[1]);
-   	sprintf(density,argv[2]);
+    sprintf(fname, "1ajj");
+    sprintf(density, "1.0");
+   	// sprintf(fname,argv[1]);
+   	// sprintf(density,argv[2]);
 	readin(fname, density);
+	printf("hahahahahahahah");
+	system("pause");
 	comp_source_wrapper(); //wraps the solvation energy computation
 
 	/* parameters for GMRES */

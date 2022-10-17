@@ -19,14 +19,6 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
 	double *tr_xyz, double *tr_q, int nface, int nchr);
 
 
-// get the ID from block
-// void initY( double* y, int nface) {
-//         int i = blockDim.x * blockIdx.x + threadIdx.x;
-//         if(i<nface)
-//          y[i]=0.0;
-// }
-
-
 void matvecmul(const double *x, double *y, double *q, int nface, 
 	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta) {
 	int i, j;
