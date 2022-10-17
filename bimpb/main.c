@@ -1,6 +1,11 @@
-// #include <stdio.h>
-// #include <stdlib.h>
-// #include <math.h>
+/* Xin (Sharon) Yang
+   SMU Mathematics Math 6370 
+   Project bim-pb with Weihua Geng, Jiahui Chen */
+
+/* Inclusions */
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
 #include "pp_timer.h"
 
 extern int nface, nspt, natm, nchr;		// number of faces, points, atoms, and charges
