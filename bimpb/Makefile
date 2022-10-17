@@ -11,16 +11,18 @@ CC = gcc
 # CU = nvcc
 
 # flags
-CFLAGS = -c
-# CUCFLAGSS = -c -O3 -arch=sm_61 -use_fast_math
+CFLAGS = -c -03
+# CUFLAGSS = -c -O3 -arch=sm_61 -use_fast_math
 # for -arch=sm_xx check http://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html#gpu-feature-list
-all: bimpb_s.exe #bimpb_c.exe 
+
+# makefile targets
+all: bimpb.exe #bimpb_c.exe 
 
 # bimpb_c.exe: main_cuda.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_cuda.o pp_timer.o
-# 	$(comp) -o md_cuda.exe *.o -lm
+# 	$(CU) -o bimpb_c.exe *.o -lm
 
-bimpb_s.exe: main.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec.o pp_timer.o
-	$(CC) -o md_serial.exe *.o -lm
+bimpb.exe: main.o readin.o matvec.o pp_timer.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o
+	$(CC) -o bimpb.exe *.o -lm
 matvec.o: matvec.c
 	$(CC) $(CFLAGS) matvec.c
 main.o: main.c
@@ -60,3 +62,5 @@ clean:
 	\rm -rf *.o *.out
 realclean: clean
 	\rm -rf *.exe *~
+
+####### End of Makefile #######

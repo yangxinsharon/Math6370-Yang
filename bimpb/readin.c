@@ -1,5 +1,5 @@
-#include <stdio.h>
-#include <math.h>
+// #include <stdio.h>
+// #include <math.h>
 #include "gl_functions.h"
 // #include "gl_constants.h"
 #include <string.h> //yang memcpy

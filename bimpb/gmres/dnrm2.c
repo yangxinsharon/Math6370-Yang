@@ -5,7 +5,7 @@
 */
 
 #include "f2c.h"
-#include "math.h" // yang sqrt
+// #include "math.h" // yang sqrt
 doublereal dnrm2_(integer *n, doublereal *x, integer *incx)
 {
 

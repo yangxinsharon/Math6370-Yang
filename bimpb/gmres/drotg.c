@@ -4,7 +4,7 @@
 */
 
 #include "f2c.h"
-#include "math.h" //yang sqrt
+// #include "math.h" //yang sqrt
 /* Table of constant values */
 
 static doublereal c_b4 = 1.;

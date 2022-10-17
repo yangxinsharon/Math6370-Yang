@@ -3,9 +3,9 @@
    Project bim-pb with Weihua Geng, Jiahui Chen */
 
 /* Inclusions */
-#include <stdlib.h> //yang malloc
-#include <math.h> //yang sqrt exp 
-#include <stdio.h>
+// #include <stdlib.h> //yang malloc
+// #include <math.h> //yang sqrt exp 
+// #include <stdio.h>
 #include "gl_variables.h"
 #include "gl_constants.h"
 // #include "gl_functions.h"
