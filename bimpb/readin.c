@@ -53,7 +53,7 @@ void readin(char fname[16], char density[16]) {
 
 	sprintf(fpath,"");
 
-	sprintf(fname_tp,"msms -if %s.xyzr -prob 1.4 -dens %s -of %s ",fname,density,fname);
+	sprintf(fname_tp,"./msms -if %s.xyzr -prob 1.4 -dens %s -of %s ",fname,density,fname);
 	printf("%s\n",fname_tp);
 
 	system(fname_tp);
@@ -110,7 +110,6 @@ void readin(char fname[16], char density[16]) {
    	fp=fopen(fname_tp,"r");
 	for (i=1;i<=2;i++){
 		c=getc(fp);
-
         while (c!='\n'){
         }
     }
