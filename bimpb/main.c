@@ -1,6 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+// #include <stdio.h>
+// #include <stdlib.h>
+// #include <math.h>
 #include "pp_timer.h"
 
 extern int nface, nspt, natm, nchr;		// number of faces, points, atoms, and charges
