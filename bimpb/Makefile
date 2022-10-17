@@ -22,7 +22,7 @@ all: bimpb.exe #bimpb_c.exe
 # 	$(CU) -o bimpb_c.exe *.o -lm
 
 bimpb.exe: main.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec.o pp_timer.o
-	$(CC) -o bimpb.exe *.o -lm
+	$(CC) -o md_s.exe *.o -lm
 matvec.o: matvec.c
 	$(CC) $(CFLAGS) matvec.c
 main.o: main.c
