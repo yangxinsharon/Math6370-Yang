@@ -11,7 +11,7 @@ CC = gcc
 # CU = nvcc
 
 # flags
-CFLAGS = -c -03
+CFLAGS = -c -O3
 # CUFLAGSS = -c -O3 -arch=sm_61 -use_fast_math
 # for -arch=sm_xx check http://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html#gpu-feature-list
 
