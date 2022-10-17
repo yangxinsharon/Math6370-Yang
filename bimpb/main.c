@@ -114,10 +114,11 @@ int main(int argc, char *argv[]) {
 // ****************************************************************
 int *psolve(double *z, double *r) {
 /*r as original while z as scaled*/
+	int i;
 	double scale1,scale2;
 	scale1=0.5*(1.0+eps);
 	scale2=0.5*(1.0+1.0/eps);
-	for (int i=0; i<nface; i++){
+	for (i=0; i<nface; i++){
 		z[i]=r[i]/scale1;
 		z[i+nface]=r[i+nface]/scale2;
 	}
