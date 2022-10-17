@@ -1,17 +1,17 @@
 #include <stdio.h>
 #include <math.h>
+#include <string.h>
 #include "gl_functions.h"
-#include "gl_constants.h"
 
 extern int nface, nspt, natm, nchr;
-extern int **extr_v; //[3][nspt]
-extern int **extr_f; //[2][nface]
-extern int **face,**face_copy;//[3][nface]
-extern double **vert, **snrm; //[3][nspt];
-extern double *tr_xyz, *tr_q; //[3][nface]
-extern double *tr_area,*bvct,*xvct; //[nface];
-extern double **atmpos; //[3][natm/nchr];
-extern double *atmrad, *atmchr, *chrpos; //[natm/nchr]; 
+extern int **extr_v;						//[3][nspt]
+extern int **extr_f;						//[2][nface]
+extern int **face, **face_copy;				//[3][nface]
+extern double **vert, **snrm;				//[3][nspt];
+extern double *tr_xyz, *tr_q;				//[3][nface]
+extern double *tr_area, *bvct, *xvct;		//[nface];
+extern double **atmpos;						//[3][natm/nchr];
+extern double *atmrad, *atmchr, *chrpos;	//[natm/nchr]; 
 extern double *work, *h;
 extern double *h_pot;
 extern double *dev_xp, *dev_yp, *dev_zp, *dev_q, *dev_pot;
@@ -38,7 +38,6 @@ void readin(char fname[16], char density[16]) {
     FILE *fp;
     char c;
 	char fpath[256];
-	//char fname[16],density[16];
 	char fname_tp[256];
 
     int i,j,k,i1,i2,i3,j1,j2,j3,ii,jj,kk,namelength=4,nfacenew,ichanged;
@@ -52,7 +51,6 @@ void readin(char fname[16], char density[16]) {
 
 	/*read in vertices*/
 
-	//sprintf(fpath,"C:\\Users\\wgeng\\Dropbox\\Programs\\bama_pb\\bimpb_ds_cuda\\");
 	sprintf(fpath,"");
 
 	sprintf(fname_tp,"./msms -if %s.xyzr -prob 1.4 -dens %s -of %s ",fname,density,fname);
@@ -61,15 +59,21 @@ void readin(char fname[16], char density[16]) {
 	system(fname_tp);
 
 	/* read in vert */
+	printf("hahahahahahahah1\n");
 	sprintf(fname_tp, "%s%s.vert",fpath,fname);	//or use "strcat(fname_tp,".vert")"
 	printf("%s\n",fname_tp);
-
+	printf("hahahahahahahah2\n");
 	/* open the file and read through the first two rows*/
 	fp=fopen(fname_tp,"r");
 	for (i=1;i<=2;i++){
-        while (c=getc(fp)!='\n'){
-        }
+		c=getc(fp);
+		printf("hahahahahahahah3\n");
+        // while (c!='\n'){
+        	
+        // }
+        // printf("hahahahahahahah3\n");
     }
+    printf("hahahahahahahah4\n");
     fscanf(fp,"%d %d %lf %lf ",&nspt,&natm,&den,&prob_rds);
     printf("nspt=%d, natm=%d, den=%lf, prob=%lf\n", nspt,natm,den,prob_rds);
 	/*allocate variables for vertices file*/
@@ -107,7 +111,8 @@ void readin(char fname[16], char density[16]) {
 	sprintf(fname_tp, "%s%s.face",fpath,fname);
    	fp=fopen(fname_tp,"r");
 	for (i=1;i<=2;i++){
-        while (c=getc(fp)!='\n'){
+		c=getc(fp);
+        while (c!='\n'){
         }
     }
     fscanf(fp,"%d %d %lf %lf ",&nface,&natm,&den,&prob_rds);
