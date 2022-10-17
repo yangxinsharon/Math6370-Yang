@@ -48,9 +48,9 @@ int main(int argc, char *argv[]) {
 
 	/* read in structural information */
     // sprintf(fname, "1ajj");
-    sprintf(density, "5");
-   	sprintf(fname,argv[0]);
-   	// sprintf(density,argv[1]);
+    // sprintf(density, "5");
+   	sprintf(fname,argv[1]);
+   	sprintf(density,argv[2]);
 	readin(fname, density);
 	comp_source_wrapper(); //wraps the solvation energy computation
 
