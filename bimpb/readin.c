@@ -68,8 +68,9 @@ void readin(char fname[16], char density[16]) {
 	for (i=1;i<=2;i++){
 		c=getc(fp);
 		printf("hahahahahahahah3\n");
-        while (c!='\n'){
-        }
+        // while (c!='\n'){
+        	
+        // }
         // printf("hahahahahahahah3\n");
     }
     printf("hahahahahahahah4\n");
