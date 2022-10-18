@@ -1,18 +1,17 @@
 #include <stdio.h>
 #include <math.h>
-#include "gl_functions.h"
 #include <string.h>
-// #include "gl_constants.h"
+#include "gl_functions.h"
 
 extern int nface, nspt, natm, nchr;
-extern int **extr_v; //[3][nspt]
-extern int **extr_f; //[2][nface]
-extern int **face,**face_copy;//[3][nface]
-extern double **vert, **snrm; //[3][nspt];
-extern double *tr_xyz, *tr_q; //[3][nface]
-extern double *tr_area,*bvct,*xvct; //[nface];
-extern double **atmpos; //[3][natm/nchr];
-extern double *atmrad, *atmchr, *chrpos; //[natm/nchr]; 
+extern int **extr_v;						//[3][nspt]
+extern int **extr_f;						//[2][nface]
+extern int **face, **face_copy;				//[3][nface]
+extern double **vert, **snrm;				//[3][nspt];
+extern double *tr_xyz, *tr_q;				//[3][nface]
+extern double *tr_area, *bvct, *xvct;		//[nface];
+extern double **atmpos;						//[3][natm/nchr];
+extern double *atmrad, *atmchr, *chrpos;	//[natm/nchr]; 
 extern double *work, *h;
 extern double *h_pot;
 extern double *dev_xp, *dev_yp, *dev_zp, *dev_q, *dev_pot;
@@ -39,7 +38,6 @@ void readin(char fname[16], char density[16]) {
     FILE *fp;
     char c;
 	char fpath[256];
-	//char fname[16],density[16];
 	char fname_tp[256];
 
     int i,j,k,i1,i2,i3,j1,j2,j3,ii,jj,kk,namelength=4,nfacenew,ichanged;
@@ -52,11 +50,9 @@ void readin(char fname[16], char density[16]) {
 	double xx[3],yy[3];
 
 	/*read in vertices*/
-
-	//sprintf(fpath,"C:\\Users\\wgeng\\Dropbox\\Programs\\bama_pb\\bimpb_ds_cuda\\");
-	sprintf(fpath,"");
-
-	sprintf(fname_tp,"./msms -if %s.xyzr -prob 1.4 -dens %s -of %s ",fname,density,fname);
+	sprintf(fpath,"test_proteins/");
+	// sprintf(fpath,"");
+	sprintf(fname_tp,"msms -if %s%s.xyzr -prob 1.4 -dens %s -of %s%s ",fpath,fname,density,fpath,fname);
 	printf("%s\n",fname_tp);
 
 	system(fname_tp);
@@ -130,7 +126,6 @@ void readin(char fname[16], char density[16]) {
 	printf("finish reading face file...\n");
 
 	/*read atom coodinates and radius */
-
 	sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
 	fp=fopen(fname_tp,"r");
 
@@ -150,7 +145,6 @@ void readin(char fname[16], char density[16]) {
 	printf("finish reading position file...\n");
 
 	/*read charge coodinates and radius */
-
 	sprintf(fname_tp, "%s%s.pqr",fpath,fname);
 	fp=fopen(fname_tp,"r");
 

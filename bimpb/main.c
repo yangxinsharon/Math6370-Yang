@@ -3,20 +3,20 @@
    Project bim-pb with Weihua Geng, Jiahui Chen */
 
 /* Inclusions */
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
 #include "pp_timer.h"
 
-extern int nface, nspt, natm, nchr;		// number of faces, points, atoms, and charges
-extern int **extr_v;					// [3][nspt]
-extern int **extr_f;					// [2][nface]
-extern int **face,**face_copy;			// [3][nface]
-extern double **vert, **snrm;			// [3][nspt];
-extern double *tr_xyz, *tr_q;			// [3][nface]
-extern double *tr_area,*bvct,*xvct;		// [nface];
-extern double **atmpos;					// [3][natm/nchr];
-extern double *atmrad, *atmchr, *chrpos;// [natm/nchr]; 
+extern int nface, nspt, natm, nchr;			// number of faces, points, atoms, and charges
+extern int **extr_v;								// [3][nspt]
+extern int **extr_f;								// [2][nface]
+extern int **face, **face_copy;				// [3][nface]
+extern double **vert, **snrm;					// [3][nspt];
+extern double *tr_xyz, *tr_q;					// [3][nface]
+extern double *tr_area, *bvct, *xvct;			// [nface];
+extern double **atmpos;							// [3][natm/nchr];
+extern double *atmrad, *atmchr, *chrpos;	// [natm/nchr]; 
 extern double *work, *h;
 extern double *h_pot;
 extern double *dev_xp, *dev_yp, *dev_zp, *dev_q, *dev_pot;
@@ -36,10 +36,11 @@ int main(int argc, char *argv[]) {
 	double resid;
 	extern void comp_source_wrapper();				// yang
 	extern void comp_soleng_wrapper(double soleng);	// yang
-	extern int *matvec(), *psolve();
+	extern int *matvec(double *alpha, double *x, double *beta, double *y); // yang
+	extern int *psolve(double *z, double *r); // yang
 	extern int gmres_(long int *n, double *b, double *x, long int *restrt, double *work,
 	long int *ldw, double *h, long int *ldh, long int *iter,
-	double *resid, int (*matvec) (), int (*psolve) (), long int *info);
+	double *resid, int *matvec (), int *psolve (), long int *info);
 
    extern void timer_start(char *n); // yang
    extern void timer_end(void); // yang
@@ -47,10 +48,10 @@ int main(int argc, char *argv[]) {
 	printf("%d %s %s \n", argc, argv[0], argv[1]);
 
 	/* read in structural information */
-   sprintf(fname, "1ajj");
-   sprintf(density, "1");
-   	// sprintf(fname,argv[1]);
-   	// sprintf(density,argv[2]);
+   // sprintf(fname, "1ajj");
+   // sprintf(density, "1");
+   sprintf(fname,"%s",argv[1]);
+   sprintf(density,"%s",argv[2]);
 	readin(fname, density);
 	comp_source_wrapper(); //wraps the solvation energy computation
 
@@ -66,7 +67,7 @@ int main(int argc, char *argv[]) {
 	work=(double *) calloc (ldw*(RESTRT+4), sizeof(double));
 	h=(double *) calloc (ldh*(RESTRT+2), sizeof(double));
 
-	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, matvec, psolve, &info);
+	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
 
 	soleng=0.0;
 

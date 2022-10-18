@@ -3,8 +3,8 @@
    Project bim-pb with Weihua Geng, Jiahui Chen */
 
 /* Inclusions */
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
 #include "gl_variables.h"
 #include "gl_constants.h"
@@ -18,7 +18,7 @@ void comp_pot(const double* xvct, double *atmchr, double *chrpos, double *ptl,
 void comp_source( double* bvct, double *atmchr, double *chrpos, 
 	double *tr_xyz, double *tr_q, int nface, int nchr);
 
-
+ 
 void matvecmul(const double *x, double *y, double *q, int nface, 
 	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta) {
 	int i, j;
