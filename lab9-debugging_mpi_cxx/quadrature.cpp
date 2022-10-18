@@ -83,8 +83,8 @@ int main(int argc, char* argv[]) {
   double F = 0.0;
 
   // perform integration over n intervals in each direction
-  for (int i=is; i<ie; i++) {
-    for (int j=js; j<je; j++) {
+  for (int i=is; i<=ie; i++) {
+    for (int j=js; j<=je; j++) {
 
       // in each sub-square, evaluate at all 64 points and combine results
       for (int k=0; k<nodes; k++) {
