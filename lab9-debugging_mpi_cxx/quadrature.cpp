@@ -71,11 +71,11 @@ int main(int argc, char* argv[]) {
   double h = 1.0 / n;
 
   // determine this processor's sub-region of the 2D region
-  int is = ((int) (1.0*n/numprocs))*myid;
+  int is = ((int) (1.0*n/numprocs))*myid + 1;
   int ie = ((int) (1.0*n/numprocs))*(myid+1);
   if (myid == numprocs-1)  ie = n;
 
-  int js = ((int) (1.0*n/numprocs))*myid;
+  int js = ((int) (1.0*n/numprocs))*myid + 1;
   int je = ((int) (1.0*n/numprocs))*(myid+1);
   if (myid == numprocs-1)  je = n;
 
