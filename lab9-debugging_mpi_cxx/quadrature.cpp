@@ -71,11 +71,11 @@ int main(int argc, char* argv[]) {
   double h = 1.0 / n;
 
   // determine this processor's sub-region of the 2D region
-  int is = ((int) (1.0*n/numprocs))*myid + 1;
+  int is = ((int) (1.0*n/numprocs))*myid;
   int ie = ((int) (1.0*n/numprocs))*(myid+1);
   if (myid == numprocs-1)  ie = n;
 
-  int js = ((int) (1.0*n/numprocs))*myid + 1;
+  int js = ((int) (1.0*n/numprocs))*myid;
   int je = ((int) (1.0*n/numprocs))*(myid+1);
   if (myid == numprocs-1)  je = n;
 
@@ -83,16 +83,18 @@ int main(int argc, char* argv[]) {
   double F = 0.0;
 
   // perform integration over n intervals in each direction
-  for (int i=is; i<=ie; i++) {
-    for (int j=js; j<=je; j++) {
-
+  for (int i=is; i<ie; i++) {
+    for (int j=js; j<je; j++) {
+      // location of sub-square center
+      double x = h * (i + 0.5);
+      double y = h * (j + 0.5);
       // in each sub-square, evaluate at all 64 points and combine results
       for (int k=0; k<nodes; k++) {
         for (int l=0; l<nodes; l++) {
 
-          // location of sub-square center
-          double x = h * (i + 0.5);
-          double y = h * (j + 0.5);
+          // // location of sub-square center
+          // double x = h * (i + 0.5);
+          // double y = h * (j + 0.5);
 
           // location of quadrature evaluation point
           double a = x + 0.5*h*z[k];
