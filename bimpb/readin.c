@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <math.h>
-#include <string.h>
+#include <string.h> // memcpy
 #include "gl_functions.h"
 
 extern int nface, nspt, natm, nchr;
@@ -51,8 +51,7 @@ void readin(char fname[16], char density[16]) {
 
 	/*read in vertices*/
 	sprintf(fpath,"test_proteins/");
-	// sprintf(fpath,"");
-	sprintf(fname_tp,"./msms -if %s%s.xyzr -prob 1.4 -dens %s -of %s%s ",fpath,fname,density,fpath,fname);
+	sprintf(fname_tp,"msms -if %s%s.xyzr -prob 1.4 -dens %s -of %s%s ",fpath,fname,density,fpath,fname);
 	printf("%s\n",fname_tp);
 
 	system(fname_tp);
