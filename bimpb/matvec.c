@@ -30,7 +30,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	double L1, L2, L3, L4;
 
     pre1=0.50*(1.0+eps); /* const eps=80.0 */
-    pre2=0.50*(1.0+1.0/eps); //fdivide(1.0,eps)); //!!! fdivide?
+    pre2=0.50*(1.0+1.0/eps);
     for (i=0; i<nface; i++) {
     	double tp[3] = {tr_xyz[3*i], tr_xyz[3*i+1], tr_xyz[3*i+2]};
 		double tq[3] = {tr_q[3*i], tr_q[3*i+1], tr_q[3*i+2]};
@@ -95,7 +95,7 @@ void comp_soleng_wrapper(double soleng) {
     int i;
 	double *chrptl;
 	double units_para = 2.0;
-    units_para = units_para*units_coef;
+    units_para = units_para *units_coef;
     units_para = units_para*pi;
 
 	if ((chrptl=(double *) malloc(nface*sizeof(double)))==NULL) {
@@ -106,12 +106,12 @@ void comp_soleng_wrapper(double soleng) {
 	soleng=0.0;
 	for (i=0; i<nface; i++) soleng = soleng+chrptl[i];
 	soleng = soleng*units_para;
-	printf("solvation energy on GPU = %f kcal/mol\n",soleng);
+	printf("solvation energy = %f kcal/mol\n",soleng);
 }
 
 
 
-/* This subroutine calculates the element-wise potential on GPU */
+/* This subroutine calculates the element-wise potential */
 void comp_pot(const double* xvct, double *atmchr, double *chrpos, double *ptl, 
 	double *tr_xyz, double *tr_q, double *tr_area, int nface, int nchr) {
 	int i, j;
@@ -156,7 +156,7 @@ void comp_source_wrapper() {
 }
 
 
-/* This subroutine calculates the source term of the integral equation on GPU */
+/* This subroutine calculates the source term of the integral equation */
 /* atmchr=atom charge   chrpos=charge position */
 /* bvct be located at readin.c */
 void comp_source( double* bvct, double *atmchr, double *chrpos, 
@@ -169,7 +169,7 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
         for (j=0; j<nchr; j++) {
             double r_s[3] = {chrpos[3*j]-tr_xyz[3*i], chrpos[3*j+1]-tr_xyz[3*i+1], 
             	chrpos[3*j+2]-tr_xyz[3*i+2]};
-			sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2]; //c can't use that r_s.x
+			sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2]; 
             cos_theta = tr_q[3*i]*r_s[0] + tr_q[3*i+1]*r_s[1] + tr_q[3*i+2]*r_s[2];
 			irs = 1.0/sqrt(sumrs) ;//rsqrt(sumrs);//returns reciprocal square root of scalars and vectors.
             cos_theta = cos_theta*irs;
