@@ -63,6 +63,13 @@ int main(int argc, char* argv[]) {
   // root outputs parallelism information to screen
   if (myid == 0)
     std::cout << " Running with " << numprocs << " MPI tasks\n";
+  
+  // root node sends n out to other processors
+  ierr = MPI_Bcast(&n, 1, MPI_INT, 0, MPI_COMM_WORLD);
+  if (ierr != MPI_SUCCESS) {
+    std::cerr << " error in MPI_Bcast = " << ierr << "\n";
+    MPI_Abort(MPI_COMM_WORLD, 1);
+  }
 
   // start timer
   double stime = MPI_Wtime();
@@ -85,16 +92,14 @@ int main(int argc, char* argv[]) {
   // perform integration over n intervals in each direction
   for (int i=is; i<ie; i++) {
     for (int j=js; j<je; j++) {
-      // location of sub-square center
-      double x = h * (i + 0.5);
-      double y = h * (j + 0.5);
+
       // in each sub-square, evaluate at all 64 points and combine results
       for (int k=0; k<nodes; k++) {
         for (int l=0; l<nodes; l++) {
 
-          // // location of sub-square center
-          // double x = h * (i + 0.5);
-          // double y = h * (j + 0.5);
+          // location of sub-square center
+          double x = h * (i + 0.5);
+          double y = h * (j + 0.5);
 
           // location of quadrature evaluation point
           double a = x + 0.5*h*z[k];
