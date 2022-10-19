@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <math.h>
-#include <string.h> // memcpy
+#include <string.h> // yang: memcpy
 #include "gl_functions.h"
 
 extern int nface, nspt, natm, nchr;
