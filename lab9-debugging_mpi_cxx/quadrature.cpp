@@ -63,13 +63,6 @@ int main(int argc, char* argv[]) {
   // root outputs parallelism information to screen
   if (myid == 0)
     std::cout << " Running with " << numprocs << " MPI tasks\n";
-  
-  // root node sends n out to other processors
-  ierr = MPI_Bcast(&n, 1, MPI_INT, 0, MPI_COMM_WORLD);
-  if (ierr != MPI_SUCCESS) {
-    std::cerr << " error in MPI_Bcast = " << ierr << "\n";
-    MPI_Abort(MPI_COMM_WORLD, 1);
-  }
 
   // start timer
   double stime = MPI_Wtime();
