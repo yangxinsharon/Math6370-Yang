@@ -24,7 +24,7 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
  
 void matvecmul(const double *x, double *y, double *q, int nface, 
 	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta) {
-	int i, j, tmp_i, tid;
+	int i, j, tmp_i, tid, nthreads;
 	double pre1, pre2;
 	double area, rs, irs, sumrs;
 	double G0, kappa_rs, exp_kappa_rs, Gk;
