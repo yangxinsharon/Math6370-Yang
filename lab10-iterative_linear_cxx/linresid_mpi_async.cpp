@@ -97,7 +97,7 @@ int linresid(double *a, double *b, double *c, double *u, double *r,
       }
 
       // send to left w/ tag 103
-      if ( MPI_Isend(&s_l, 1, MPI_DOUBLE, my_id-1, 103, comm) != MPI_SUCCESS) {
+      if ( MPI_Isend(&s_l, 1, MPI_DOUBLE, my_id-1, 103, comm, &request) != MPI_SUCCESS) {
         std::cerr << "linresid error in MPI_Send\n";
         return 1;
       }
