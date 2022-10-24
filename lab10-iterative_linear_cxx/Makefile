@@ -9,6 +9,7 @@
 CXX = g++
 MPICXX = mpicxx
 CXXFLAGS = -O2
+all : driver.exe driver_mpi.exe driver_mpi_async.exe
 
 driver.exe: driver.cpp jacobi_solve.cpp linresid.cpp
 	$(CXX) $(CXXFLAGS) -lm -o $@ $^
@@ -16,7 +17,8 @@ driver.exe: driver.cpp jacobi_solve.cpp linresid.cpp
 driver_mpi.exe: driver_mpi.cpp jacobi_solve_mpi.cpp linresid_mpi.cpp
 	$(MPICXX) $(CXXFLAGS) -lm -o $@ $^
 
-all : driver.exe driver_mpi.exe
+driver_mpi_async.exe: driver_mpi.cpp jacobi_solve_mpi.cpp linresid_mpi_async.cpp
+	$(MPICXX) $(CXXFLAGS) -lm -o $@ $^
 
 clean :
 	\rm *.exe *~
