@@ -8,9 +8,8 @@
 #include <math.h>
 #include "../gl_variables.h"
 #include "../gl_constants.h"
-#ifdef _OPENMP
-  #include "omp.h"
-#endif
+#include "omp.h"
+
 
 
 /* Prototypes */
@@ -25,7 +24,7 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
  
 void matvecmul(const double *x, double *y, double *q, int nface, 
 	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta) {
-	int i, j, tmp_i;
+	int i, j, tmp_i, tid;
 	double pre1, pre2;
 	double area, rs, irs, sumrs;
 	double G0, kappa_rs, exp_kappa_rs, Gk;
@@ -37,65 +36,73 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 
     pre1=0.50*(1.0+eps); /* const eps=80.0 */
     pre2=0.50*(1.0+1.0/eps);
-    #pragma omp parallel for default (shared) private(i,j,tp,tq,sp,sq,r_s,rs)
-    
- 
-    for (i=0; i<nface; i++) {
-    	for(tmp_i=0; tmp_i<3; tmp_i++) {
-    		tp[tmp_i] = tr_xyz[3*i+tmp_i];
-			tq[tmp_i] = tr_q[3*i+tmp_i];
+    #pragma omp parallel for 	\
+    default (shared) 	\
+    private(i,j,tp,tq,sp,sq,r_s,rs)
+    {
+    	tid = omp_get_thread_num();
+ 		
+ 		if (tid == 0) {
+      		nthreads = omp_get_num_threads();
+      		printf("Number of threads = %i\n", nthreads);
     	}
-
-
-		double peng[2] = {0.0, 0.0};
-		for (j=0; j<nface; j++) {
-        	if (j != i) {
-        		for(tmp_i=0; tmp_i<3; tmp_i++) {
-					sp[tmp_i]= tr_xyz[3*j+tmp_i];
-					sq[tmp_i]= tr_q[3*j+tmp_i];   
-					r_s[tmp_i] =sp[tmp_i]-tp[tmp_i];			
-        		}
-				// sp= {tr_xyz[3*j], tr_xyz[3*j+1], tr_xyz[3*j+2]};
-				// sq= {tr_q[3*j], tr_q[3*j+1], tr_q[3*j+2]};
-				// r_s = {sp[0]-tp[0], sp[1]-tp[1], sp[2]-tp[2]};
-				sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
-				rs = sqrt(sumrs);
-				irs = 1.0/sqrt(sumrs) ; //rsqrt(sumrs);
-				G0 = one_over_4pi;
-				G0 = G0*irs;
-				kappa_rs = kappa*rs;
-				exp_kappa_rs = exp(-kappa_rs);
-				Gk = exp_kappa_rs*G0;
+    	for (i=0; i<nface; i++) {
+    		for(tmp_i=0; tmp_i<3; tmp_i++) {
+    			tp[tmp_i] = tr_xyz[3*i+tmp_i];
+				tq[tmp_i] = tr_q[3*i+tmp_i];
+    		}
 	
-				cos_theta = (sq[0]*r_s[0] + sq[1]*r_s[1] + sq[2]*r_s[2]) * irs;
-				cos_theta0 = (tq[0]*r_s[0] + tq[1]*r_s[1] + tq[2]*r_s[2]) * irs;
 	
-				tp1 = G0*irs;
-				tp2 = (1.0+kappa_rs) * exp_kappa_rs;
+			double peng[2] = {0.0, 0.0};
+			for (j=0; j<nface; j++) {
+    	    	if (j != i) {
+    	    		for(tmp_i=0; tmp_i<3; tmp_i++) {
+						sp[tmp_i]= tr_xyz[3*j+tmp_i];
+						sq[tmp_i]= tr_q[3*j+tmp_i];   
+						r_s[tmp_i] =sp[tmp_i]-tp[tmp_i];			
+    	    		}
+					// sp= {tr_xyz[3*j], tr_xyz[3*j+1], tr_xyz[3*j+2]};
+					// sq= {tr_q[3*j], tr_q[3*j+1], tr_q[3*j+2]};
+					// r_s = {sp[0]-tp[0], sp[1]-tp[1], sp[2]-tp[2]};
+					sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
+					rs = sqrt(sumrs);
+					irs = 1.0/sqrt(sumrs) ; //rsqrt(sumrs);
+					G0 = one_over_4pi;
+					G0 = G0*irs;
+					kappa_rs = kappa*rs;
+					exp_kappa_rs = exp(-kappa_rs);
+					Gk = exp_kappa_rs*G0;
+		
+					cos_theta = (sq[0]*r_s[0] + sq[1]*r_s[1] + sq[2]*r_s[2]) * irs;
+					cos_theta0 = (tq[0]*r_s[0] + tq[1]*r_s[1] + tq[2]*r_s[2]) * irs;
+		
+					tp1 = G0*irs;
+					tp2 = (1.0+kappa_rs) * exp_kappa_rs;
+		
+					G10 = cos_theta0*tp1;
+					G20 = tp2*G10;
+		
+					G1 = cos_theta*tp1;
+					G2 = tp2*G1;
+		
+					dot_tqsq = sq[0]*tq[0] + sq[1]*tq[1] + sq[2]*tq[2];
+					G3 = (dot_tqsq-3.0*cos_theta0*cos_theta) * irs*tp1;
+					G4 = tp2*G3 - kappa2*cos_theta0*cos_theta*Gk;
+					L1 = G1-eps*G2;
+					L2 = G0-Gk;
+					L3 = G4-G3;
+					L4 = G10-G20/eps; //fdivide(G20,eps);
+		
+					double peng_old[2] = {x[j], x[j+nface]};
+					area = tr_area[j];
+					peng[0] = peng[0] + (L1*peng_old[0] + L2*peng_old[1]) * area;
+					peng[1] = peng[1] + (L3*peng_old[0] + L4*peng_old[1]) * area;
+    	    	}
+			}
 	
-				G10 = cos_theta0*tp1;
-				G20 = tp2*G10;
-	
-				G1 = cos_theta*tp1;
-				G2 = tp2*G1;
-	
-				dot_tqsq = sq[0]*tq[0] + sq[1]*tq[1] + sq[2]*tq[2];
-				G3 = (dot_tqsq-3.0*cos_theta0*cos_theta) * irs*tp1;
-				G4 = tp2*G3 - kappa2*cos_theta0*cos_theta*Gk;
-				L1 = G1-eps*G2;
-				L2 = G0-Gk;
-				L3 = G4-G3;
-				L4 = G10-G20/eps; //fdivide(G20,eps);
-	
-				double peng_old[2] = {x[j], x[j+nface]};
-				area = tr_area[j];
-				peng[0] = peng[0] + (L1*peng_old[0] + L2*peng_old[1]) * area;
-				peng[1] = peng[1] + (L3*peng_old[0] + L4*peng_old[1]) * area;
-        	}
+			y[i] = y[i]*beta + (pre1*x[i]-peng[0])*alpha;
+			y[nface+i] = y[nface+i]*beta + (pre2*x[nface+i]-peng[1])*alpha;
 		}
-
-		y[i] = y[i]*beta + (pre1*x[i]-peng[0])*alpha;
-		y[nface+i] = y[nface+i]*beta + (pre2*x[nface+i]-peng[1])*alpha;
 	}
 }
 
