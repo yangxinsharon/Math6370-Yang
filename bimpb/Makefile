@@ -7,25 +7,25 @@
 ###################################################################
 
 # compilers
-# CC = clang # on Yang's MacOS
-CC = gcc # on Linux, i.e., HPC-M2
+CC = clang # on Yang's MacOS
+# CC = gcc # on Linux, i.e., HPC-M2
 # NVCC = nvcc
-# MPICC = mpicc
+MPICC = mpicc
 
 # flags
 CFLAGS = -c -O2
 # NVCCFLAGS = -c -O3 -arch=sm_61 -use_fast_math	# for -arch=sm_xx check http://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html#gpu-feature-list
-# OMPFLAGS = -fopenmp
+OMPFLAGS = -fopenmp
 
 # makefile targets
-all: bimpb.exe #bimpb_omp.exe #bimpb_mpi.exe #bimpb_cuda.exe 
+all: bimpb.exe bimpb_omp.exe #bimpb_mpi.exe #bimpb_cuda.exe 
 
 bimpb.exe: main.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec.o pp_timer.o
-	$(CC) -o bimpb.exe *.o -lm
+	$(CC) -lm -o $@ $^
 # bimpb_cuda.exe: main_cuda.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_cuda.o pp_timer.o
 # 	$(NVCC) -o bimpb_cuda.exe *.o -lm
-# bimpb_omp.exe: main_omp.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_omp.o pp_timer.o
-# 	$(CC) -o bimpb_omp.exe *.o -lm
+bimpb_omp.exe: main_omp.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_omp.o pp_timer.o
+	$(CC) -lm -o $@ $^
 # bimpb_mpi.exe: main_mpi.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_mpi.o pp_timer.o
 # 	$(MPICC) -o bimpb_mpi.exe *.o -lm
 matvec.o: matvec.c
@@ -40,10 +40,10 @@ readin.o: readin.c
 # 	$(NNCC) $(NVCCFLAGS) cuda/matvec_cuda.cu
 # main_cuda.o: cuda/main_cuda.c
 # 	$(NVCC) $(NVCCFLAGS) cuda/main_cuda.c
-# matvec_omp.o: omp/matvec_omp.c
-# 	$(CC) $(CFLAGS) $(OMPFLAGS) omp/matvec_omp.c
-# main_omp.o: omp/main_omp.c
-# 	$(CC) $(CFLAGS) $(OMPFLAGS) omp/main_omp.c
+matvec_omp.o: omp/matvec_omp.c
+	$(CC) $(CFLAGS) $(OMPFLAGS) omp/matvec_omp.c
+main_omp.o: omp/main_omp.c
+	$(CC) $(CFLAGS) $(OMPFLAGS) omp/main_omp.c
 # matvec_mpi.o: mpi/matvec_mpi.c
 # 	$(MPICC) $(CFLAGS) mpi/matvec_mpi.c
 # main_mpi.o: mpi/main_mpi.c
