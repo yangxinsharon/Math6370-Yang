@@ -8,7 +8,10 @@
 #include <math.h>
 #include "../gl_variables.h"
 #include "../gl_constants.h"
-#include "omp.h"
+#ifdef _OPENMP
+  #include "omp.h"
+#endif
+
 
 /* Prototypes */
 int *matvec(double *alpha, double *x, double *beta, double *y);
@@ -36,10 +39,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
     pre2=0.50*(1.0+1.0/eps);
     #pragma omp parallel for default (shared) private(i,j,tp,tq,sp,sq,r_s,rs)
     
-    #ifdef _OPENMP
-	#pragma omp single
-    	printf(" starting OpenMP with %i processes\n", omp_get_num_threads());
-	#endif  
+ 
     for (i=0; i<nface; i++) {
     	for(tmp_i=0; tmp_i<3; tmp_i++) {
     		tp[tmp_i] = tr_xyz[3*i+tmp_i];
