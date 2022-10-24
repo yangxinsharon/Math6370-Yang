@@ -38,8 +38,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
     pre2=0.50*(1.0+1.0/eps);
     #pragma omp parallel for 	\
     default (shared) 	\
-    private(i,j,tp,tq,sp,sq,r_s,rs)
-    {
+    private(i,j,tp,tq,sp,sq,r_s,rs) {
     	tid = omp_get_thread_num();
  		
  		if (tid == 0) {
