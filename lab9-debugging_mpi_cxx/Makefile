@@ -7,7 +7,7 @@
 ###################################################################
 
 MPICXX = mpicxx
-CXXFLAGS = -O2
+CXXFLAGS = -O0 -g
 
 quadrature.exe : quadrature.cpp
 	$(MPICXX) $(CXXFLAGS) $^ -lm -o $@
