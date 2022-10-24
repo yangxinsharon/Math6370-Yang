@@ -37,13 +37,13 @@ int linresid(double *a, double *b, double *c, double *u, double *r,
     if (my_id != nprocs-1) {   // check we're not last
 
       // send to right w/ tag 100
-      if ( MPI_ISend(&s_r, 1, MPI_DOUBLE, my_id+1, 100, comm, &request) != MPI_SUCCESS) {
+      if ( MPI_Isend(&s_r, 1, MPI_DOUBLE, my_id+1, 100, comm, &request) != MPI_SUCCESS) {
         std::cerr << "linresid error in MPI_Send\n";
         return 1;
       }
 
       // recv from right w/ tag 101
-      if ( MPI_IRecv(&u_r, 1, MPI_DOUBLE, my_id+1, 101, comm, &request) != MPI_SUCCESS) {
+      if ( MPI_Irecv(&u_r, 1, MPI_DOUBLE, my_id+1, 101, comm, &request) != MPI_SUCCESS) {
         std::cerr << "linresid error in MPI_Recv\n";
         return 1;
       }
@@ -54,13 +54,13 @@ int linresid(double *a, double *b, double *c, double *u, double *r,
     if (my_id != 0) {          // check we're not first
 
       // recv from left w/ tag 100
-      if ( MPI_IRecv(&u_l, 1, MPI_DOUBLE, my_id-1, 100, comm, &request) != MPI_SUCCESS) {
+      if ( MPI_Irecv(&u_l, 1, MPI_DOUBLE, my_id-1, 100, comm, &request) != MPI_SUCCESS) {
         std::cerr << "linresid error in MPI_Recv\n";
         return 1;
       }
 
       // send to left w/ tag 101
-      if ( MPI_ISend(&s_l, 1, MPI_DOUBLE, my_id-1, 101, comm, &request) != MPI_SUCCESS) {
+      if ( MPI_Isend(&s_l, 1, MPI_DOUBLE, my_id-1, 101, comm, &request) != MPI_SUCCESS) {
         std::cerr << "linresid error in MPI_Send\n";
         return 1;
       }
@@ -74,13 +74,13 @@ int linresid(double *a, double *b, double *c, double *u, double *r,
     if (my_id != nprocs-1) {   // check we're not last
 
       // send to right w/ tag 102
-      if ( MPI_ISend(&s_r, 1, MPI_DOUBLE, my_id+1, 102, comm, &request) != MPI_SUCCESS) {
+      if ( MPI_Isend(&s_r, 1, MPI_DOUBLE, my_id+1, 102, comm, &request) != MPI_SUCCESS) {
         std::cerr << "linresid error in MPI_Send\n";
         return 1;
       }
 
       // recv from right w/ tag 103
-      if ( MPI_IRecv(&u_r, 1, MPI_DOUBLE, my_id+1, 103, comm, &request) != MPI_SUCCESS) {
+      if ( MPI_Irecv(&u_r, 1, MPI_DOUBLE, my_id+1, 103, comm, &request) != MPI_SUCCESS) {
         std::cerr << "linresid error in MPI_Recv\n";
         return 1;
       }
@@ -91,13 +91,13 @@ int linresid(double *a, double *b, double *c, double *u, double *r,
     if (my_id != 0) {          // check we're not first
 
       // recv from left w/ tag 102
-      if ( MPI_IRecv(&u_l, 1, MPI_DOUBLE, my_id-1, 102, comm, &request) != MPI_SUCCESS) {
+      if ( MPI_Irecv(&u_l, 1, MPI_DOUBLE, my_id-1, 102, comm, &request) != MPI_SUCCESS) {
         std::cerr << "linresid error in MPI_Recv\n";
         return 1;
       }
 
       // send to left w/ tag 103
-      if ( MPI_ISend(&s_l, 1, MPI_DOUBLE, my_id-1, 103, comm) != MPI_SUCCESS) {
+      if ( MPI_Isend(&s_l, 1, MPI_DOUBLE, my_id-1, 103, comm) != MPI_SUCCESS) {
         std::cerr << "linresid error in MPI_Send\n";
         return 1;
       }

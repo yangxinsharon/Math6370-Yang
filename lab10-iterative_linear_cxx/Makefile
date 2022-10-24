@@ -9,6 +9,7 @@
 CXX = g++
 MPICXX = mpicxx
 CXXFLAGS = -O2
+
 all : driver.exe driver_mpi.exe driver_mpi_async.exe
 
 driver.exe: driver.cpp jacobi_solve.cpp linresid.cpp
