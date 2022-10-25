@@ -24,7 +24,7 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
  
 void matvecmul(const double *x, double *y, double *q, int nface, 
 	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta) {
-	int i, j, tmp_i, tid, nthreads;
+	int i, j, tmp_i, tmp_j, tid, nthreads;
 	double pre1, pre2;
 	double area, rs, irs, sumrs;
 	double G0, kappa_rs, exp_kappa_rs, Gk;
@@ -36,8 +36,9 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 
     pre1=0.50*(1.0+eps); /* const eps=80.0 */
     pre2=0.50*(1.0+1.0/eps);
-    #pragma omp parallel for default (shared) private(i,j,tp,tq,sp,sq,r_s,rs)
-
+    // #pragma omp parallel for default (shared) private(i,j,tmp_i,tmp_j,tp,tq,sp,sq,r_s,sumrs,rs,irs,\
+    //  G0,kappa_rs,exp_kappa_rs,Gk,cos_theta,cos_theta0,cos_theta0,tp1,tp2,G10,G20,G1,G2,dot_tqsq)
+    #pragma omp parallel for default (private) share(nface,tr_xyz,tr_q,one_over_4pi,kappa,x,y,alpha,beta,pre1,pre2)
     	for (i=0; i<nface; i++) {
     		for(tmp_i=0; tmp_i<3; tmp_i++) {
     			tp[tmp_i] = tr_xyz[3*i+tmp_i];
@@ -48,10 +49,10 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 		double peng[2] = {0.0, 0.0};
 		for (j=0; j<nface; j++) {
     	   	if (j != i) {
-    	   		for(tmp_i=0; tmp_i<3; tmp_i++) {
-					sp[tmp_i]= tr_xyz[3*j+tmp_i];
-					sq[tmp_i]= tr_q[3*j+tmp_i];   
-					r_s[tmp_i] =sp[tmp_i]-tp[tmp_i];			
+    	   		for(tmp_j=0; tmp_j<3; tmp_j++) {
+					sp[tmp_j]= tr_xyz[3*j+tmp_j];
+					sq[tmp_j]= tr_q[3*j+tmp_j];   
+					r_s[tmp_j] =sp[tmp_j]-tp[tmp_j];			
     	   		}
 				// sp= {tr_xyz[3*j], tr_xyz[3*j+1], tr_xyz[3*j+2]};
 				// sq= {tr_q[3*j], tr_q[3*j+1], tr_q[3*j+2]};
