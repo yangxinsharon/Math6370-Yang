@@ -7,8 +7,8 @@
 ###################################################################
 
 # compilers
-# CC = clang # on Yang's MacOS
-CC = gcc # on Linux, i.e., HPC-M2
+CC = clang # on Yang's MacOS
+# CC = gcc # on Linux, i.e., HPC-M2
 # NVCC = nvcc
 MPICC = mpicc
 
@@ -18,36 +18,36 @@ CFLAGS = -c -O2
 OMPFLAGS = -fopenmp
 
 # makefile targets
-all: bimpb.exe bimpb_omp.exe #bimpb_mpi.exe #bimpb_cuda.exe 
+all: bimpb.exe #bimpb_omp.exe #bimpb_mpi.exe #bimpb_cuda.exe 
 
 bimpb.exe: main.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec.o pp_timer.o
 	$(CC) -lm -o $@ $^
 # bimpb_cuda.exe: main_cuda.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_cuda.o pp_timer.o
-# 	$(NVCC) -o bimpb_cuda.exe *.o -lm
+# 	$(NVCC) -o -lm -o $@ $^
 bimpb_omp.exe: main_omp.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_omp.o pp_timer.o
 	$(CC) -lm -o $@ $^
 # bimpb_mpi.exe: main_mpi.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_mpi.o pp_timer.o
-# 	$(MPICC) -o bimpb_mpi.exe *.o -lm
-matvec.o: matvec.c
-	$(CC) $(CFLAGS) matvec.c
-main.o: main.c
-	$(CC) $(CFLAGS) main.c
+# 	$(MPICC) -lm -o $@ $^
 pp_timer.o: pp_timer.c
 	$(CC) $(CFLAGS) pp_timer.c
 readin.o: readin.c
 	$(CC) $(CFLAGS) readin.c
+matvec.o: matvec.c
+	$(CC) $(CFLAGS) matvec.c
+main.o: main.c
+	$(CC) $(CFLAGS) main.c
 # matvec_cuda.o: cuda/matvec_cuda.cu
 # 	$(NNCC) $(NVCCFLAGS) cuda/matvec_cuda.cu
 # main_cuda.o: cuda/main_cuda.c
 # 	$(NVCC) $(NVCCFLAGS) cuda/main_cuda.c
-matvec_omp.o: omp/matvec_omp.c
-	$(CC) $(CFLAGS) $(OMPFLAGS) omp/matvec_omp.c
-main_omp.o: omp/main_omp.c
-	$(CC) $(CFLAGS) $(OMPFLAGS) omp/main_omp.c
-# matvec_mpi.o: mpi/matvec_mpi.c
-# 	$(MPICC) $(CFLAGS) mpi/matvec_mpi.c
-# main_mpi.o: mpi/main_mpi.c
-# 	$(MPICC) $(CFLAGS) mpi/main_mpi.c
+matvec_omp.o: matvec_omp.c
+	$(CC) $(CFLAGS) $(OMPFLAGS) matvec_omp.c
+main_omp.o: main_omp.c
+	$(CC) $(CFLAGS) $(OMPFLAGS) main_omp.c
+# matvec_mpi.o: matvec_mpi.c
+# 	$(MPICC) $(CFLAGS) matvec_mpi.c
+# main_mpi.o: main_mpi.c
+# 	$(MPICC) $(CFLAGS) main_mpi.c
 d_sign.o: gmres/d_sign.c
 	$(CC) $(CFLAGS) gmres/d_sign.c
 daxpy.o: gmres/daxpy.c
