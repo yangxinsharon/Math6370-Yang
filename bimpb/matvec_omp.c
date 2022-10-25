@@ -36,13 +36,14 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 
     pre1=0.50*(1.0+eps); /* const eps=80.0 */
     pre2=0.50*(1.0+1.0/eps);
-    #pragma omp parallel for default (shared) private(i,j,tp,tq,sp,sq,r_s,rs) {
+    #pragma omp parallel for default (shared) private(i,j,tp,tq,sp,sq,r_s,rs)
     	tid = omp_get_thread_num();
  		
  		if (tid == 0) {
       		nthreads = omp_get_num_threads();
       		printf("Number of threads = %i\n", nthreads);
     	}
+
     	for (i=0; i<nface; i++) {
     		for(tmp_i=0; tmp_i<3; tmp_i++) {
     			tp[tmp_i] = tr_xyz[3*i+tmp_i];
@@ -100,7 +101,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 		y[i] = y[i]*beta + (pre1*x[i]-peng[0])*alpha;
 		y[nface+i] = y[nface+i]*beta + (pre2*x[nface+i]-peng[1])*alpha;
 		}
-	}
+	
 }
 
 
