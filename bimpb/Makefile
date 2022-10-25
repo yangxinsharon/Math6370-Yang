@@ -7,8 +7,8 @@
 ###################################################################
 
 # compilers
-CC = clang # on Yang's MacOS
-# CC = gcc # on Linux, i.e., HPC-M2
+# CC = clang # on Yang's MacOS
+CC = gcc # on Linux, i.e., HPC-M2
 # NVCC = nvcc
 MPICC = mpicc
 
