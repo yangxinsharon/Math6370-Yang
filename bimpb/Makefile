@@ -10,22 +10,22 @@
 # CC = clang # on Yang's MacOS
 CC = gcc # on Linux, i.e., HPC-M2
 # NVCC = nvcc
-# MPICC = mpicc
+MPICC = mpicc
 
 # flags
 CFLAGS = -c -O2
 # NVCCFLAGS = -c -O3 -arch=sm_61 -use_fast_math	# for -arch=sm_xx check http://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html#gpu-feature-list
-# OMPFLAGS = -fopenmp
+OMPFLAGS = -fopenmp
 
 # makefile targets
 all: bimpb.exe #bimpb_omp.exe #bimpb_mpi.exe #bimpb_cuda.exe 
 
 bimpb.exe: main.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec.o pp_timer.o
-	$(CC) -lm -o $@ $^
+	$(CC) -lm -p -o $@ $^
 # bimpb_cuda.exe: main_cuda.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_cuda.o pp_timer.o
 # 	$(NVCC) -o -lm -o $@ $^
-# bimpb_omp.exe: main_omp.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_omp.o pp_timer.o
-# 	$(CC) -lm -o $@ $^
+bimpb_omp.exe: main_omp.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_omp.o pp_timer.o
+	$(CC) -lm -o $@ $^
 # bimpb_mpi.exe: main_mpi.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_mpi.o pp_timer.o
 # 	$(MPICC) -lm -o $@ $^
 pp_timer.o: pp_timer.c
