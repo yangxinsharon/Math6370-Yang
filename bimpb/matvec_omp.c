@@ -62,8 +62,8 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 						// r_s[tmp_j] =sp[tmp_j]-tp[tmp_j];			
     		//    		}
 
-					double sp= {tr_xyz[3*j], tr_xyz[3*j+1], tr_xyz[3*j+2]};
-					double sq= {tr_q[3*j], tr_q[3*j+1], tr_q[3*j+2]};
+					double sp[3]= {tr_xyz[3*j], tr_xyz[3*j+1], tr_xyz[3*j+2]};
+					double sq[3]= {tr_q[3*j], tr_q[3*j+1], tr_q[3*j+2]};
 					double r_s[3] = {sp[0]-tp[0], sp[1]-tp[1], sp[2]-tp[2]};
 
 					double sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
