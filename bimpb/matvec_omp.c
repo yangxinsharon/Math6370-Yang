@@ -40,7 +40,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
     // #pragma omp parallel for default (shared) private(i,j,tmp_i,tmp_j,tp,tq,sp,sq,r_s,sumrs,rs,irs,\
     //  G0,kappa_rs,exp_kappa_rs,Gk,cos_theta,cos_theta0,cos_theta0,tp1,tp2,G10,G20,G1,G2,dot_tqsq)
     // #pragma omp parallel for shared(nface,tr_xyz,tr_q,one_over_4pi,kappa,x,y,alpha,beta,pre1,pre2)
-    #pragma omp parallel {
+    #pragma omp parallel
     	int i, j, tmp_i, tmp_j, tid, nthreads;
 
     	#pragma omp parallel for 
@@ -61,8 +61,8 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 						// r_s[tmp_j] =sp[tmp_j]-tp[tmp_j];			
     		//    		}
 
-					sp= {tr_xyz[3*j], tr_xyz[3*j+1], tr_xyz[3*j+2]};
-					sq= {tr_q[3*j], tr_q[3*j+1], tr_q[3*j+2]};
+					double sp= {tr_xyz[3*j], tr_xyz[3*j+1], tr_xyz[3*j+2]};
+					double sq= {tr_q[3*j], tr_q[3*j+1], tr_q[3*j+2]};
 					double r_s[3] = {sp[0]-tp[0], sp[1]-tp[1], sp[2]-tp[2]};
 
 					double sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
@@ -104,7 +104,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 			y[i] = y[i]*beta + (pre1*x[i]-peng[0])*alpha;
 			y[nface+i] = y[nface+i]*beta + (pre2*x[nface+i]-peng[1])*alpha;
 		}
-	}
+	
 }
 
 
