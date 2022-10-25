@@ -25,7 +25,7 @@ bimpb.exe: main.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.
 # bimpb_cuda.exe: main_cuda.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_cuda.o pp_timer.o
 # 	$(NVCC) -o -lm -o $@ $^
 bimpb_omp.exe: main_omp.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_omp.o pp_timer.o
-	$(CC) -lm -o $@ $^
+	$(CC) $(OMPFLAGS) -lm -o $@ $^
 # bimpb_mpi.exe: main_mpi.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_mpi.o pp_timer.o
 # 	$(MPICC) -lm -o $@ $^
 pp_timer.o: pp_timer.c
