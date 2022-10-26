@@ -10,7 +10,7 @@
 
 // Description: calculates the linear residual and its averaged 2-norm (WRMS)
 int linresid(double *a, double *b, double *c, double *u, double *r,
-	     double *res, double &norm2, int loc_N, MPI_Comm comm) {
+       double *res, double &norm2, int loc_N, MPI_Comm comm) {
 
   // Get MPI parallelism information from comm
   int nprocs, my_id;
@@ -43,7 +43,7 @@ int linresid(double *a, double *b, double *c, double *u, double *r,
       }
 
       // recv from right w/ tag 101
-      if ( MPI_Irecv(&u_r, 1, MPI_DOUBLE, my_id+1, 101, comm, &request) != MPI_SUCCESS) {
+      if ( MPI_Irecv(&u_r, 1, MPI_DOUBLE, my_id+1, 101, comm, &status, &request) != MPI_SUCCESS) {
         std::cerr << "linresid error in MPI_Recv\n";
         return 1;
       }
@@ -54,7 +54,7 @@ int linresid(double *a, double *b, double *c, double *u, double *r,
     if (my_id != 0) {          // check we're not first
 
       // recv from left w/ tag 100
-      if ( MPI_Irecv(&u_l, 1, MPI_DOUBLE, my_id-1, 100, comm, &request) != MPI_SUCCESS) {
+      if ( MPI_Irecv(&u_l, 1, MPI_DOUBLE, my_id-1, 100, comm, &status, &request) != MPI_SUCCESS) {
         std::cerr << "linresid error in MPI_Recv\n";
         return 1;
       }
@@ -80,7 +80,7 @@ int linresid(double *a, double *b, double *c, double *u, double *r,
       }
 
       // recv from right w/ tag 103
-      if ( MPI_Irecv(&u_r, 1, MPI_DOUBLE, my_id+1, 103, comm, &request) != MPI_SUCCESS) {
+      if ( MPI_Irecv(&u_r, 1, MPI_DOUBLE, my_id+1, 103, comm, &status, &request) != MPI_SUCCESS) {
         std::cerr << "linresid error in MPI_Recv\n";
         return 1;
       }
@@ -91,7 +91,7 @@ int linresid(double *a, double *b, double *c, double *u, double *r,
     if (my_id != 0) {          // check we're not first
 
       // recv from left w/ tag 102
-      if ( MPI_Irecv(&u_l, 1, MPI_DOUBLE, my_id-1, 102, comm, &request) != MPI_SUCCESS) {
+      if ( MPI_Irecv(&u_l, 1, MPI_DOUBLE, my_id-1, 102, comm, &status, &request) != MPI_SUCCESS) {
         std::cerr << "linresid error in MPI_Recv\n";
         return 1;
       }
