@@ -41,7 +41,7 @@ int linresid(double *a, double *b, double *c, double *u, double *r,
         std::cerr << "linresid error in MPI_Send\n";
         return 1;
       }
-      if ( MPI_Wait(request, status) != MPI_SUCCESS) {
+      if ( MPI_Wait(&request, &status) != MPI_SUCCESS) {
         std::cerr << "linresid error in MPI_Wait\n";
         return 1;
       }
@@ -51,7 +51,7 @@ int linresid(double *a, double *b, double *c, double *u, double *r,
         std::cerr << "linresid error in MPI_Recv\n";
         return 1;
       }
-      if ( MPI_Wait(request, status) != MPI_SUCCESS) {
+      if ( MPI_Wait(&request, &status) != MPI_SUCCESS) {
         std::cerr << "linresid error in MPI_Wait\n";
         return 1;
       }
@@ -66,7 +66,7 @@ int linresid(double *a, double *b, double *c, double *u, double *r,
         std::cerr << "linresid error in MPI_Recv\n";
         return 1;
       }
-      if ( MPI_Wait(request, status) != MPI_SUCCESS) {
+      if ( MPI_Wait(&request, &status) != MPI_SUCCESS) {
         std::cerr << "linresid error in MPI_Wait\n";
         return 1;
       }
@@ -76,7 +76,7 @@ int linresid(double *a, double *b, double *c, double *u, double *r,
         std::cerr << "linresid error in MPI_Send\n";
         return 1;
       }
-      if ( MPI_Wait(request, status) != MPI_SUCCESS) {
+      if ( MPI_Wait(&request, &status) != MPI_SUCCESS) {
         std::cerr << "linresid error in MPI_Wait\n";
         return 1;
       }
@@ -94,7 +94,7 @@ int linresid(double *a, double *b, double *c, double *u, double *r,
         std::cerr << "linresid error in MPI_Send\n";
         return 1;
       }
-      if ( MPI_Wait(request, status) != MPI_SUCCESS) {
+      if ( MPI_Wait(&request, &status) != MPI_SUCCESS) {
         std::cerr << "linresid error in MPI_Wait\n";
         return 1;
       }
@@ -103,7 +103,7 @@ int linresid(double *a, double *b, double *c, double *u, double *r,
         std::cerr << "linresid error in MPI_Recv\n";
         return 1;
       }
-      if ( MPI_Wait(request, status) != MPI_SUCCESS) {
+      if ( MPI_Wait(&request, &status) != MPI_SUCCESS) {
         std::cerr << "linresid error in MPI_Wait\n";
         return 1;
       }      
@@ -118,7 +118,7 @@ int linresid(double *a, double *b, double *c, double *u, double *r,
         std::cerr << "linresid error in MPI_Recv\n";
         return 1;
       }
-      if ( MPI_Wait(request, status) != MPI_SUCCESS) {
+      if ( MPI_Wait(&request, &status) != MPI_SUCCESS) {
         std::cerr << "linresid error in MPI_Wait\n";
         return 1;
       }
@@ -128,7 +128,7 @@ int linresid(double *a, double *b, double *c, double *u, double *r,
         std::cerr << "linresid error in MPI_Send\n";
         return 1;
       }
-      if ( MPI_Wait(request, status) != MPI_SUCCESS) {
+      if ( MPI_Wait(&request, &status) != MPI_SUCCESS) {
         std::cerr << "linresid error in MPI_Wait\n";
         return 1;
       }
