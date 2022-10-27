@@ -1,0 +1,10 @@
+Files:  looks good
+
+Building:  successful
+
+Debugged code:
+* While this runs correctly, the overall runtime **increases**
+  as more threads are added.  This is because you used "critical"
+  to handle the reduction on F, instead of a "reduction" clause.
+
+Grade:  90
