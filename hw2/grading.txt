@@ -1,0 +1,25 @@
+Files:  everything looks appropriate
+
+Compiling your tests: successful
+
+Compiling my tests: successful
+
+Running grade_vec2d.exe: successful
+
+Running grade_vec2d_b.exe: successful
+
+Comments on performance:
+* I would have liked a bit more understanding of the performance
+  differences.  I'll note that you are the one storing things, so
+  this has nothing to do with C++ vs Fortran, row-major vs
+  column-major, ordering. [hint: this has to do with loading
+  memory into cache].
+
+Files:
+* vec2d_b.cpp:
+  - lines 100-103, 114-117, 132-135, 146-149, etc: with the flattened
+    data array, these loops would be marginally more efficient if you
+    used a single "for (long int i=0; i<(this->nrow)*(this->ncol); i++)"
+    loop.
+
+Grade: 96
