@@ -40,7 +40,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
     // #pragma omp parallel for default (shared) private(i,j,tmp_i,tmp_j,tp,tq,sp,sq,r_s,sumrs,rs,irs,\
     //  G0,kappa_rs,exp_kappa_rs,Gk,cos_theta,cos_theta0,cos_theta0,tp1,tp2,G10,G20,G1,G2,dot_tqsq)
     // #pragma omp parallel for shared(nface,tr_xyz,tr_q,one_over_4pi,kappa,x,y,alpha,beta,pre1,pre2)
-    #pragma omp parallel default
+    #pragma omp parallel default(shared)
     {
     	printf(“The parallel region is executed by thread %i\n”, omp_get_thread_num());
 		// if ( omp_get_thread_num() == 2 )
