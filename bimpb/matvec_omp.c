@@ -40,7 +40,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
     // #pragma omp parallel for default (shared) private(i,j,tmp_i,tmp_j,tp,tq,sp,sq,r_s,sumrs,rs,irs,\
     //  G0,kappa_rs,exp_kappa_rs,Gk,cos_theta,cos_theta0,cos_theta0,tp1,tp2,G10,G20,G1,G2,dot_tqsq)
     // #pragma omp parallel for shared(nface,tr_xyz,tr_q,one_over_4pi,kappa,x,y,alpha,beta,pre1,pre2)
-    #pragma omp parallel default(shared)
+    #pragma omp parallel
     {
     	printf("The parallel region is executed by thread %i\n", omp_get_thread_num());
 		// if ( omp_get_thread_num() == 2 )
@@ -105,7 +105,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 					peng[1] = peng[1] + (L3*peng_old[0] + L4*peng_old[1]) * area;
     		   	}
 			}
-	
+			// #pragma omp reduction 
 			y[i] = y[i]*beta + (pre1*x[i]-peng[0])*alpha;
 			y[nface+i] = y[nface+i]*beta + (pre2*x[nface+i]-peng[1])*alpha;
 		}
