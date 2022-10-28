@@ -42,7 +42,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
     // #pragma omp parallel for shared(nface,tr_xyz,tr_q,one_over_4pi,kappa,x,y,alpha,beta,pre1,pre2)
     #pragma omp parallel default(shared)
     {
-    	printf(“The parallel region is executed by thread %i\n”, omp_get_thread_num());
+    	printf("The parallel region is executed by thread %i\n", omp_get_thread_num());
 		// if ( omp_get_thread_num() == 2 )
 		// 	printf(“ thread %i does things differently\n”, omp_get_thread_num());
 
