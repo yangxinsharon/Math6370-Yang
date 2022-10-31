@@ -48,7 +48,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 
     	int i, j, tmp_i, tmp_j, tid, nthreads;
 
-    	#pragma omp parallel for 
+    	#pragma omp for 
     	for (i=0; i<nface; i++) {
     		double tp[3] = {tr_xyz[3*i], tr_xyz[3*i+1], tr_xyz[3*i+2]};
 			double tq[3] = {tr_q[3*i], tr_q[3*i+1], tr_q[3*i+2]};
