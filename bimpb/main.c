@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
 
 	/* read in structural information */
    sprintf(fname, "1a63");
-   sprintf(density, "10");
+   sprintf(density, "5");
    // sprintf(fname,"%s",argv[1]);
    // sprintf(density,"%s",argv[2]);
 	readin(fname, density);
