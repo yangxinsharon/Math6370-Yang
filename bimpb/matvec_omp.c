@@ -195,4 +195,5 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
     	        bvct[nface+i] = bvct[nface+i]+atmchr[j]*G1;
     	    }
     	}
+    }
 }
