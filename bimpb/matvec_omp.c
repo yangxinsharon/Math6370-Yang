@@ -126,7 +126,6 @@ void comp_pot(const double* xvct, double *atmchr, double *chrpos, double *ptl,
     {
     	printf("The parallel region for comp_pot is executed by thread %i\n", omp_get_thread_num());
     	int i, j;
-    	double ptl[nface] = 0.0;
     	#pragma omp for 
 		for (j=0; j<nface; j++) {
     		ptl[j] = 0.0;
