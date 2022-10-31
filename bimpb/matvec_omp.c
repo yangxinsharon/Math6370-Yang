@@ -29,7 +29,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
     pre2=0.50*(1.0+1.0/eps);
     #pragma omp parallel
     {
-    	printf("The parallel region for matvecmul is executed by thread %i\n", omp_get_thread_num());
+    	// printf("The parallel region for matvecmul is executed by thread %i\n", omp_get_thread_num());
 
     	int i, j;
 
@@ -124,7 +124,7 @@ void comp_pot(const double* xvct, double *atmchr, double *chrpos, double *ptl,
 
     #pragma omp parallel 
     {
-    	printf("The parallel region for comp_pot is executed by thread %i\n", omp_get_thread_num());
+    	// printf("The parallel region for comp_pot is executed by thread %i\n", omp_get_thread_num());
     	int i, j;
     	#pragma omp for 
 		for (j=0; j<nface; j++) {
