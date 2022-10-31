@@ -172,25 +172,27 @@ void comp_source_wrapper() {
 /* bvct be located at readin.c */
 void comp_source( double* bvct, double *atmchr, double *chrpos, 
 	double *tr_xyz,double *tr_q, int nface, int nchr) {
-	int i, j;
-	double sumrs, cos_theta, irs, G0, G1, tp1;
-	for (i=0; i<nface; i++) {
-        bvct[i] = 0.0;
-        bvct[i+nface] = 0.0;
-        for (j=0; j<nchr; j++) {
-            double r_s[3] = {chrpos[3*j]-tr_xyz[3*i], chrpos[3*j+1]-tr_xyz[3*i+1], 
-            	chrpos[3*j+2]-tr_xyz[3*i+2]};
-			sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2]; 
-            cos_theta = tr_q[3*i]*r_s[0] + tr_q[3*i+1]*r_s[1] + tr_q[3*i+2]*r_s[2];
-			irs = 1.0/sqrt(sumrs) ;//rsqrt(sumrs);//returns reciprocal square root of scalars and vectors.
-            cos_theta = cos_theta*irs;
-            G0 = one_over_4pi;//constant
-            G0 = G0*irs;
-            tp1 = G0*irs;
-            G1 = cos_theta*tp1;
-            bvct[i] = bvct[i]+atmchr[j]*G0;
-            bvct[nface+i] = bvct[nface+i]+atmchr[j]*G1;
-        }
-
-    }
+    #pragma omp parallel
+    {
+    	// printf("The parallel region for comp_source is executed by thread %i\n", omp_get_thread_num());
+    	int i, j;
+    	#pragma omp for 
+		for (i=0; i<nface; i++) {
+    	    bvct[i] = 0.0;
+    	    bvct[i+nface] = 0.0;
+    	    for (j=0; j<nchr; j++) {
+    	        double r_s[3] = {chrpos[3*j]-tr_xyz[3*i], chrpos[3*j+1]-tr_xyz[3*i+1], 
+    	        	chrpos[3*j+2]-tr_xyz[3*i+2]};
+				double sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2]; 
+    	        double cos_theta = tr_q[3*i]*r_s[0] + tr_q[3*i+1]*r_s[1] + tr_q[3*i+2]*r_s[2];
+				double irs = 1.0/sqrt(sumrs) ;//rsqrt(sumrs);//returns reciprocal square root of scalars and vectors.
+    	        cos_theta = cos_theta*irs;
+    	        double G0 = one_over_4pi;//constant
+    	        G0 = G0*irs;
+    	        double tp1 = G0*irs;
+    	        double G1 = cos_theta*tp1;
+    	        bvct[i] = bvct[i]+atmchr[j]*G0;
+    	        bvct[nface+i] = bvct[nface+i]+atmchr[j]*G1;
+    	    }
+    	}
 }
