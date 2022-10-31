@@ -42,7 +42,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
     // #pragma omp parallel for shared(nface,tr_xyz,tr_q,one_over_4pi,kappa,x,y,alpha,beta,pre1,pre2)
     #pragma omp parallel
     {
-    	printf("The parallel region is executed by thread %i\n", omp_get_thread_num());
+    	printf("The parallel region for matvecmul is executed by thread %i\n", omp_get_thread_num());
 		// if ( omp_get_thread_num() == 2 )
 		// 	printf(“ thread %i does things differently\n”, omp_get_thread_num());
 
@@ -147,6 +147,9 @@ void comp_pot(const double* xvct, double *atmchr, double *chrpos, double *ptl,
 	int i, j;
     double sumrs, irs, rs, G0, Gk, kappa_rs, exp_kappa_rs;
     double cos_theta, G1, G2, L1, L2, tp1, tp2;
+    // #pragma omp parallel 
+    // {
+    // 	printf("The parallel region for comp_pot is executed by thread %i\n", omp_get_thread_num());
 	for (j=0; j<nface; j++) {
     	ptl[j] = 0.0;
 		double r[3] = {tr_xyz[3*j], tr_xyz[3*j+1], tr_xyz[3*j+2]};

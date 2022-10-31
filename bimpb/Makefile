@@ -24,7 +24,7 @@ bimpb.exe: main.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.
 	$(CC) -lm -p -o $@ $^
 # bimpb_cuda.exe: main_cuda.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_cuda.o pp_timer.o
 # 	$(NVCC) -o -lm -o $@ $^
-bimpb_omp.exe: main_omp.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_omp.o pp_timer.o
+bimpb_omp.exe: main.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_omp.o pp_timer.o
 	$(CC) $(OMPFLAGS) -lm -p -o $@ $^
 # bimpb_mpi.exe: main_mpi.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_mpi.o pp_timer.o
 # 	$(MPICC) -lm -o $@ $^
@@ -42,8 +42,8 @@ main.o: main.c
 # 	$(NVCC) $(NVCCFLAGS) cuda/main_cuda.c
 matvec_omp.o: matvec_omp.c
 	$(CC) $(CFLAGS) $(OMPFLAGS) matvec_omp.c
-main_omp.o: main_omp.c
-	$(CC) $(CFLAGS) $(OMPFLAGS) main_omp.c
+# main_omp.o: main_omp.c
+# 	$(CC) $(CFLAGS) $(OMPFLAGS) main_omp.c
 # matvec_mpi.o: matvec_mpi.c
 # 	$(MPICC) $(CFLAGS) matvec_mpi.c
 # main_mpi.o: main_mpi.c
