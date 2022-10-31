@@ -126,9 +126,10 @@ void comp_pot(const double* xvct, double *atmchr, double *chrpos, double *ptl,
     {
     	printf("The parallel region for comp_pot is executed by thread %i\n", omp_get_thread_num());
     	int i, j;
+    	double ptl[nface] = 0.0;
     	#pragma omp for 
 		for (j=0; j<nface; j++) {
-    		double ptl[j] = 0.0;
+    		ptl[j] = 0.0;
 			double r[3] = {tr_xyz[3*j], tr_xyz[3*j+1], tr_xyz[3*j+2]};
 			double v[3] = {tr_q[3*j], tr_q[3*j+1], tr_q[3*j+2]};
     		for (i=0; i<nchr; i++) {
@@ -139,7 +140,7 @@ void comp_pot(const double* xvct, double *atmchr, double *chrpos, double *ptl,
 				double irs = 1.0/sqrt(sumrs);
 	
     	    	double G0 = one_over_4pi;
-    	    	double G0 = G0*irs;
+    	    	G0 = G0*irs;
     	    	double kappa_rs = kappa*rs;
     	    	double exp_kappa_rs = exp(-kappa_rs);
     	    	double Gk = exp_kappa_rs*G0;
