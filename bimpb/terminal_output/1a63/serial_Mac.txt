@@ -1,0 +1,90 @@
+xinyang@Xins-MBP ~/Library/CloudStorage/OneDrive-SouthernMethodistUniversity/MathDoctor/6370 Parallel Computing/Math6370-Yang/bimpb$ ./md_serial.exe 1.0                                 ✹ ✭main 
+2 ./md_serial.exe 1.0 
+./msms -if 1a63.xyzr -prob 1.4 -dens 10 -of 1a63 
+sh: ./msms: cannot execute binary file
+1a63.vert
+nspt=66100, natm=2065, den=10.000000, prob=1.400000
+finish reading vertices file...
+nface=132196, natm=2065, den=10.000000, prob=1.400000
+finish reading face file...
+finish reading position file...
+finish reading charge file...
+The 4771 th triangle has small area:0.000000e+00
+The 6744 th triangle has small area:0.000000e+00
+The 6747 th triangle has small area:0.000000e+00
+The 6748 th triangle has small area:0.000000e+00
+The 6749 th triangle has small area:0.000000e+00
+The 6750 th triangle has small area:0.000000e+00
+The 13074 th triangle has small area:0.000000e+00
+The 13075 th triangle has small area:0.000000e+00
+The 13076 th triangle has small area:0.000000e+00
+The 13077 th triangle has small area:0.000000e+00
+The 13078 th triangle has small area:0.000000e+00
+The 13079 th triangle has small area:0.000000e+00
+The 13080 th triangle has small area:0.000000e+00
+The 13083 th triangle has small area:0.000000e+00
+The 18937 th triangle has small area:0.000000e+00
+The 18938 th triangle has small area:0.000000e+00
+The 18941 th triangle has small area:0.000000e+00
+The 31012 th triangle has small area:0.000000e+00
+The 31017 th triangle has small area:0.000000e+00
+The 31090 th triangle has small area:0.000000e+00
+The 31091 th triangle has small area:0.000000e+00
+The 31092 th triangle has small area:0.000000e+00
+The 31095 th triangle has small area:0.000000e+00
+The 33122 th triangle has small area:0.000000e+00
+The 33123 th triangle has small area:0.000000e+00
+The 33124 th triangle has small area:0.000000e+00
+The 33125 th triangle has small area:0.000000e+00
+The 33126 th triangle has small area:0.000000e+00
+The 33127 th triangle has small area:0.000000e+00
+The 34719 th triangle has small area:0.000000e+00
+The 34720 th triangle has small area:0.000000e+00
+The 34721 th triangle has small area:0.000000e+00
+The 34722 th triangle has small area:0.000000e+00
+The 34829 th triangle has small area:0.000000e+00
+The 34830 th triangle has small area:0.000000e+00
+The 34852 th triangle has small area:0.000000e+00
+The 34853 th triangle has small area:0.000000e+00
+The 34854 th triangle has small area:0.000000e+00
+The 34855 th triangle has small area:0.000000e+00
+The 34856 th triangle has small area:0.000000e+00
+The 34857 th triangle has small area:0.000000e+00
+The 90581 th triangle has small area:0.000000e+00
+The 90645 th triangle has small area:0.000000e+00
+The 96593 th triangle has small area:7.071068e-07
+The 96659 th triangle has small area:0.000000e+00
+The 99069 th triangle has small area:7.071068e-07
+The 99071 th triangle has small area:0.000000e+00
+The 101603 th triangle has small area:0.000000e+00
+The 101604 th triangle has small area:7.921490e-06
+The 110977 th triangle has small area:2.915476e-06
+The 112032 th triangle has small area:0.000000e+00
+The 112089 th triangle has small area:0.000000e+00
+The 114164 th triangle has small area:0.000000e+00
+The 114320 th triangle has small area:4.123106e-06
+The 115492 th triangle has small area:0.000000e+00
+The 115497 th triangle has small area:5.000000e-07
+The 115672 th triangle has small area:0.000000e+00
+The 115736 th triangle has small area:0.000000e+00
+The 117171 th triangle has small area:0.000000e+00
+The 118623 th triangle has small area:0.000000e+00
+The 119431 th triangle has small area:2.236068e-06
+The 119432 th triangle has small area:2.236068e-06
+62 faces are deleted
+total area = 6973.643752
+264268	-0.044670	0.000000	10	264268	11	100	0.000100
+iteration no.=1, error=1.704596e-01
+iteration no.=2, error=4.640450e-02
+iteration no.=3, error=1.728947e-02
+iteration no.=4, error=7.285962e-03
+iteration no.=5, error=3.600631e-03
+iteration no.=6, error=1.879018e-03
+iteration no.=7, error=9.736841e-04
+iteration no.=8, error=4.541809e-04
+iteration no.=9, error=1.939977e-04
+iteration no.=10, error=1.019216e-04
+iteration no.=11, error=5.311389e-05
+solvation energy on GPU = -2404.072761 kcal/mol
+TOTAL_TIME 21421.017842
+ %                                                                                               xinyang@Xins-MBP ~/Library/CloudStorage/OneDrive-SouthernMethodistUniversity/MathDoctor/6370 Parallel Computing/Math6370-Yang/bimpb$                                                     ✹ ✭main 
