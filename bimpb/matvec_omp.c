@@ -158,6 +158,7 @@ void comp_pot(const double* xvct, double *atmchr, double *chrpos, double *ptl,
     	  		ptl[j] = ptl[j] + atmchr[i] * (L1*xvct[j]+L2*xvct[nface+j]) * tr_area[j];
 			}
     	}
+    }
 }
 
 /* This subroutine wraps the solvation energy computation */
