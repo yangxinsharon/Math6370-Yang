@@ -40,7 +40,7 @@ int linresid(double *a, double *b, double *c, double *u, double *r,
   if (my_id != nprocs-1) {   // check we're not last
 
     // send to right w/ tag 100
-    if ( MPI_Isend(&s_r, 1, MPI_DOUBLE, my_id+1, 100, comm, &reques1) != MPI_SUCCESS) {
+    if ( MPI_Isend(&s_r, 1, MPI_DOUBLE, my_id+1, 100, comm, &request1) != MPI_SUCCESS) {
       std::cerr << "linresid error in MPI_Send\n";
       return 1;
     }
