@@ -41,13 +41,13 @@ int linresid(double *a, double *b, double *c, double *u, double *r,
 
     // send to right w/ tag 100
     if ( MPI_Isend(&s_r, 1, MPI_DOUBLE, my_id+1, 100, comm, &request1) != MPI_SUCCESS) {
-      std::cerr << "linresid error in MPI_Send\n";
+      std::cerr << "linresid error in MPI_Isend\n";
       return 1;
     }
   
     // recv from right w/ tag 101
     if ( MPI_Irecv(&u_r, 1, MPI_DOUBLE, my_id+1, 101, comm, &request2) != MPI_SUCCESS) {
-      std::cerr << "linresid error in MPI_Recv\n";
+      std::cerr << "linresid error in MPI_Irecv\n";
       return 1;
     }
   }
@@ -122,6 +122,14 @@ int linresid(double *a, double *b, double *c, double *u, double *r,
 
   // } // if my_id%2
 
+  
+  // compute linear residual in interior of subdomain
+  int k;
+  for (k=1; k<loc_N-1; k++) {
+    res[k] = a[k]*u[k-1] + b[k]*u[k] + c[k]*u[k+1] - r[k];
+    norm2 += res[k]*res[k];
+  }
+
   if ( MPI_Wait(&request1, &status) != MPI_SUCCESS) {
     std::cerr << "linresid error in MPI_Wait\n";
     return 1;
@@ -145,12 +153,6 @@ int linresid(double *a, double *b, double *c, double *u, double *r,
   res[0] = a[0]*u_l + b[0]*u[0] + c[0]*u[1] - r[0];
   norm2 = res[0]*res[0];
 
-  // compute linear residual in interior of subdomain
-  int k;
-  for (k=1; k<loc_N-1; k++) {
-    res[k] = a[k]*u[k-1] + b[k]*u[k] + c[k]*u[k+1] - r[k];
-    norm2 += res[k]*res[k];
-  }
 
   // compute linear residual at right end of subdomain
   k = loc_N-1;
