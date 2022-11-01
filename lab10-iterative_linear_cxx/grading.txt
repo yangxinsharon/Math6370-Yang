@@ -1,0 +1,27 @@
+Files:  looks good
+
+Building:  successful
+
+Correct input file:  yes
+
+Runs correctly:  yes
+
+Test results:
+* Good analysis of your results.  I'm somewhat surprised that the non-blocking
+  speedup was not better than the blocking (it was with other students), but
+  this could just be natural variation from run to run.
+
+Comments on your linresid_mpi_async routine:
+* I would prefer if you'd add your name to the author list when you modify my code.
+
+* You overcomplicated this.  Since neither MPI_Isend nor MPI_Irecv are blocking,
+  you do not need to retain our previous multi-phase approach.  Instead, all procs
+  can launch their MPI_Irecv and MPI_Isend calls at first, and then MPI_Wait for
+  these to complete before using the message data.
+
+* The whole point with MPI_Isend and MPI_Irecv is that you can do other useful work
+  while the communications proceed, **before** you MPI_Wait on those messages to
+  complete.  Instead, you MPI_Wait immediately after each call, effectively reducing
+  these to blocking MPI_Send and MPI_Recv calls.
+
+Grade: 90
