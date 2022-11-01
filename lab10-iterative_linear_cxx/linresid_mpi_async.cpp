@@ -32,6 +32,7 @@ int linresid(double *a, double *b, double *c, double *u, double *r,
   // phase 1: even procs exchange to right, odd ones exchange to left
   MPI_Status status;
   MPI_Request request;
+
   if (my_id%2 == 0) {
 
     if (my_id != nprocs-1) {   // check we're not last
@@ -41,18 +42,10 @@ int linresid(double *a, double *b, double *c, double *u, double *r,
         std::cerr << "linresid error in MPI_Send\n";
         return 1;
       }
-      if ( MPI_Wait(&request, &status) != MPI_SUCCESS) {
-        std::cerr << "linresid error in MPI_Wait\n";
-        return 1;
-      }
-
+    
       // recv from right w/ tag 101
       if ( MPI_Irecv(&u_r, 1, MPI_DOUBLE, my_id+1, 101, comm, &request) != MPI_SUCCESS) {
         std::cerr << "linresid error in MPI_Recv\n";
-        return 1;
-      }
-      if ( MPI_Wait(&request, &status) != MPI_SUCCESS) {
-        std::cerr << "linresid error in MPI_Wait\n";
         return 1;
       }
     }
@@ -66,75 +59,74 @@ int linresid(double *a, double *b, double *c, double *u, double *r,
         std::cerr << "linresid error in MPI_Recv\n";
         return 1;
       }
-      if ( MPI_Wait(&request, &status) != MPI_SUCCESS) {
-        std::cerr << "linresid error in MPI_Wait\n";
-        return 1;
-      }
 
       // send to left w/ tag 101
       if ( MPI_Isend(&s_l, 1, MPI_DOUBLE, my_id-1, 101, comm, &request) != MPI_SUCCESS) {
         std::cerr << "linresid error in MPI_Send\n";
         return 1;
       }
-      if ( MPI_Wait(&request, &status) != MPI_SUCCESS) {
-        std::cerr << "linresid error in MPI_Wait\n";
-        return 1;
-      }
     }
 
   } // if my_id%2
 
-  // phase 2: even procs exchange to left, odd ones exchange to right
-  if (my_id%2 == 1) {
+  // // phase 2: even procs exchange to left, odd ones exchange to right
+  // if (my_id%2 == 1) {
 
-    if (my_id != nprocs-1) {   // check we're not last
+  //   if (my_id != nprocs-1) {   // check we're not last
 
-      // send to right w/ tag 102
-      if ( MPI_Isend(&s_r, 1, MPI_DOUBLE, my_id+1, 102, comm, &request) != MPI_SUCCESS) {
-        std::cerr << "linresid error in MPI_Send\n";
-        return 1;
-      }
-      if ( MPI_Wait(&request, &status) != MPI_SUCCESS) {
-        std::cerr << "linresid error in MPI_Wait\n";
-        return 1;
-      }
-      // recv from right w/ tag 103
-      if ( MPI_Irecv(&u_r, 1, MPI_DOUBLE, my_id+1, 103, comm, &request) != MPI_SUCCESS) {
-        std::cerr << "linresid error in MPI_Recv\n";
-        return 1;
-      }
-      if ( MPI_Wait(&request, &status) != MPI_SUCCESS) {
-        std::cerr << "linresid error in MPI_Wait\n";
-        return 1;
-      }      
-    }
+  //     // send to right w/ tag 102
+  //     if ( MPI_Isend(&s_r, 1, MPI_DOUBLE, my_id+1, 102, comm, &request) != MPI_SUCCESS) {
+  //       std::cerr << "linresid error in MPI_Send\n";
+  //       return 1;
+  //     }
+  //     if ( MPI_Wait(&request, &status) != MPI_SUCCESS) {
+  //       std::cerr << "linresid error in MPI_Wait\n";
+  //       return 1;
+  //     }
+  //     // recv from right w/ tag 103
+  //     if ( MPI_Irecv(&u_r, 1, MPI_DOUBLE, my_id+1, 103, comm, &request) != MPI_SUCCESS) {
+  //       std::cerr << "linresid error in MPI_Recv\n";
+  //       return 1;
+  //     }
+  //     if ( MPI_Wait(&request, &status) != MPI_SUCCESS) {
+  //       std::cerr << "linresid error in MPI_Wait\n";
+  //       return 1;
+  //     }      
+  //   }
 
-  } else {
+  // } else {
 
-    if (my_id != 0) {          // check we're not first
+  //   if (my_id != 0) {          // check we're not first
 
-      // recv from left w/ tag 102
-      if ( MPI_Irecv(&u_l, 1, MPI_DOUBLE, my_id-1, 102, comm, &request) != MPI_SUCCESS) {
-        std::cerr << "linresid error in MPI_Recv\n";
-        return 1;
-      }
-      if ( MPI_Wait(&request, &status) != MPI_SUCCESS) {
-        std::cerr << "linresid error in MPI_Wait\n";
-        return 1;
-      }
+  //     // recv from left w/ tag 102
+  //     if ( MPI_Irecv(&u_l, 1, MPI_DOUBLE, my_id-1, 102, comm, &request) != MPI_SUCCESS) {
+  //       std::cerr << "linresid error in MPI_Recv\n";
+  //       return 1;
+  //     }
+  //     if ( MPI_Wait(&request, &status) != MPI_SUCCESS) {
+  //       std::cerr << "linresid error in MPI_Wait\n";
+  //       return 1;
+  //     }
 
-      // send to left w/ tag 103
-      if ( MPI_Isend(&s_l, 1, MPI_DOUBLE, my_id-1, 103, comm, &request) != MPI_SUCCESS) {
-        std::cerr << "linresid error in MPI_Send\n";
-        return 1;
-      }
-      if ( MPI_Wait(&request, &status) != MPI_SUCCESS) {
-        std::cerr << "linresid error in MPI_Wait\n";
-        return 1;
-      }
-    }
+  //     // send to left w/ tag 103
+  //     if ( MPI_Isend(&s_l, 1, MPI_DOUBLE, my_id-1, 103, comm, &request) != MPI_SUCCESS) {
+  //       std::cerr << "linresid error in MPI_Send\n";
+  //       return 1;
+  //     }
+  //     if ( MPI_Wait(&request, &status) != MPI_SUCCESS) {
+  //       std::cerr << "linresid error in MPI_Wait\n";
+  //       return 1;
+  //     }
+  //   }
 
-  } // if my_id%2
+  // } // if my_id%2
+
+  if ( MPI_Wait(&request, &status) != MPI_SUCCESS) {
+    std::cerr << "linresid error in MPI_Wait\n";
+    return 1;
+  }
+
+
 
   // compute linear residual at left of subdomain
   res[0] = a[0]*u_l + b[0]*u[0] + c[0]*u[1] - r[0];
