@@ -37,38 +37,38 @@ int linresid(double *a, double *b, double *c, double *u, double *r,
   MPI_Request request4;
 
 
-    if (my_id != nprocs-1) {   // check we're not last
+  if (my_id != nprocs-1) {   // check we're not last
 
-      // send to right w/ tag 100
-      if ( MPI_Isend(&s_r, 1, MPI_DOUBLE, my_id+1, 100, comm, &reques1) != MPI_SUCCESS) {
-        std::cerr << "linresid error in MPI_Send\n";
-        return 1;
-      }
-    
-      // recv from right w/ tag 101
-      if ( MPI_Irecv(&u_r, 1, MPI_DOUBLE, my_id+1, 101, comm, &request2) != MPI_SUCCESS) {
-        std::cerr << "linresid error in MPI_Recv\n";
-        return 1;
-      }
+    // send to right w/ tag 100
+    if ( MPI_Isend(&s_r, 1, MPI_DOUBLE, my_id+1, 100, comm, &reques1) != MPI_SUCCESS) {
+      std::cerr << "linresid error in MPI_Send\n";
+      return 1;
+    }
+  
+    // recv from right w/ tag 101
+    if ( MPI_Irecv(&u_r, 1, MPI_DOUBLE, my_id+1, 101, comm, &request2) != MPI_SUCCESS) {
+      std::cerr << "linresid error in MPI_Recv\n";
+      return 1;
+    }
+  }
+
+
+  if (my_id != 0) {          // check we're not first
+
+    // recv from left w/ tag 100
+    if ( MPI_Irecv(&u_l, 1, MPI_DOUBLE, my_id-1, 100, comm, &request3) != MPI_SUCCESS) {
+      std::cerr << "linresid error in MPI_Recv\n";
+      return 1;
     }
 
-
-    if (my_id != 0) {          // check we're not first
-
-      // recv from left w/ tag 100
-      if ( MPI_Irecv(&u_l, 1, MPI_DOUBLE, my_id-1, 100, comm, &request3) != MPI_SUCCESS) {
-        std::cerr << "linresid error in MPI_Recv\n";
-        return 1;
-      }
-
-      // send to left w/ tag 101
-      if ( MPI_Isend(&s_l, 1, MPI_DOUBLE, my_id-1, 101, comm, &request4) != MPI_SUCCESS) {
-        std::cerr << "linresid error in MPI_Send\n";
-        return 1;
-      }
+    // send to left w/ tag 101
+    if ( MPI_Isend(&s_l, 1, MPI_DOUBLE, my_id-1, 101, comm, &request4) != MPI_SUCCESS) {
+      std::cerr << "linresid error in MPI_Send\n";
+      return 1;
     }
+  }
 
-  } // if my_id%2
+
 
   // // phase 2: even procs exchange to left, odd ones exchange to right
   // if (my_id%2 == 1) {
