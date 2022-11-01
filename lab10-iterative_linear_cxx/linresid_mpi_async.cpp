@@ -31,37 +31,38 @@ int linresid(double *a, double *b, double *c, double *u, double *r,
 
   // phase 1: even procs exchange to right, odd ones exchange to left
   MPI_Status status;
-  MPI_Request request;
+  MPI_Request request1;
+  MPI_Request request2;
+  MPI_Request request3;
+  MPI_Request request4;
 
-  if (my_id%2 == 0) {
 
     if (my_id != nprocs-1) {   // check we're not last
 
       // send to right w/ tag 100
-      if ( MPI_Isend(&s_r, 1, MPI_DOUBLE, my_id+1, 100, comm, &request) != MPI_SUCCESS) {
+      if ( MPI_Isend(&s_r, 1, MPI_DOUBLE, my_id+1, 100, comm, &reques1) != MPI_SUCCESS) {
         std::cerr << "linresid error in MPI_Send\n";
         return 1;
       }
     
       // recv from right w/ tag 101
-      if ( MPI_Irecv(&u_r, 1, MPI_DOUBLE, my_id+1, 101, comm, &request) != MPI_SUCCESS) {
+      if ( MPI_Irecv(&u_r, 1, MPI_DOUBLE, my_id+1, 101, comm, &request2) != MPI_SUCCESS) {
         std::cerr << "linresid error in MPI_Recv\n";
         return 1;
       }
     }
 
-  } else {
 
     if (my_id != 0) {          // check we're not first
 
       // recv from left w/ tag 100
-      if ( MPI_Irecv(&u_l, 1, MPI_DOUBLE, my_id-1, 100, comm, &request) != MPI_SUCCESS) {
+      if ( MPI_Irecv(&u_l, 1, MPI_DOUBLE, my_id-1, 100, comm, &request3) != MPI_SUCCESS) {
         std::cerr << "linresid error in MPI_Recv\n";
         return 1;
       }
 
       // send to left w/ tag 101
-      if ( MPI_Isend(&s_l, 1, MPI_DOUBLE, my_id-1, 101, comm, &request) != MPI_SUCCESS) {
+      if ( MPI_Isend(&s_l, 1, MPI_DOUBLE, my_id-1, 101, comm, &request4) != MPI_SUCCESS) {
         std::cerr << "linresid error in MPI_Send\n";
         return 1;
       }
@@ -121,7 +122,19 @@ int linresid(double *a, double *b, double *c, double *u, double *r,
 
   // } // if my_id%2
 
-  if ( MPI_Wait(&request, &status) != MPI_SUCCESS) {
+  if ( MPI_Wait(&request1, &status) != MPI_SUCCESS) {
+    std::cerr << "linresid error in MPI_Wait\n";
+    return 1;
+  }
+  if ( MPI_Wait(&request2, &status) != MPI_SUCCESS) {
+    std::cerr << "linresid error in MPI_Wait\n";
+    return 1;
+  }
+  if ( MPI_Wait(&request3, &status) != MPI_SUCCESS) {
+    std::cerr << "linresid error in MPI_Wait\n";
+    return 1;
+  }
+  if ( MPI_Wait(&request4, &status) != MPI_SUCCESS) {
     std::cerr << "linresid error in MPI_Wait\n";
     return 1;
   }
