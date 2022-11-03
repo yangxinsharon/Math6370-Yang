@@ -29,7 +29,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
     pre2=0.50*(1.0+1.0/eps);
     #pragma omp parallel
     {
-    	// printf("The parallel region for matvecmul is executed by thread %i\n", omp_get_thread_num());
+    	printf("The parallel region for matvecmul is executed by thread %i\n", omp_get_thread_num());
     	// printf("%i, %i\n", omp_get_num_procs(), omp_get_thread_limit());
     	int i, j;
 
