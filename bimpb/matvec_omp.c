@@ -30,7 +30,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
     #pragma omp parallel
     {
     	// printf("The parallel region for matvecmul is executed by thread %i\n", omp_get_thread_num());
-    	printf("Maximum number is  %i,%i\n", omp_get_num_procs(), omp_get_thread_limit());
+    	// printf("%i, %i\n", omp_get_num_procs(), omp_get_thread_limit());
     	int i, j;
 
     	#pragma omp for 
@@ -81,7 +81,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 					peng[1] = peng[1] + (L3*peng_old[0] + L4*peng_old[1]) * area;
     		   	}
 			}
-
+	
 			y[i] = y[i]*beta + (pre1*x[i]-peng[0])*alpha;
 			y[nface+i] = y[nface+i]*beta + (pre2*x[nface+i]-peng[1])*alpha;
 		}
