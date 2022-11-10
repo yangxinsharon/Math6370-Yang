@@ -9,8 +9,7 @@
 #include "mpi.h"
 
 // Prototypes
-void chem_solver(double, double*, double*, double*,
-		 double, double, int, int*, double*);
+void chem_solver(double, double*, double*, double*, double, double, int, int*, double*);
 
 
 /* Example routine to compute the equilibrium chemical densities at
@@ -19,15 +18,13 @@ void chem_solver(double, double*, double*, double*,
    subroutine chem_solver, which is called at every spatial location. */
 int main(int argc, char* argv[]) {
 
-
   // declarations
-  int maxit, n, its;
-  int ierr, numprocs, myid, numsent, iend, sender, ansentry;
+  int maxit, n, tag, its;
+  int ierr, numprocs, myid, numsent, iend, sender;
   double *Pbuf, *Sbuf;
   double lam, eps, res, stime, ftime, runtime;
   bool more_work;
   MPI_Status status;
-  int tag;
 
 
   // initialize MPI
@@ -86,15 +83,14 @@ int main(int argc, char* argv[]) {
     numsent = 0;
 
     // first send initial tasks to each of the worker node
-    iend = (n < numprocs-1) ? n : numprocs-1;
-    for (int i=0; i<iend; i++) {
+    for (int i=0; i<n; i++) {
       // fill send buffer
       Pbuf[0] = T[i];
       Pbuf[1] = u[i];
       Pbuf[2] = v[i];
       Pbuf[3] = w[i];
       // send with tag as entry in temperature array
-      ierr = MPI_Send(Pbuf, 4, MPI_DOUBLE, i+1, numsent, MPI_COMM_WORLD);
+      ierr = MPI_Send(Pbuf, 4, MPI_DOUBLE, i+1, numsent+1, MPI_COMM_WORLD);
       if (ierr != MPI_SUCCESS) {
         printf("Error in MPI_Send = %i\n",ierr);
         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
@@ -127,7 +123,7 @@ int main(int argc, char* argv[]) {
         Pbuf[1] = u[numsent];
         Pbuf[2] = v[numsent];
         Pbuf[3] = w[numsent];
-        ierr = MPI_Send(Pbuf, 4, MPI_DOUBLE, sender, numsent, MPI_COMM_WORLD);
+        ierr = MPI_Send(Pbuf, 4, MPI_DOUBLE, sender, numsent+1, MPI_COMM_WORLD);
         if (ierr != MPI_SUCCESS) {
           printf("Error in MPI_Send = %i\n",ierr);
           ierr = MPI_Abort(MPI_COMM_WORLD, 1);
@@ -181,7 +177,8 @@ int main(int argc, char* argv[]) {
         return 1;
       }
 
-      tag = status.MPI_TAG-1;
+
+      tag = status.MPI_TAG;
       std::cerr << "tag is %i\n"<<tag<<std::endl;
       // // check if work is complete
       // ierr = MPI_Get_count(&status, MPI_DOUBLE, &numreceived);
@@ -225,5 +222,5 @@ int main(int argc, char* argv[]) {
   // finalize MPI
   ierr = MPI_Finalize();
 
-  // return 0;
+  return 0;
 } // end main
