@@ -9,7 +9,7 @@
 MPICXX = mpicxx
 CXXFLAGS = -O0
 
-chemistry_mpi.exe : chemistry_mpi.cpp chem_solver.cpp
+chemistry_mpi.exe : chemistry_mpi2.cpp chem_solver.cpp
 	$(MPICXX) $(CXXFLAGS) $^ -lm -o $@
 
 clean :
