@@ -186,11 +186,11 @@ int main(int argc, char* argv[]) {
         w = Pbuf[3];
         chem_solver(T, &u, &v, &w, lam, eps, maxit, &its, &res); 
         if (res < eps) {
-          std::cout << "    i = " << i << "  its = " << its << std::endl;
+          std::cout << "    i = " << tag << "  its = " << its << std::endl;
         }
         else {
-          std::cout << "    error: i=" << i << ", its=%i" << its << ", res=" << res 
-          << ", u=" << u[i] << ", v=" << v[i] << ", w=" << w[i] << std::endl;
+          std::cout << "    error: i=" << tag << ", its=%i" << its << ", res=" << res 
+          << ", u=" << u << ", v=" << v << ", w=" << w << std::endl;
           ierr = MPI_Abort(MPI_COMM_WORLD, 1);
         }
       }
