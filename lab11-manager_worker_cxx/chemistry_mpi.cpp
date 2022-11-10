@@ -24,10 +24,9 @@ int main(int argc, char* argv[]) {
   int ierr, numprocs, myid, iend, sender, ansentry;
   double *Pbuf, *Sbuf;
   bool more_work;
-  int tag, numsent;
+  int tag, numsent, n, its;
+  double res, stime, ftime, runtime;
   MPI_Status status;
-  int its;
-  double res;
 
 
   // initialize MPI
@@ -59,7 +58,6 @@ int main(int argc, char* argv[]) {
   if (myid == 0) { 
 
     // 2. input the number of intervals
-    int n;
     std::cout << "Enter the number of intervals (0 quits):\n";
     std::cin >> n;
     if (n < 1) {
@@ -79,8 +77,7 @@ int main(int argc, char* argv[]) {
     for (int i=0; i<n; i++)  w[i] = 0.5;
   
     // 5. start timer
-    double stime = MPI_Wtime();
-
+    stime = MPI_Wtime();
 
     // a counter to know how much work it has yet to send out
     numsent = 0;
@@ -149,11 +146,9 @@ int main(int argc, char* argv[]) {
            
     }
 
-
-
     // 7. stop timer
-    double ftime = MPI_Wtime();
-    double runtime = ftime - stime;
+    ftime = MPI_Wtime();
+    runtime = ftime - stime;
   
     // 8. output solution time
     std::cout << "     runtime = " << runtime << std::endl;
@@ -182,6 +177,7 @@ int main(int argc, char* argv[]) {
       if (ierr != MPI_SUCCESS) {
         std::cerr << "Error in calling MPI_Recv in worker\n";
         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+        return 1;
       }
 
       tag = status.MPI_TAG;
@@ -201,6 +197,7 @@ int main(int argc, char* argv[]) {
           std::cout << "    error: i=" << tag << ", its=%i" << its << ", res=" << res 
           << ", u=" << u << ", v=" << v << ", w=" << w << std::endl;
           ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+          return 1;
         }
       }
 
@@ -212,6 +209,7 @@ int main(int argc, char* argv[]) {
       if (ierr != MPI_SUCCESS) {
         std::cerr << "Error in calling MPI_Send in worker\n";
         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+        return 1;
       }
     }
   }
@@ -220,5 +218,5 @@ int main(int argc, char* argv[]) {
   // finalize MPI
   ierr = MPI_Finalize();
 
-  return 0;
+  // return 0;
 } // end main
