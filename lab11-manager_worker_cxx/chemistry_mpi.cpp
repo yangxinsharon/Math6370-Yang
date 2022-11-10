@@ -191,6 +191,7 @@ int main(int argc, char* argv[]) {
 
       if (tag == 0) {
         more_work = false;
+        return 1;
       } else {
         // values received from the manager
         T = Pbuf[0];
