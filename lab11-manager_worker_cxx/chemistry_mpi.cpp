@@ -19,12 +19,13 @@ void chem_solver(double, double*, double*, double*, double, double, int, int*, d
 int main(int argc, char* argv[]) {
 
   // declarations
-  int maxit, n, tag, its;
-  int ierr, numprocs, myid, numsent, iend, sender;
+  int n, tag, maxit, its;
+  int ierr, numprocs, myid, numsent;
   double *Pbuf, *Sbuf;
   double lam, eps, res, stime, ftime, runtime;
   bool more_work;
   MPI_Status status;
+  int iend, sender, numreceived, mycount, ansentry;
 
 
   // initialize MPI
@@ -98,6 +99,8 @@ int main(int argc, char* argv[]) {
       }
       numsent++;
     } 
+
+
 
     // obtain the workers’ solutions
     for (int i=0; i<n; i++) {
@@ -177,7 +180,6 @@ int main(int argc, char* argv[]) {
         return 1;
       }
 
-
       tag = status.MPI_TAG;
       std::cerr << "tag is %i\n"<<tag<<std::endl;
       // // check if work is complete
@@ -203,20 +205,20 @@ int main(int argc, char* argv[]) {
           ierr = MPI_Abort(MPI_COMM_WORLD, 1);
           return 1;
         }
-      }
 
-      // pack the solution buffer and send it back to the manager
-      Sbuf[0] = u;
-      Sbuf[1] = v;
-      Sbuf[2] = w;
-      ierr = MPI_Send(Sbuf, 3, MPI_DOUBLE, 0, tag, MPI_COMM_WORLD);
-      if (ierr != 0) {
-        std::cerr << "Error in calling MPI_Send in worker\n";
-        ierr = MPI_Abort(MPI_COMM_WORLD, 1);
-        return 1;
+        // pack the solution buffer and send it back to the manager
+        Sbuf[0] = u;
+        Sbuf[1] = v;
+        Sbuf[2] = w;
+        ierr = MPI_Send(Sbuf, 3, MPI_DOUBLE, 0, tag, MPI_COMM_WORLD);
+        if (ierr != 0) {
+          std::cerr << "Error in calling MPI_Send in worker\n";
+          ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+          return 1;
+        }
       }
-    }
-  }
+    } // end while loop
+  } // end worker
 
 
   // finalize MPI
