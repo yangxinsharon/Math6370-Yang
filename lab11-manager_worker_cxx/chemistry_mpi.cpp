@@ -184,6 +184,11 @@ int main(int argc, char* argv[]) {
       }
 
       tag = status.MPI_TAG;
+      std::cerr << "tag is %i\n"<<tag<<std::endl;
+      // // check if work is complete
+      // ierr = MPI_Get_count(&status, MPI_DOUBLE, &numreceived);
+      // if (numreceived == 0) {
+
       if (tag == 0) {
         more_work = false;
       } else {
@@ -209,7 +214,7 @@ int main(int argc, char* argv[]) {
       Sbuf[1] = v;
       Sbuf[2] = w;
       ierr = MPI_Send(Sbuf, 3, MPI_DOUBLE, 0, tag, MPI_COMM_WORLD);
-      if (ierr != MPI_SUCCESS) {
+      if (ierr != 0) {
         std::cerr << "Error in calling MPI_Send in worker\n";
         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
         return 1;
