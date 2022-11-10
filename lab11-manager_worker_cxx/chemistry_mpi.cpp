@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
   double lam, eps, res, stime, ftime, runtime;
   bool more_work;
   MPI_Status status;
-  int tag, numsent;
+  int tag;
 
 
   // initialize MPI
