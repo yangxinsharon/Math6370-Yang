@@ -91,7 +91,7 @@ int main(int argc, char* argv[]) {
       Pbuf[2] = v[i];
       Pbuf[3] = w[i];
       // send with tag as entry in temperature array
-      ierr = MPI_Send(Pbuf, 4, MPI_DOUBLE, i+1, numsent+1, MPI_COMM_WORLD);
+      ierr = MPI_Send(Pbuf, 4, MPI_DOUBLE, i+1, numsent, MPI_COMM_WORLD);
       if (ierr != MPI_SUCCESS) {
         printf("Error in MPI_Send = %i\n",ierr);
         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
@@ -126,7 +126,7 @@ int main(int argc, char* argv[]) {
         Pbuf[1] = u[numsent];
         Pbuf[2] = v[numsent];
         Pbuf[3] = w[numsent];
-        ierr = MPI_Send(Pbuf, 4, MPI_DOUBLE, sender, numsent+1, MPI_COMM_WORLD);
+        ierr = MPI_Send(Pbuf, 4, MPI_DOUBLE, sender, numsent, MPI_COMM_WORLD);
         if (ierr != MPI_SUCCESS) {
           printf("Error in MPI_Send = %i\n",ierr);
           ierr = MPI_Abort(MPI_COMM_WORLD, 1);
