@@ -150,9 +150,9 @@ int main(int argc, char* argv[]) {
               ansentry = status.MPI_TAG;
               // store results 
               if (ansentry+1-1 <= n) {
-                for (int i=0; i<chunk; i++)  u[ansentry+i] = Sbuf[0];
-                for (int i=0; i<chunk; i++)  v[ansentry+i] = Sbuf[1];
-                for (int i=0; i<chunk; i++)  w[ansentry+i] = Sbuf[2];
+                for (int i=0; i<1; i++)  u[ansentry+i] = Sbuf[0];
+                for (int i=0; i<1; i++)  v[ansentry+i] = Sbuf[1];
+                for (int i=0; i<1; i++)  w[ansentry+i] = Sbuf[2];
               } else {
                 for (int i=0; i<n-ansentry+1; i++)  u[ansentry+i] = Sbuf[0];
                 for (int i=0; i<n-ansentry+1; i++)  v[ansentry+i] = Sbuf[1];
