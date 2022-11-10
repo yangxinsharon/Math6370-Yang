@@ -181,7 +181,7 @@ int main(int argc, char* argv[]) {
         return 1;
       }
 
-      tag = status.MPI_TAG;
+      tag = status.MPI_TAG-1;
       std::cerr << "tag is %i\n"<<tag<<std::endl;
       // // check if work is complete
       // ierr = MPI_Get_count(&status, MPI_DOUBLE, &numreceived);
