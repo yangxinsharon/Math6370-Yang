@@ -1,4 +1,4 @@
-/* Daniel R. Reynolds
+/* Daniel R. Reynolds; Sharon Yang
    SMU Mathematics
    Math 4370 / 6370 */
 
@@ -19,10 +19,32 @@ void chem_solver(double, double*, double*, double*,
    subroutine chem_solver, which is called at every spatial location. */
 int main(int argc, char* argv[]) {
 
+
+  // declarations
+  int ierr, numprocs, myid;
+  double *Pbuf, *Sbuf;
+  bool more_work;
+  int tag, numsent;
+  MPI_Status status;
+  int its;
+  double res;
+
   // initialize MPI
-  int ierr = MPI_Init(&argc, &argv);
+  ierr = MPI_Init(&argc, &argv);
   if (ierr != MPI_SUCCESS) {
      std::cerr << "Error in calling MPI_Init\n";
+     return 1;
+  }
+
+  ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
+  if (ierr != MPI_SUCCESS) {
+     std::cerr << "Error in calling MPI_Comm_size\n";
+     return 1;
+  }
+
+  ierr = MPI_Comm_rank(MPI_COMM_WORLD, &myid);
+  if (ierr != MPI_SUCCESS) {
+     std::cerr << "Error in calling MPI_Comm_rank\n";
      return 1;
   }
 
@@ -31,55 +53,157 @@ int main(int argc, char* argv[]) {
   const double lam = 1.e-2;
   const double eps = 1.e-10;
 
-  // 2. input the number of intervals
-  int n;
-  std::cout << "Enter the number of intervals (0 quits):\n";
-  std::cin >> n;
-  if (n < 1) {
-    return 1;
-  }
 
-  // 3. allocate temperature and solution arrays
-  double *T = new double[n];
-  double *u = new double[n];
-  double *v = new double[n];
-  double *w = new double[n];
+  // manager code
+  if (myid == 0) { 
 
-  // 4. set random temperature field, initial guesses at chemical densities
-  for (int i=0; i<n; i++)  T[i] = random() / (pow(2.0,31.0) - 1.0);
-  for (int i=0; i<n; i++)  u[i] = 0.35;
-  for (int i=0; i<n; i++)  v[i] = 0.1;
-  for (int i=0; i<n; i++)  w[i] = 0.5;
-
-  // 5. start timer
-  double stime = MPI_Wtime();
-
-  // 6. call solver over n intervals
-  for (int i=0; i<n; i++) {
-    int its;
-    double res;
-    chem_solver(T[i], &(u[i]), &(v[i]), &(w[i]), lam, eps, maxit, &its, &res);
-    if (res < eps)
-      std::cout << "    i = " << i << "  its = " << its << std::endl;
-    else {
-      std::cout << "    error: i=" << i << ", its=%i" << its << ", res=" << res
-		<< ", u=" << u[i] << ", v=" << v[i] << ", w=" << w[i] << std::endl;
+    // 2. input the number of intervals
+    int n;
+    std::cout << "Enter the number of intervals (0 quits):\n";
+    std::cin >> n;
+    if (n < 1) {
       return 1;
     }
-  }
 
-  // 7. stop timer
-  double ftime = MPI_Wtime();
-  double runtime = ftime - stime;
+    // 3. allocate temperature and solution arrays
+    double *T = new double[n];
+    double *u = new double[n];
+    double *v = new double[n];
+    double *w = new double[n];
 
-  // 8. output solution time
-  std::cout << "     runtime = " << runtime << std::endl;
+    // 4. set random temperature field, initial guesses at chemical densities
+    for (int i=0; i<n; i++)  T[i] = random() / (pow(2.0,31.0) - 1.0);
+    for (int i=0; i<n; i++)  u[i] = 0.35;
+    for (int i=0; i<n; i++)  v[i] = 0.1;
+    for (int i=0; i<n; i++)  w[i] = 0.5;
+  
+    // 5. start timer
+    double stime = MPI_Wtime();
 
-  // 9. free temperature and solution arrays
-  delete[] T;
-  delete[] u;
-  delete[] v;
-  delete[] w;
+
+    // a counter to know how much work it has yet to send out
+    numsent = 0;
+
+    // first send initial tasks to each of the worker node
+    iend = (n < numprocs-1) ? n : numprocs-1;
+    for (int i=0; i<iend; i++) {
+      // fill send buffer
+      Pbuf[0] = T[i];
+      Pbuf[1] = u[i];
+      Pbuf[2] = v[i];
+      Pbuf[3] = w[i];
+      // send with tag as entry in temperature array
+      ierr = MPI_Send(Pbuf, 4, MPI_DOUBLE, i+1, numsent, MPI_COMM_WORLD);
+      if (ierr != 0) {
+      printf("Error in MPI_Send = %i\n",ierr);
+      ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+      return 1;
+      }
+      numsent++;
+    } // for i    
+
+    // obtain the workers’ solutions
+    for (int i=0; i<n; i++) {
+
+      // receive answers from any process
+      ierr = MPI_Recv(Sbuf, 3, MPI_DOUBLE, MPI_ANY_SOURCE, MPI_ANY_TAG, 
+        MPI_COMM_WORLD, &status);
+      if (ierr != 0) {
+        printf("Error in MPI_Recv = %i\n",ierr);
+        ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+        return 1;
+      }
+
+      // decode the sender and solution entry from status
+      sender   = status.MPI_SOURCE;
+      ansentry = status.MPI_TAG;
+
+      // store results
+      u[ansentry] = Sbuf[0];
+      v[ansentry] = Sbuf[1];
+      w[ansentry] = Sbuf[2];
+      if (numsent < n) {  // send another row
+        Pbuf[0] = T[numsent];
+        Pbuf[1] = u[numsent];
+        Pbuf[2] = v[numsent];
+        Pbuf[3] = w[numsent];
+        ierr = MPI_Send(Pbuf, 4, MPI_DOUBLE, sender, numsent, MPI_COMM_WORLD);
+        if (ierr != 0) {
+          printf("Error in MPI_Send = %i\n",ierr);
+          ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+          return 1;
+        }
+        numsent++;
+      } else {  // tell senders that work is complete, by sending message of zero size
+        ierr = MPI_Send(Pbuf, 0, MPI_DOUBLE, sender, 0, MPI_COMM_WORLD);
+        if (ierr != 0) {
+          printf("Error in MPI_Send = %i\n",ierr);
+          ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+          return 1;
+        }
+      } // if numsent
+           
+    } // for i
+
+
+
+    // 7. stop timer
+    double ftime = MPI_Wtime();
+    double runtime = ftime - stime;
+  
+    // 8. output solution time
+    std::cout << "     runtime = " << runtime << std::endl;
+  
+    // 9. free temperature and solution arrays
+    delete[] T;
+    delete[] u;
+    delete[] v;
+    delete[] w;
+
+
+
+
+  // worker code
+  } else {
+
+    // set up workers' own local variables
+    double T, u, v, w;
+
+    // 6. call solver in a while loop
+    more_work = true
+    while (more_work) {
+
+      // receive from the manager
+      ierr = MPI_Recv(Pbuf, 4, MPI_DOUBLE, 0, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+      tag = status.MPI_TAG;
+      if (tag == 0) {
+        more_work = false;
+      } else {
+        T = Pbuf[0];
+        u = Pbuf[1];
+        v = Pbuf[2];
+        w = Pbuf[3];
+        chem_solver(T, &u, &v, &w, lam, eps, maxit, &its, &res); 
+        if (res < eps) {
+          std::cout << "    i = " << i << "  its = " << its << std::endl;
+        }
+        else {
+          std::cout << "    error: i=" << i << ", its=%i" << its << ", res=" << res 
+          << ", u=" << u[i] << ", v=" << v[i] << ", w=" << w[i] << std::endl;
+          ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+        }
+      }
+    }
+
+    // pack the solution buffer and send it back to the manager
+    Sbuf[0] = u;
+    Sbuf[1] = v;
+    Sbuf[2] = w;
+    ierr = MPI_Send(Sbuf, 3, MPI_DOUBLE, 0, tag, MPI_COMM_WORLD);
+
+
+}
+
 
   // finalize MPI
   ierr = MPI_Finalize();
