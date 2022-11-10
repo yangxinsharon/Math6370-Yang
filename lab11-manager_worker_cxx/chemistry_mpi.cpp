@@ -21,12 +21,13 @@ int main(int argc, char* argv[]) {
 
 
   // declarations
-  int ierr, numprocs, myid, iend, sender, ansentry;
+  int maxit, n, its;
+  int ierr, numprocs, myid, numsent, iend, sender, ansentry;
   double *Pbuf, *Sbuf;
+  double lam, eps, res, stime, ftime, runtime;
   bool more_work;
-  int tag, numsent, n, its;
-  double res, stime, ftime, runtime;
   MPI_Status status;
+  int tag, numsent;
 
 
   // initialize MPI
@@ -49,9 +50,11 @@ int main(int argc, char* argv[]) {
   }
 
   // 1. set solver input parameters
-  const int maxit = 1000000;
-  const double lam = 1.e-2;
-  const double eps = 1.e-10;
+  maxit = 1000000;
+  lam = 1.e-2;
+  eps = 1.e-10;
+  Pbuf = new double [4];
+  Sbuf = new double [3];
 
 
   // manager code
