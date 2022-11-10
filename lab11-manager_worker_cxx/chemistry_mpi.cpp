@@ -21,14 +21,14 @@ int main(int argc, char* argv[]) {
 
 
   // declarations
-  int ierr, numprocs, myid;
+  int ierr, numprocs, myid, iend, sender, ansentry;
   double *Pbuf, *Sbuf;
   bool more_work;
   int tag, numsent;
   MPI_Status status;
   int its;
   double res;
-  int iend, sender, ansentry;
+
 
   // initialize MPI
   ierr = MPI_Init(&argc, &argv);
@@ -96,12 +96,12 @@ int main(int argc, char* argv[]) {
       // send with tag as entry in temperature array
       ierr = MPI_Send(Pbuf, 4, MPI_DOUBLE, i+1, numsent, MPI_COMM_WORLD);
       if (ierr != 0) {
-      printf("Error in MPI_Send = %i\n",ierr);
-      ierr = MPI_Abort(MPI_COMM_WORLD, 1);
-      return 1;
+        printf("Error in MPI_Send = %i\n",ierr);
+        ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+        return 1;
       }
       numsent++;
-    } // for i    
+    } 
 
     // obtain the workers’ solutions
     for (int i=0; i<n; i++) {
@@ -109,6 +109,7 @@ int main(int argc, char* argv[]) {
       // receive answers from any process
       ierr = MPI_Recv(Sbuf, 3, MPI_DOUBLE, MPI_ANY_SOURCE, MPI_ANY_TAG, 
         MPI_COMM_WORLD, &status);
+
       if (ierr != 0) {
         printf("Error in MPI_Recv = %i\n",ierr);
         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
@@ -135,7 +136,9 @@ int main(int argc, char* argv[]) {
           return 1;
         }
         numsent++;
-      } else {  // tell senders that work is complete, by sending message of zero size
+
+      // tell senders that work is complete, by sending message of zero size
+      } else {
         ierr = MPI_Send(Pbuf, 0, MPI_DOUBLE, sender, 0, MPI_COMM_WORLD);
         if (ierr != 0) {
           printf("Error in MPI_Send = %i\n",ierr);
@@ -144,7 +147,7 @@ int main(int argc, char* argv[]) {
         }
       } // if numsent
            
-    } // for i
+    }
 
 
 
@@ -176,10 +179,16 @@ int main(int argc, char* argv[]) {
 
       // receive from the manager
       ierr = MPI_Recv(Pbuf, 4, MPI_DOUBLE, 0, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+      if (ierr != MPI_SUCCESS) {
+        std::cerr << "Error in calling MPI_Recv in worker\n";
+        ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+      }
+
       tag = status.MPI_TAG;
       if (tag == 0) {
         more_work = false;
       } else {
+        // values received from the manager
         T = Pbuf[0];
         u = Pbuf[1];
         v = Pbuf[2];
@@ -194,16 +203,18 @@ int main(int argc, char* argv[]) {
           ierr = MPI_Abort(MPI_COMM_WORLD, 1);
         }
       }
+
+      // pack the solution buffer and send it back to the manager
+      Sbuf[0] = u;
+      Sbuf[1] = v;
+      Sbuf[2] = w;
+      ierr = MPI_Send(Sbuf, 3, MPI_DOUBLE, 0, tag, MPI_COMM_WORLD);
+      if (ierr != MPI_SUCCESS) {
+        std::cerr << "Error in calling MPI_Send in worker\n";
+        ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+      }
     }
-
-    // pack the solution buffer and send it back to the manager
-    Sbuf[0] = u;
-    Sbuf[1] = v;
-    Sbuf[2] = w;
-    ierr = MPI_Send(Sbuf, 3, MPI_DOUBLE, 0, tag, MPI_COMM_WORLD);
-
-
-}
+  }
 
 
   // finalize MPI
