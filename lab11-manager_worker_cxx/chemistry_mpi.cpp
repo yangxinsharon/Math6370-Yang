@@ -95,7 +95,7 @@ int main(int argc, char* argv[]) {
       Pbuf[3] = w[i];
       // send with tag as entry in temperature array
       ierr = MPI_Send(Pbuf, 4, MPI_DOUBLE, i+1, numsent, MPI_COMM_WORLD);
-      if (ierr != 0) {
+      if (ierr != MPI_SUCCESS) {
         printf("Error in MPI_Send = %i\n",ierr);
         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
         return 1;
@@ -107,30 +107,28 @@ int main(int argc, char* argv[]) {
     for (int i=0; i<n; i++) {
 
       // receive answers from any process
-      ierr = MPI_Recv(Sbuf, 3, MPI_DOUBLE, MPI_ANY_SOURCE, MPI_ANY_TAG, 
-        MPI_COMM_WORLD, &status);
-
-      if (ierr != 0) {
+      ierr = MPI_Recv(Sbuf, 3, MPI_DOUBLE, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+      if (ierr != MPI_SUCCESS) {
         printf("Error in MPI_Recv = %i\n",ierr);
         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
         return 1;
       }
 
       // decode the sender and solution entry from status
-      sender   = status.MPI_SOURCE;
-      ansentry = status.MPI_TAG;
+      sender = status.MPI_SOURCE;
+      tag = status.MPI_TAG;
 
       // store results
-      u[ansentry] = Sbuf[0];
-      v[ansentry] = Sbuf[1];
-      w[ansentry] = Sbuf[2];
+      u[tag] = Sbuf[0];
+      v[tag] = Sbuf[1];
+      w[tag] = Sbuf[2];
       if (numsent < n) {  // send another row
         Pbuf[0] = T[numsent];
         Pbuf[1] = u[numsent];
         Pbuf[2] = v[numsent];
         Pbuf[3] = w[numsent];
         ierr = MPI_Send(Pbuf, 4, MPI_DOUBLE, sender, numsent, MPI_COMM_WORLD);
-        if (ierr != 0) {
+        if (ierr != MPI_SUCCESS) {
           printf("Error in MPI_Send = %i\n",ierr);
           ierr = MPI_Abort(MPI_COMM_WORLD, 1);
           return 1;
