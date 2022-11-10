@@ -23,6 +23,7 @@ int main(int argc, char* argv[]) {
   double *Pbuf, *Sbuf;
   bool more_work;
   int tag, numsent;
+  int numprocs, myid, sender, ansentry;
   MPI_Status status;
 
   // 1. set solver input parameters
@@ -97,7 +98,7 @@ int main(int argc, char* argv[]) {
     if (numsent >= n-1) {
 
       // receive work from each proc
-      for (i=1; i<numprocs; i++) {
+      for (int i=1; i<numprocs; i++) {
 
         // receive answers from any processor 
         ierr = MPI_Recv(Sbuf, 3, MPI_DOUBLE, MPI_ANY_SOURCE, 
@@ -148,7 +149,7 @@ int main(int argc, char* argv[]) {
               sender   = status.MPI_SOURCE;
               ansentry = status.MPI_TAG;
               // store results 
-              if (ansentry+chunk-1 <= n) {
+              if (ansentry+1-1 <= n) {
                 for (int i=0; i<chunk; i++)  u[ansentry+i] = Sbuf[0];
                 for (int i=0; i<chunk; i++)  v[ansentry+i] = Sbuf[1];
                 for (int i=0; i<chunk; i++)  w[ansentry+i] = Sbuf[2];
@@ -162,7 +163,7 @@ int main(int argc, char* argv[]) {
                   for (i=0; i<1; i++) Sbuf[i] = T[numsent+i];
                 else {
                   for (i=0; i<n-numsent; i++) Sbuf[i] = T[numsent+i];
-                  for (i=n=numsent; i<chunk; i++) Sbuf[i] = 1.0;
+                  for (i=n=numsent; i<1; i++) Sbuf[i] = 1.0;
                 }
                 ierr = MPI_Send(Sbuf, 1, MPI_DOUBLE, sender, numsent, 
                     MPI_COMM_WORLD);
