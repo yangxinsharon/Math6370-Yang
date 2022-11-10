@@ -28,6 +28,7 @@ int main(int argc, char* argv[]) {
   MPI_Status status;
   int its;
   double res;
+  int iend, sender, ansentry;
 
   // initialize MPI
   ierr = MPI_Init(&argc, &argv);
@@ -170,7 +171,7 @@ int main(int argc, char* argv[]) {
     double T, u, v, w;
 
     // 6. call solver in a while loop
-    more_work = true
+    more_work = true;
     while (more_work) {
 
       // receive from the manager
