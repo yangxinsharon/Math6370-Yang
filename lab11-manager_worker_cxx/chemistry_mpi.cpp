@@ -184,11 +184,9 @@ int main(int argc, char* argv[]) {
       }
 
       tag = status.MPI_TAG;
-      std::cerr << "tag is %i\n"<<tag<<std::endl; // yang
 
       if (tag == 0) {
         more_work = false;
-        return 1; //yang
       } else {
         // values received from the manager
         T = Pbuf[0];
