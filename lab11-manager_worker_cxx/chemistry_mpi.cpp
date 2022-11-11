@@ -58,6 +58,8 @@ int main(int argc, char* argv[]) {
   // manager code
   if (myid == 0) { 
 
+    std::cout << "Starting MPI with %i processes\n\n",numprocs;
+
     // 2. input the number of intervals
     std::cout << "Enter the number of intervals (0 quits):\n";
     std::cin >> n;
@@ -84,14 +86,15 @@ int main(int argc, char* argv[]) {
     numsent = 0;
 
     // first send initial tasks to each of the worker node
-    for (int i=0; i<n; i++) {
+    iend = (n < numprocs-1) ? n : numprocs-1;
+    for (int i=0; i<iend; i++) {
       // fill send buffer
       Pbuf[0] = T[i];
       Pbuf[1] = u[i];
       Pbuf[2] = v[i];
       Pbuf[3] = w[i];
       // send with tag as entry in temperature array
-      ierr = MPI_Send(Pbuf, 4, MPI_DOUBLE, i+1, numsent, MPI_COMM_WORLD);
+      ierr = MPI_Send(Pbuf, 4, MPI_DOUBLE, i+1, i, MPI_COMM_WORLD);
       if (ierr != MPI_SUCCESS) {
         printf("Error in MPI_Send = %i\n",ierr);
         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
@@ -115,13 +118,13 @@ int main(int argc, char* argv[]) {
 
       // decode the sender and solution entry from status
       sender = status.MPI_SOURCE;
-      tag = status.MPI_TAG;
+      tag = status.MPI_TAG-1;
 
       // store results
       u[tag] = Sbuf[0];
       v[tag] = Sbuf[1];
       w[tag] = Sbuf[2];
-      if (numsent < n) {  // send another row
+      if (numsent < n+1) {  // send again
         Pbuf[0] = T[numsent];
         Pbuf[1] = u[numsent];
         Pbuf[2] = v[numsent];
@@ -181,14 +184,14 @@ int main(int argc, char* argv[]) {
       }
 
       tag = status.MPI_TAG;
-      std::cerr << "tag is %i\n"<<tag<<std::endl;
+      std::cerr << "tag is %i\n"<<tag<<std::endl; // yang
       // // check if work is complete
       // ierr = MPI_Get_count(&status, MPI_DOUBLE, &numreceived);
       // if (numreceived == 0) {
 
       if (tag == 0) {
         more_work = false;
-        return 1;
+        return 1; //yang
       } else {
         // values received from the manager
         T = Pbuf[0];
