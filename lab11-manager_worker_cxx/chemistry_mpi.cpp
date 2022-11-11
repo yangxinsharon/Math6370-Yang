@@ -83,7 +83,7 @@ int main(int argc, char* argv[]) {
     stime = MPI_Wtime();
 
     // a counter to know how much work it has yet to send out
-    numsent = 0;
+    numsent = 1;
 
     // first send initial tasks to each of the worker node
     iend = (n < numprocs-1) ? n : numprocs-1;
@@ -94,7 +94,7 @@ int main(int argc, char* argv[]) {
       Pbuf[2] = v[i];
       Pbuf[3] = w[i];
       // send with tag as entry in temperature array
-      ierr = MPI_Send(Pbuf, 4, MPI_DOUBLE, i+1, i, MPI_COMM_WORLD);
+      ierr = MPI_Send(Pbuf, 4, MPI_DOUBLE, i+1, numsent, MPI_COMM_WORLD);
       if (ierr != MPI_SUCCESS) {
         printf("Error in MPI_Send = %i\n",ierr);
         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
@@ -125,10 +125,10 @@ int main(int argc, char* argv[]) {
       v[tag] = Sbuf[1];
       w[tag] = Sbuf[2];
       if (numsent < n+1) {  // send again
-        Pbuf[0] = T[numsent];
-        Pbuf[1] = u[numsent];
-        Pbuf[2] = v[numsent];
-        Pbuf[3] = w[numsent];
+        Pbuf[0] = T[numsent-1];
+        Pbuf[1] = u[numsent-1];
+        Pbuf[2] = v[numsent-1];
+        Pbuf[3] = w[numsent-1];
         ierr = MPI_Send(Pbuf, 4, MPI_DOUBLE, sender, numsent, MPI_COMM_WORLD);
         if (ierr != MPI_SUCCESS) {
           printf("Error in MPI_Send = %i\n",ierr);
@@ -185,9 +185,6 @@ int main(int argc, char* argv[]) {
 
       tag = status.MPI_TAG;
       std::cerr << "tag is %i\n"<<tag<<std::endl; // yang
-      // // check if work is complete
-      // ierr = MPI_Get_count(&status, MPI_DOUBLE, &numreceived);
-      // if (numreceived == 0) {
 
       if (tag == 0) {
         more_work = false;
