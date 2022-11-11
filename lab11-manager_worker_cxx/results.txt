@@ -1,0 +1,12 @@
+The runtime for 200 intervals using 2 processes is 0.408123.
+
+N processes     runtime         parallel speedup
+2               0.408123        1
+3               0.243185        1.678240845
+4               0.164374        2.482892672
+5               0.116569        3.501128087
+6               0.094612        4.313649431
+7               0.0723583       5.640306641
+8               0.0741834       5.501540776
+
+It will be stuck using 1 processor because there is only the manager without workers.
