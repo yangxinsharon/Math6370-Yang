@@ -223,7 +223,8 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
             G1 = cos_theta*tp1;
             bvct[i] = bvct[i]+atmchr[j]*G0;
             bvct[nface+i] = bvct[nface+i]+atmchr[j]*G1;
-        }	
+        }
+   }	
     // #pragma omp parallel
     // {
     // 	// printf("The parallel region for comp_source is executed by thread %i\n", omp_get_thread_num());
