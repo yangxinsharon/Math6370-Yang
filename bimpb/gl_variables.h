@@ -38,11 +38,11 @@ int **extr_f; //[2][nface]
 int **face,**face_copy;//[3][nface]
 
 
-double **vert, **snrm; //[3][nspt];
+double **vert, **snrm; //[3][nspt]
 double *tr_xyz, *tr_q; //[3][nface]
-double *tr_area,*bvct,*xvct; //[nface];
-double **atmpos; //[3][natm/nchr];
-double *atmrad, *atmchr, *chrpos; //[natm/nchr]; 
+double *tr_area,*bvct,*xvct; //[nface]
+double **atmpos; //[3][natm/nchr]
+double *atmrad, *atmchr, *chrpos; //[natm/nchr] 
 
 double *work, *h;
 //extern int readin(void);
