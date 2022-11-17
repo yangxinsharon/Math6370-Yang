@@ -22,13 +22,7 @@ void comp_pot(const double* xvct, double *atmchr, double *chrpos, double *ptl,
 void comp_source( double* bvct, double *atmchr, double *chrpos, 
 	double *tr_xyz, double *tr_q, int nface, int nchr);
 
-// ierr = MPI_Init(&argc, &argv);
-ierr = MPI_Init(NULL,NULL);
-// printf("ARGC = %d %s %s %s \n",argc, argv[0], argv[1], argv[2]);
-if (ierr != MPI_SUCCESS) {
-  printf("Error in MPI_Init = %i\n",ierr);
-  MPI_Abort(MPI_COMM_WORLD, 1);
-}
+
 
 void matvecmul(const double *x, double *y, double *q, int nface, 
 	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta) {
@@ -39,7 +33,13 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	int is, ie;
 	int ierr, numprocs, myid;
 
-
+	// ierr = MPI_Init(&argc, &argv);
+	ierr = MPI_Init(NULL,NULL);
+	// printf("ARGC = %d %s %s %s \n",argc, argv[0], argv[1], argv[2]);
+	if (ierr != MPI_SUCCESS) {
+	  printf("Error in MPI_Init = %i\n",ierr);
+	  MPI_Abort(MPI_COMM_WORLD, 1);
+	}
   	
 	ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
 	printf(" NUMPROCS = %i\n",numprocs);

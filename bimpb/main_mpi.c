@@ -97,8 +97,8 @@ int main(int argc, char *argv[]) {
 	comp_soleng_wrapper(soleng); //wraps the solvation energy computation
 	timer_end();
 
-	// /* finalize MPI */
-	// ierr = MPI_Finalize();
+	/* finalize MPI */
+	int ierr = MPI_Finalize();
 
 
 	/* free memory */
