@@ -55,16 +55,16 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 
 
 	// /* root sends pre1 and pre2 out to other processors */
-    // ierr = MPI_Bcast(&pre1, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-  	// if (ierr != 0) {
-  	// 	fprintf(stderr," error in MPI_Bcast = %i\n",ierr);
-  	// 	MPI_Abort(MPI_COMM_WORLD, 1);
-  	// }
-    // ierr = MPI_Bcast(&pre2, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-  	// if (ierr != 0) {
-  	// 	fprintf(stderr," error in MPI_Bcast = %i\n",ierr);
-  	// 	MPI_Abort(MPI_COMM_WORLD, 1);
-  	// }  	
+    ierr = MPI_Bcast(&pre1, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  	if (ierr != 0) {
+  		fprintf(stderr," error in MPI_Bcast = %i\n",ierr);
+  		MPI_Abort(MPI_COMM_WORLD, 1);
+  	}
+    ierr = MPI_Bcast(&pre2, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  	if (ierr != 0) {
+  		fprintf(stderr," error in MPI_Bcast = %i\n",ierr);
+  		MPI_Abort(MPI_COMM_WORLD, 1);
+  	}  	
 
 	/* determine this processor's interval */
   	is = ((int) (1.0*nface/numprocs))*myid;
@@ -123,8 +123,6 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 		y[nface+i] = y[nface+i]*beta + (pre2*x[nface+i]-peng[1])*alpha;
 	}
 	
-	/* finalize MPI */
-	ierr = MPI_Finalize();
 
 
 }
