@@ -144,7 +144,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 /* This subroutine wraps the matrix-vector multiplication */
 int *matvec(double *alpha, double *x, double *beta, double *y) {
 
-	// int ierr, numprocs;
+	int ierr, numprocs;
 	// ++counter;
 	// printf(" COUNTER = %i\n",counter);
 	// // int ierr = MPI_Init(&argc, &argv);
@@ -155,12 +155,12 @@ int *matvec(double *alpha, double *x, double *beta, double *y) {
 	//   MPI_Abort(MPI_COMM_WORLD, 1);
 	// }
 
-	// ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
-	// // printf(" NUMPROCS = %i\n",numprocs);
-	// if (ierr != 0) {
-	//   printf(" error in MPI_Comm_size = %i\n",ierr);
-	//   MPI_Abort(MPI_COMM_WORLD, 1);
-	// }
+	ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
+	// printf(" NUMPROCS = %i\n",numprocs);
+	if (ierr != 0) {
+	  printf(" error in MPI_Comm_size = %i\n",ierr);
+	  MPI_Abort(MPI_COMM_WORLD, 1);
+	}
 
     // matvecmul(x, y, tr_q, nface, tr_xyz, tr_q, tr_area, *alpha, *beta);
     matvecmul(x, y, tr_q, nface, tr_xyz, tr_q, tr_area, *alpha, *beta, numprocs);
