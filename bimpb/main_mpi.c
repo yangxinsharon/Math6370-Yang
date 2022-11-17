@@ -71,17 +71,18 @@ int main(int argc, char *argv[]) {
 	h=(double *) calloc (ldh*(RESTRT+2), sizeof(double));
 
 
-	// int ierr = MPI_Init(&argc, &argv);
-	// printf("ARGC = %d %s %s %s \n",argc, argv[0], argv[1], argv[2]);
-	// if (ierr != MPI_SUCCESS) {
-	//   printf("Error in MPI_Init = %i\n",ierr);
-	//   return 1;
-	// } // MPI will call gmres Nprocs times
+	int ierr = MPI_Init(&argc, &argv);
+	printf("ARGC = %d %s %s %s \n",argc, argv[0], argv[1], argv[2]);
+	if (ierr != MPI_SUCCESS) {
+	  printf("Error in MPI_Init = %i\n",ierr);
+	  return 1;
+	}
 
+	int ierr = MPI_Init(NULL,NULL);
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
 	
 	// /* finalize MPI */
-	int ierr = MPI_Finalize();
+	ierr = MPI_Finalize();
 
 	soleng=0.0;
 
