@@ -44,10 +44,10 @@ matvec_omp.o: matvec_omp.c
 	$(CC) $(CFLAGS) $(OMPFLAGS) matvec_omp.c
 # main_omp.o: main_omp.c
 # 	$(CC) $(CFLAGS) $(OMPFLAGS) main_omp.c
-# matvec_mpi.o: matvec_mpi.c
-# 	$(MPICC) $(CFLAGS) matvec_mpi.c
-# main_mpi.o: main_mpi.c
-# 	$(MPICC) $(CFLAGS) main_mpi.c
+matvec_mpi.o: matvec_mpi.c
+	$(MPICC) $(CFLAGS) matvec_mpi.c
+main_mpi.o: main_mpi.c
+	$(MPICC) $(CFLAGS) main_mpi.c
 d_sign.o: gmres/d_sign.c
 	$(CC) $(CFLAGS) gmres/d_sign.c
 daxpy.o: gmres/daxpy.c
