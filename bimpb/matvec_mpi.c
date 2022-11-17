@@ -153,7 +153,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 /* This subroutine wraps the matrix-vector multiplication */
 int *matvec(double *alpha, double *x, double *beta, double *y) {
 
-	int numprocs;
+	int ierr, numprocs;
 
 	// // int ierr = MPI_Init(&argc, &argv);
 	// int ierr = MPI_Init(NULL, NULL);
