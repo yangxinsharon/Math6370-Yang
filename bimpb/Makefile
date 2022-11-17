@@ -48,7 +48,7 @@ matvec_mpi.o: matvec_mpi.c
 	$(MPICC) $(CFLAGS) matvec_mpi.c
 main_mpi.o: main_mpi.c
 	$(MPICC) $(CFLAGS) main_mpi.c
-gmres_mpi.o: gmres_mpi.c
+gmres_mpi.o: gmres/gmres_mpi.c
 	$(MPICC) $(CFLAGS) gmres/gmres_mpi.c
 
 d_sign.o: gmres/d_sign.c
