@@ -5,7 +5,7 @@
 
 #include "f2c.h"
 #include <stdio.h>
-
+#include "mpi.h"
 /* Table of constant values */
 
 static integer c__1 = 1;
