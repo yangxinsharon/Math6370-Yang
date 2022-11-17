@@ -148,7 +148,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 // int *matvec(double *alpha, double *x, double *beta, double *y) {
 int *matvec(double *alpha, double *x, double *beta, double *y, int argc, char *argv[]) {
     // matvecmul(x, y, tr_q, nface, tr_xyz, tr_q, tr_area, *alpha, *beta);
-    matvecmul(x, y, tr_q, nface, tr_xyz, tr_q, tr_area, *alpha, *beta, argc, *argv[]);
+    matvecmul(x, y, tr_q, nface, tr_xyz, tr_q, tr_area, *alpha, *beta, argc, *argv);
     return NULL;
 }
 
