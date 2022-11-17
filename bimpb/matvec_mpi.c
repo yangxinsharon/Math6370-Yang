@@ -151,12 +151,16 @@ int *matvec(double *alpha, double *x, double *beta, double *y) {
 // int *matvec(double *alpha, double *x, double *beta, double *y, int argc, char *argv[]) {
     matvecmul(x, y, tr_q, nface, tr_xyz, tr_q, tr_area, *alpha, *beta);
 
+
     // matvecmul(x, y, tr_q, nface, tr_xyz, tr_q, tr_area, *alpha, *beta, argc, *argv);
+    
+    /* finalize MPI */
+	int ierrr = MPI_Finalize();
+
+
     return NULL;
 }
 
-/* finalize MPI */
-ierr = MPI_Finalize();
 
 /* This subroutine wraps the solvation energy computation */
 void comp_soleng_wrapper(double soleng) {
