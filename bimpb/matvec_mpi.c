@@ -30,11 +30,11 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	int is, ie;
 	int ierr, numprocs, myid;
 
-	int ierr = MPI_Init(&argc, &argv);
+	ierr = MPI_Init(&argc, &argv);
 	printf("ARGC = %d %s %s %s \n",argc, argv[0], argv[1], argv[2]);
 	if (ierr != MPI_SUCCESS) {
 	  printf("Error in MPI_Init = %i\n",ierr);
-	  return 1;
+	  MPI_Abort(MPI_COMM_WORLD, 1);
 	}
   	
 	ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
