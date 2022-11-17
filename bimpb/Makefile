@@ -18,7 +18,7 @@ CFLAGS = -c -O2
 OMPFLAGS = -fopenmp
 
 # makefile targets
-all: bimpb.exe bimpb_omp.exe #bimpb_mpi.exe #bimpb_cuda.exe 
+all: bimpb.exe bimpb_omp.exe bimpb_mpi.exe #bimpb_cuda.exe 
 
 bimpb.exe: main.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec.o pp_timer.o
 	$(CC) -lm -p -o $@ $^
