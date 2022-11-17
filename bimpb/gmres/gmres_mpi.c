@@ -130,6 +130,11 @@ int gmres_(n, b, x, restrt, work, ldw, h, ldh, iter, resid, matvec, psolve,
    doublereal *b, *x, *work, *h, *resid;
    int (*matvec) (), (*psolve) ();
 {
+    // yang {
+    int ierr, numprocs;
+    // int ierr = MPI_Init(&argc, &argv);
+    ierr = MPI_Init(NULL, NULL);
+    // } yang
 
     /* System generated locals */
     integer work_dim1, work_offset, h_dim1, h_offset, i__1;
