@@ -11,10 +11,9 @@
 #include "mpi.h"
 
 /* Prototypes */
-extern int argc;
-extern char *argv[];
+// extern int argc;
+// extern char *argv[];
 int *matvec(double *alpha, double *x, double *beta, double *y);
-// int *matvec(double *alpha, double *x, double *beta, double *y, int argc, char *argv[]);
 void comp_soleng_wrapper(double soleng);
 void comp_source_wrapper();
 void comp_pot(const double* xvct, double *atmchr, double *chrpos, double *ptl, 
@@ -26,11 +25,11 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
 // void matvecmul(const double *x, double *y, double *q, int nface, 
 // 	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta) {
 void matvecmul(const double *x, double *y, double *q, int nface, 
-	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta, int argc, char *argv[]) {
+	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta, int numprocs) {
 
 	/* declarations for mpi */
 	int is, ie;
-	int ierr, numprocs, myid;
+	int ierr, myid;
 
 
 	static int counter;
@@ -38,20 +37,20 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	printf(" COUNTER IS %i\n",counter);
 	++counter;
 
-	ierr = MPI_Init(&argc, &argv);
-	// ierr = MPI_Init(NULL,NULL);
-	// printf("ARGC = %d %s %s %s \n",argc, argv[0], argv[1], argv[2]);
-	if (ierr != MPI_SUCCESS) {
-	  printf("Error in MPI_Init = %i\n",ierr);
-	  MPI_Abort(MPI_COMM_WORLD, 1);
-	}
+	// ierr = MPI_Init(&argc, &argv);
+	// // ierr = MPI_Init(NULL,NULL);
+	// // printf("ARGC = %d %s %s %s \n",argc, argv[0], argv[1], argv[2]);
+	// if (ierr != MPI_SUCCESS) {
+	//   printf("Error in MPI_Init = %i\n",ierr);
+	//   MPI_Abort(MPI_COMM_WORLD, 1);
+	// }
   	
-	ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
-	printf(" NUMPROCS = %i\n",numprocs);
-	if (ierr != 0) {
-	  printf(" error in MPI_Comm_size = %i\n",ierr);
-	  MPI_Abort(MPI_COMM_WORLD, 1);
-	}
+	// ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
+	// printf(" NUMPROCS = %i\n",numprocs);
+	// if (ierr != 0) {
+	//   printf(" error in MPI_Comm_size = %i\n",ierr);
+	//   MPI_Abort(MPI_COMM_WORLD, 1);
+	// }
 
 	ierr = MPI_Comm_rank(MPI_COMM_WORLD, &myid);
 	printf(" MYID = %i\n",myid);
@@ -153,11 +152,24 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 
 /* This subroutine wraps the matrix-vector multiplication */
 int *matvec(double *alpha, double *x, double *beta, double *y) {
-// int *matvec(double *alpha, double *x, double *beta, double *y, int argc, char *argv[]) {
-    // matvecmul(x, y, tr_q, nface, tr_xyz, tr_q, tr_area, *alpha, *beta);
 
+	int numprocs;
 
-    matvecmul(x, y, tr_q, nface, tr_xyz, tr_q, tr_area, *alpha, *beta, argc, *argv);
+	int ierr = MPI_Init(&argc, &argv);
+	printf("ARGC = %d %s %s %s \n",argc, argv[0], argv[1], argv[2]);
+	if (ierr != MPI_SUCCESS) {
+	  printf("Error in MPI_Init = %i\n",ierr);
+	  MPI_Abort(MPI_COMM_WORLD, 1);
+	}
+
+	ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
+	printf(" NUMPROCS = %i\n",numprocs);
+	if (ierr != 0) {
+	  printf(" error in MPI_Comm_size = %i\n",ierr);
+	  MPI_Abort(MPI_COMM_WORLD, 1);
+	}
+
+    matvecmul(x, y, tr_q, nface, tr_xyz, tr_q, tr_area, *alpha, *beta, numprocs);
 
 
     return NULL;
