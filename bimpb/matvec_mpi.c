@@ -11,8 +11,8 @@
 #include "mpi.h"
 
 /* Prototypes */
-extern int argc;
-extern char *argv[];
+// extern int argc;
+// extern char *argv[];
 int *matvec(double *alpha, double *x, double *beta, double *y);
 // int *matvec(double *alpha, double *x, double *beta, double *y, int argc, char *argv[]);
 void comp_soleng_wrapper(double soleng);
@@ -33,13 +33,13 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	int is, ie;
 	int ierr, numprocs, myid;
 
-	// ierr = MPI_Init(&argc, &argv);
-	ierr = MPI_Init(NULL,NULL);
-	// printf("ARGC = %d %s %s %s \n",argc, argv[0], argv[1], argv[2]);
-	if (ierr != MPI_SUCCESS) {
-	  printf("Error in MPI_Init = %i\n",ierr);
-	  MPI_Abort(MPI_COMM_WORLD, 1);
-	}
+	// // ierr = MPI_Init(&argc, &argv);
+	// ierr = MPI_Init(NULL,NULL);
+	// // printf("ARGC = %d %s %s %s \n",argc, argv[0], argv[1], argv[2]);
+	// if (ierr != MPI_SUCCESS) {
+	//   printf("Error in MPI_Init = %i\n",ierr);
+	//   MPI_Abort(MPI_COMM_WORLD, 1);
+	// }
   	
 	ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
 	printf(" NUMPROCS = %i\n",numprocs);
