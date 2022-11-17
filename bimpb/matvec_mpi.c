@@ -29,7 +29,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	int argc;
 	char* argv[];
 
-	
+	/* declarations for matvecmul */
 	int i, j;
 	double area, rs, irs, sumrs;
 	double G0, kappa_rs, exp_kappa_rs, Gk;
@@ -59,8 +59,8 @@ void matvecmul(const double *x, double *y, double *q, int nface,
   	if (myid == numprocs-1)  ie = n;
 
 
-    // for (i=0; i<nface; i++) {
-    for (i=is; i<ie; i++) {
+    for (i=0; i<nface; i++) {
+    // for (i=is; i<ie; i++) {
     	double tp[3] = {tr_xyz[3*i], tr_xyz[3*i+1], tr_xyz[3*i+2]};
 		double tq[3] = {tr_q[3*i], tr_q[3*i+1], tr_q[3*i+2]};
 
@@ -95,10 +95,10 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 				dot_tqsq = sq[0]*tq[0] + sq[1]*tq[1] + sq[2]*tq[2];
 				G3 = (dot_tqsq-3.0*cos_theta0*cos_theta) * irs*tp1;
 				G4 = tp2*G3 - kappa2*cos_theta0*cos_theta*Gk;
-				L1 = G1-eps*G2;
-				L2 = G0-Gk;
-				L3 = G4-G3;
-				L4 = G10-G20/eps; //fdivide(G20,eps);
+				L1 = G1-eps*G2;								// K2
+				L2 = G0-Gk;									// K1
+				L3 = G4-G3;									// K4
+				L4 = G10-G20/eps; //fdivide(G20,eps);		// K3
 	
 				double peng_old[2] = {x[j], x[j+nface]};
 				area = tr_area[j];
