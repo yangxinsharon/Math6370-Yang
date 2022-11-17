@@ -65,10 +65,10 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 				dot_tqsq = sq[0]*tq[0] + sq[1]*tq[1] + sq[2]*tq[2];
 				G3 = (dot_tqsq-3.0*cos_theta0*cos_theta) * irs*tp1;
 				G4 = tp2*G3 - kappa2*cos_theta0*cos_theta*Gk;
-				L1 = G1-eps*G2;
-				L2 = G0-Gk;
-				L3 = G4-G3;
-				L4 = G10-G20/eps; //fdivide(G20,eps);
+				L1 = G1-eps*G2;							// K2
+				L2 = G0-Gk;								// K1
+				L3 = G4-G3;								// K4
+				L4 = G10-G20/eps; //fdivide(G20,eps);	// K3
 	
 				double peng_old[2] = {x[j], x[j+nface]};
 				area = tr_area[j];
