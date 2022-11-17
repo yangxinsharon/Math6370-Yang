@@ -155,13 +155,13 @@ int *matvec(double *alpha, double *x, double *beta, double *y) {
 
 	int numprocs;
 
-	// int ierr = MPI_Init(&argc, &argv);
-	int ierr = MPI_Init(NULL, NULL);
-	// printf("ARGC = %d %s %s %s \n",argc, argv[0], argv[1], argv[2]);
-	if (ierr != MPI_SUCCESS) {
-	  printf("Error in MPI_Init = %i\n",ierr);
-	  MPI_Abort(MPI_COMM_WORLD, 1);
-	}
+	// // int ierr = MPI_Init(&argc, &argv);
+	// int ierr = MPI_Init(NULL, NULL);
+	// // printf("ARGC = %d %s %s %s \n",argc, argv[0], argv[1], argv[2]);
+	// if (ierr != MPI_SUCCESS) {
+	//   printf("Error in MPI_Init = %i\n",ierr);
+	//   MPI_Abort(MPI_COMM_WORLD, 1);
+	// }
 
 	ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
 	printf(" NUMPROCS = %i\n",numprocs);
