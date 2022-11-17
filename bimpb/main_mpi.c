@@ -23,7 +23,7 @@ extern double *h_pot;
 extern double *dev_xp, *dev_yp, *dev_zp, *dev_q, *dev_pot;
 extern const double eps;
 
-int main(int argc, char *argv[]) {
+int main(static int argc, static char *argv[]) {
 	/*variables local to main*/
 	int i,j;
 	double s[3], pot=0.0, sum=0.0, pot_temp=0.0;	// potential
