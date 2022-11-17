@@ -78,7 +78,8 @@ int main(int argc, char *argv[]) {
 	  return 1;
 	}
 
-	int ierr = MPI_Init(NULL,NULL);
+	// int ierr = MPI_Init(NULL,NULL);
+	
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
 	
 	// /* finalize MPI */
