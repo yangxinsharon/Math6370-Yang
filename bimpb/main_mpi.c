@@ -80,12 +80,11 @@ int main(int argc, char *argv[]) {
 	  printf("Error in MPI_Init = %i\n",ierr);
 	  return 1;
 	}
-	
+
 
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
 	
-	/* finalize MPI */
-	ierr = MPI_Finalize();
+
 	
 
 	soleng=0.0;
@@ -93,7 +92,8 @@ int main(int argc, char *argv[]) {
 	comp_soleng_wrapper(soleng); //wraps the solvation energy computation
 	timer_end();
 
-
+	/* finalize MPI */
+	ierr = MPI_Finalize();
 
 
 	/* free memory */
