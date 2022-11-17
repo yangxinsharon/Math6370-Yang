@@ -50,21 +50,21 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	// double L1, L2, L3, L4;
 
 
-    double pre1=0.50*(1.0+eps); /* const eps=80.0 */
-    double pre2=0.50*(1.0+1.0/eps);
+    // double pre1=0.50*(1.0+eps); /* const eps=80.0 */
+    // double pre2=0.50*(1.0+1.0/eps);
 
 
 	// /* root sends pre1 and pre2 out to other processors */
-    ierr = MPI_Bcast(&pre1, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-  	if (ierr != 0) {
-  		fprintf(stderr," error in MPI_Bcast = %i\n",ierr);
-  		MPI_Abort(MPI_COMM_WORLD, 1);
-  	}
-    ierr = MPI_Bcast(&pre2, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-  	if (ierr != 0) {
-  		fprintf(stderr," error in MPI_Bcast = %i\n",ierr);
-  		MPI_Abort(MPI_COMM_WORLD, 1);
-  	}  	
+    // ierr = MPI_Bcast(&pre1, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  	// if (ierr != 0) {
+  	// 	fprintf(stderr," error in MPI_Bcast = %i\n",ierr);
+  	// 	MPI_Abort(MPI_COMM_WORLD, 1);
+  	// }
+    // ierr = MPI_Bcast(&pre2, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  	// if (ierr != 0) {
+  	// 	fprintf(stderr," error in MPI_Bcast = %i\n",ierr);
+  	// 	MPI_Abort(MPI_COMM_WORLD, 1);
+  	// }  	
 
 	/* determine this processor's interval */
   	is = ((int) (1.0*nface/numprocs))*myid;
@@ -73,6 +73,10 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 
     // for (i=0; i<nface; i++) {
     for (i=is; i<ie; i++) {
+    	/* repeat calculation for mpi */
+    	double pre1=0.50*(1.0+eps); /* const eps=80.0 */
+    	double pre2=0.50*(1.0+1.0/eps);
+
     	double tp[3] = {tr_xyz[3*i], tr_xyz[3*i+1], tr_xyz[3*i+2]};
 		double tq[3] = {tr_q[3*i], tr_q[3*i+1], tr_q[3*i+2]};
 
