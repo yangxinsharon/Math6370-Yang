@@ -11,8 +11,8 @@
 #include "mpi.h"
 
 /* Prototypes */
-// int *matvec(double *alpha, double *x, double *beta, double *y);
-int *matvec(double *alpha, double *x, double *beta, double *y, int argc, char *argv[]);
+int *matvec(double *alpha, double *x, double *beta, double *y);
+// int *matvec(double *alpha, double *x, double *beta, double *y, int argc, char *argv[]);
 void comp_soleng_wrapper(double soleng);
 void comp_source_wrapper();
 void comp_pot(const double* xvct, double *atmchr, double *chrpos, double *ptl, 
@@ -20,11 +20,13 @@ void comp_pot(const double* xvct, double *atmchr, double *chrpos, double *ptl,
 void comp_source( double* bvct, double *atmchr, double *chrpos, 
 	double *tr_xyz, double *tr_q, int nface, int nchr);
 
+extern int argc;
+extern char *argv[];
 
-// void matvecmul(const double *x, double *y, double *q, int nface, 
-// 	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta) {
 void matvecmul(const double *x, double *y, double *q, int nface, 
-	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta, int argc, char *argv[]) {
+	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta) {
+// void matvecmul(const double *x, double *y, double *q, int nface, 
+// 	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta, int argc, char *argv[]) {
 
 	/* declarations for mpi */
 	int is, ie;
@@ -145,10 +147,11 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 
 
 /* This subroutine wraps the matrix-vector multiplication */
-// int *matvec(double *alpha, double *x, double *beta, double *y) {
-int *matvec(double *alpha, double *x, double *beta, double *y, int argc, char *argv[]) {
-    // matvecmul(x, y, tr_q, nface, tr_xyz, tr_q, tr_area, *alpha, *beta);
-    matvecmul(x, y, tr_q, nface, tr_xyz, tr_q, tr_area, *alpha, *beta, argc, *argv);
+int *matvec(double *alpha, double *x, double *beta, double *y) {
+// int *matvec(double *alpha, double *x, double *beta, double *y, int argc, char *argv[]) {
+    matvecmul(x, y, tr_q, nface, tr_xyz, tr_q, tr_area, *alpha, *beta);
+
+    // matvecmul(x, y, tr_q, nface, tr_xyz, tr_q, tr_area, *alpha, *beta, argc, *argv);
     return NULL;
 }
 
