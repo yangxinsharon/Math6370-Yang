@@ -24,43 +24,52 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta) {
 	
 	/* declarations for mpi */
-	int n, is, ie;
+	int is, ie;
 	int ierr, numprocs, myid;
-	int argc;
-	char* argv[];
+  	
+  	ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
+  	if (ierr != MPI_SUCCESS) {
+  	  std::cerr << " error in MPI_Comm_size = " << ierr << "\n";
+  	  MPI_Abort(MPI_COMM_WORLD, 1);
+  	}
+  	ierr = MPI_Comm_rank(MPI_COMM_WORLD, &myid);
+  	if (ierr != MPI_SUCCESS) {
+  	  std::cerr << " error in MPI_Comm_rank = " << ierr << "\n";
+  	  MPI_Abort(MPI_COMM_WORLD, 1);
+  	}
 
 	/* declarations for matvecmul */
 	int i, j;
-	double area, rs, irs, sumrs;
-	double G0, kappa_rs, exp_kappa_rs, Gk;
-	double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
-	double G10, G20, G1, G2, G3, G4;
-	double L1, L2, L3, L4;
+	// double area, rs, irs, sumrs;
+	// double G0, kappa_rs, exp_kappa_rs, Gk;
+	// double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
+	// double G10, G20, G1, G2, G3, G4;
+	// double L1, L2, L3, L4;
 
 
     double pre1=0.50*(1.0+eps); /* const eps=80.0 */
     double pre2=0.50*(1.0+1.0/eps);
 
-	/* root sends pre1 and pre2 out to other processors */
-    ierr = MPI_Bcast(&pre1, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-  	if (ierr != 0) {
-  		fprintf(stderr," error in MPI_Bcast = %i\n",ierr);
-  		MPI_Abort(MPI_COMM_WORLD, 1);
-  	}
-    ierr = MPI_Bcast(&pre2, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-  	if (ierr != 0) {
-  		fprintf(stderr," error in MPI_Bcast = %i\n",ierr);
-  		MPI_Abort(MPI_COMM_WORLD, 1);
-  	}  	
+
+	// /* root sends pre1 and pre2 out to other processors */
+    // ierr = MPI_Bcast(&pre1, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  	// if (ierr != 0) {
+  	// 	fprintf(stderr," error in MPI_Bcast = %i\n",ierr);
+  	// 	MPI_Abort(MPI_COMM_WORLD, 1);
+  	// }
+    // ierr = MPI_Bcast(&pre2, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+  	// if (ierr != 0) {
+  	// 	fprintf(stderr," error in MPI_Bcast = %i\n",ierr);
+  	// 	MPI_Abort(MPI_COMM_WORLD, 1);
+  	// }  	
 
 	/* determine this processor's interval */
-  	is = ((int) (1.0*n/numprocs))*myid;
-  	ie = ((int) (1.0*n/numprocs))*(myid+1);
-  	if (myid == numprocs-1)  ie = n;
+  	is = ((int) (1.0*nface/numprocs))*myid;
+  	ie = ((int) (1.0*nface/numprocs))*(myid+1);
+  	if (myid == numprocs-1)  ie = nface;
 
-
-    for (i=0; i<nface; i++) {
-    // for (i=is; i<ie; i++) {
+    // for (i=0; i<nface; i++) {
+    for (i=is; i<ie; i++) {
     	double tp[3] = {tr_xyz[3*i], tr_xyz[3*i+1], tr_xyz[3*i+2]};
 		double tq[3] = {tr_q[3*i], tr_q[3*i+1], tr_q[3*i+2]};
 
@@ -71,37 +80,37 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 				double sp[3] = {tr_xyz[3*j], tr_xyz[3*j+1], tr_xyz[3*j+2]};
 				double sq[3] = {tr_q[3*j], tr_q[3*j+1], tr_q[3*j+2]};
 				double r_s[3] = {sp[0]-tp[0], sp[1]-tp[1], sp[2]-tp[2]};
-				sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
-				rs = sqrt(sumrs);
-				irs = 1.0/sqrt(sumrs) ; //rsqrt(sumrs);
-				G0 = one_over_4pi;
+				double sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
+				double rs = sqrt(sumrs);
+				double irs = 1.0/sqrt(sumrs) ; //rsqrt(sumrs);
+				double G0 = one_over_4pi;
 				G0 = G0*irs;
-				kappa_rs = kappa*rs;
-				exp_kappa_rs = exp(-kappa_rs);
-				Gk = exp_kappa_rs*G0;
+				double kappa_rs = kappa*rs;
+				double exp_kappa_rs = exp(-kappa_rs);
+				double Gk = exp_kappa_rs*G0;
 	
-				cos_theta = (sq[0]*r_s[0] + sq[1]*r_s[1] + sq[2]*r_s[2]) * irs;
-				cos_theta0 = (tq[0]*r_s[0] + tq[1]*r_s[1] + tq[2]*r_s[2]) * irs;
+				double cos_theta = (sq[0]*r_s[0] + sq[1]*r_s[1] + sq[2]*r_s[2]) * irs;
+				double cos_theta0 = (tq[0]*r_s[0] + tq[1]*r_s[1] + tq[2]*r_s[2]) * irs;
 	
-				tp1 = G0*irs;
-				tp2 = (1.0+kappa_rs) * exp_kappa_rs;
+				double tp1 = G0*irs;
+				double tp2 = (1.0+kappa_rs) * exp_kappa_rs;
 	
-				G10 = cos_theta0*tp1;
-				G20 = tp2*G10;
+				double G10 = cos_theta0*tp1;
+				double G20 = tp2*G10;
 	
-				G1 = cos_theta*tp1;
-				G2 = tp2*G1;
+				double G1 = cos_theta*tp1;
+				double G2 = tp2*G1;
 	
-				dot_tqsq = sq[0]*tq[0] + sq[1]*tq[1] + sq[2]*tq[2];
-				G3 = (dot_tqsq-3.0*cos_theta0*cos_theta) * irs*tp1;
-				G4 = tp2*G3 - kappa2*cos_theta0*cos_theta*Gk;
-				L1 = G1-eps*G2;								// K2
-				L2 = G0-Gk;									// K1
-				L3 = G4-G3;									// K4
-				L4 = G10-G20/eps; //fdivide(G20,eps);		// K3
+				double dot_tqsq = sq[0]*tq[0] + sq[1]*tq[1] + sq[2]*tq[2];
+				double G3 = (dot_tqsq-3.0*cos_theta0*cos_theta) * irs*tp1;
+				double G4 = tp2*G3 - kappa2*cos_theta0*cos_theta*Gk;
+				double L1 = G1-eps*G2;								// K2
+				double L2 = G0-Gk;									// K1
+				double L3 = G4-G3;									// K4
+				double L4 = G10-G20/eps; //fdivide(G20,eps);		// K3
 	
 				double peng_old[2] = {x[j], x[j+nface]};
-				area = tr_area[j];
+				double area = tr_area[j];
 				peng[0] = peng[0] + (L1*peng_old[0] + L2*peng_old[1]) * area;
 				peng[1] = peng[1] + (L3*peng_old[0] + L4*peng_old[1]) * area;
         	}
@@ -110,6 +119,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 		y[i] = y[i]*beta + (pre1*x[i]-peng[0])*alpha;
 		y[nface+i] = y[nface+i]*beta + (pre2*x[nface+i]-peng[1])*alpha;
 	}
+
 
 
 }
