@@ -38,7 +38,6 @@ int main(int argc, char *argv[]) {
 	extern void comp_source_wrapper();				// yang
 	extern void comp_soleng_wrapper(double soleng);	// yang
 	extern int *matvec(double *alpha, double *x, double *beta, double *y); // yang
-	// extern int *matvec(double *alpha, double *x, double *beta, double *y, int argc, char *argv[]); // yang
 	extern int *psolve(double *z, double *r); // yang
 	extern int gmres_(long int *n, double *b, double *x, long int *restrt, double *work, long int *ldw, double *h, 
 		long int *ldh, long int *iter, double *resid, int *matvec (), int *psolve (), long int *info);
@@ -77,7 +76,7 @@ int main(int argc, char *argv[]) {
 	// if (ierr != MPI_SUCCESS) {
 	//   printf("Error in MPI_Init = %i\n",ierr);
 	//   return 1;
-	// }
+	// } // MPI will call gmres Nprocs times
 
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
 	
