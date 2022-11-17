@@ -23,7 +23,6 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
 	double *tr_xyz, double *tr_q, int nface, int nchr);
 
 
-
 void matvecmul(const double *x, double *y, double *q, int nface, 
 	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta) {
 // void matvecmul(const double *x, double *y, double *q, int nface, 
@@ -32,6 +31,12 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	/* declarations for mpi */
 	int is, ie;
 	int ierr, numprocs, myid;
+
+
+	static int counter;
+	counter =0;
+	printf(" COUNTER IS %i\n",counter);
+	++counter;
 
 	// // ierr = MPI_Init(&argc, &argv);
 	// ierr = MPI_Init(NULL,NULL);
@@ -153,7 +158,6 @@ int *matvec(double *alpha, double *x, double *beta, double *y) {
 
 
     // matvecmul(x, y, tr_q, nface, tr_xyz, tr_q, tr_area, *alpha, *beta, argc, *argv);
-    
 
 
     return NULL;
