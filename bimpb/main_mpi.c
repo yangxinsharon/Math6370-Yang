@@ -38,6 +38,7 @@ int main(int argc, char *argv[]) {
 	extern void comp_source_wrapper();				// yang
 	extern void comp_soleng_wrapper(double soleng);	// yang
 	extern int *matvec(double *alpha, double *x, double *beta, double *y); // yang
+	// extern int *matvec(double *alpha, double *x, double *beta, double *y, int argc, char *argv[]); // yang
 	extern int *psolve(double *z, double *r); // yang
 	extern int gmres_(long int *n, double *b, double *x, long int *restrt, double *work, long int *ldw, double *h, 
 		long int *ldh, long int *iter, double *resid, int *matvec (), int *psolve (), long int *info);
@@ -71,17 +72,17 @@ int main(int argc, char *argv[]) {
 	h=(double *) calloc (ldh*(RESTRT+2), sizeof(double));
 
 
-	// int ierr = MPI_Init(&argc, &argv);
-	// printf("ARGC = %d %s %s %s \n",argc, argv[0], argv[1], argv[2]);
-	// if (ierr != MPI_SUCCESS) {
-	//   printf("Error in MPI_Init = %i\n",ierr);
-	//   return 1;
-	// } // MPI will call gmres Nprocs times
+	int ierr = MPI_Init(&argc, &argv);
+	printf("ARGC = %d %s %s %s \n",argc, argv[0], argv[1], argv[2]);
+	if (ierr != MPI_SUCCESS) {
+	  printf("Error in MPI_Init = %i\n",ierr);
+	  return 1;
+	}
 
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
 	
 	// /* finalize MPI */
-	int ierr = MPI_Finalize();
+	ierr = MPI_Finalize();
 
 	soleng=0.0;
 

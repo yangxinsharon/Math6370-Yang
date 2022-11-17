@@ -1,0 +1,301 @@
+[xiny@k005 bimpb]$ make
+mpicc -c -O2 matvec_mpi.c
+mpicc -lm -o bimpb_mpi.exe main_mpi.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres_mpi.o matvec_mpi.o pp_timer.o
+[xiny@k005 bimpb]$ mpiexec -n 1 ./bimpb_mpi.exe 
+1 ./bimpb_mpi.exe (null) OMPI_MCA_pml=ucx 
+./msms -if test_proteins/1ajj.xyzr -prob 1.4 -dens 1 -of test_proteins/1ajj 
+MSMS 2.6.1 started on k005
+Copyright M.F. Sanner (1994)
+Compilation flags -O2 -DVERBOSE -DTIMING
+INPUT  test_proteins/1ajj.xyzr 519 spheres 0 collision only, radii  0.225 to  2.275
+PARAM  Probe_radius  1.400 density  1.000 hdensity  3.000
+REDUCED SURFACE ...
+    RS component 0 identified 4 3 6
+    0 free edge(s) found in component 0
+    RS component  #faces  #edges #free_edges  #vertices   genus
+         0         684     1026          0        297      23.5
+    Time Reduced Surface real: 0.07 user: 0.07 sys: 0.00
+ANALYTICAL SOLVENT EXCLUDED SURFACE...
+    Component   0
+        Time Surface real: 0.01 user: 0.01 sys: 0.00
+        Time Singularities real: 0.01 user: 0.01 sys: 0.00
+    SES comp.  #fac.  #edg. #s_edg. #vert. #s_vert. R_h C_h genus
+         0     2071   4155     21    2086       32   0   0    0
+ANALYTICAL SURFACE AREA :
+    Comp. probe_radius,   reent,    toric,   contact    SES       SAS
+      0       1.400     418.510   887.048   870.736  2176.294  2864.671
+TRIANGULATION...
+    Component 0
+    component#, vertices,  edges,  faces, genus, density
+        0           3020    9054    6036    0     1.388
+        Time Triangulation real: 0.04 user: 0.04 sys: 0.00
+NUMERICAL VOLUMES AND AREA
+    Comp. probe_radius SES_volume SES_area)
+       0      1.40     4573.667   2076.440
+    Total ses_volume:  4573.667
+MSMS terminated normally
+Total Time real: 0.20 user: 0.18 sys: 0.01
+test_proteins/1ajj.vert
+nspt=3020, natm=519, den=1.000000, prob=1.400000
+finish reading vertices file...
+nface=6036, natm=519, den=1.000000, prob=1.400000
+finish reading face file...
+finish reading position file...
+finish reading charge file...
+The 518 th triangle has small area:0.000000e+00
+The 763 th triangle has small area:0.000000e+00
+The 764 th triangle has small area:0.000000e+00
+The 1967 th triangle has small area:0.000000e+00
+The 4415 th triangle has small area:0.000000e+00
+particles 4623 and 4622 are too close: 3.140185e-16
+The 5000 th triangle has small area:4.974937e-06
+The 5046 th triangle has small area:6.800735e-06
+The 5612 th triangle has small area:0.000000e+00
+9 faces are deleted
+total area = 2075.998214
+12054	0.007176	0.000000	10	12054	11	100	0.000100
+ COUNTER = 1
+ MYID = 0
+iteration no.=1, error=1.038969e-01
+ COUNTER = 2
+ MYID = 0
+iteration no.=2, error=3.586408e-02
+ COUNTER = 3
+ MYID = 0
+iteration no.=3, error=1.408956e-02
+ COUNTER = 4
+ MYID = 0
+iteration no.=4, error=5.990464e-03
+ COUNTER = 5
+ MYID = 0
+iteration no.=5, error=3.132540e-03
+ COUNTER = 6
+ MYID = 0
+iteration no.=6, error=1.716279e-03
+ COUNTER = 7
+ MYID = 0
+iteration no.=7, error=7.540225e-04
+ COUNTER = 8
+ MYID = 0
+iteration no.=8, error=3.329846e-04
+ COUNTER = 9
+ MYID = 0
+iteration no.=9, error=1.540459e-04
+ COUNTER = 10
+ MYID = 0
+iteration no.=10, error=8.529138e-05
+solvation energy = -1274.122521 kcal/mol
+TOTAL_TIME 101.138055
+ [xiny@k005 bimpb]$ mpiexec -n 2 ./bimpb_mpi.exe 
+1 ./bimpb_mpi.exe (null) OMPI_MCA_pml=ucx 
+./msms -if test_proteins/1ajj.xyzr -prob 1.4 -dens 1 -of test_proteins/1ajj 
+1 ./bimpb_mpi.exe (null) OMPI_MCA_pml=ucx 
+./msms -if test_proteins/1ajj.xyzr -prob 1.4 -dens 1 -of test_proteins/1ajj 
+MSMS 2.6.1 started on k005
+Copyright M.F. Sanner (1994)
+Compilation flags -O2 -DVERBOSE -DTIMING
+MSMS 2.6.1 started on k005
+Copyright M.F. Sanner (1994)
+Compilation flags -O2 -DVERBOSE -DTIMING
+INPUT  test_proteins/1ajj.xyzr 519 spheres 0 collision only, radii  0.225 to  2.275
+PARAM  Probe_radius  1.400 density  1.000 hdensity  3.000
+REDUCED SURFACE ...
+INPUT  test_proteins/1ajj.xyzr 519 spheres 0 collision only, radii  0.225 to  2.275
+PARAM  Probe_radius  1.400 density  1.000 hdensity  3.000
+REDUCED SURFACE ...
+    RS component 0 identified 4 3 6
+    RS component 0 identified 4 3 6
+    0 free edge(s) found in component 0
+    RS component  #faces  #edges #free_edges  #vertices   genus
+         0         684     1026          0        297      23.5
+    Time Reduced Surface real: 0.08 user: 0.08 sys: 0.00
+ANALYTICAL SOLVENT EXCLUDED SURFACE...
+    Component   0
+    0 free edge(s) found in component 0
+    RS component  #faces  #edges #free_edges  #vertices   genus
+         0         684     1026          0        297      23.5
+    Time Reduced Surface real: 0.07 user: 0.07 sys: 0.00
+ANALYTICAL SOLVENT EXCLUDED SURFACE...
+    Component   0
+        Time Surface real: 0.01 user: 0.01 sys: 0.00
+        Time Singularities real: 0.00 user: 0.00 sys: 0.00
+    SES comp.  #fac.  #edg. #s_edg. #vert. #s_vert. R_h C_h genus
+         0     2071   4155     21    2086       32   0   0    0
+ANALYTICAL SURFACE AREA :
+    Comp. probe_radius,   reent,    toric,   contact    SES       SAS
+        Time Surface real: 0.01 user: 0.01 sys: 0.00
+        Time Singularities real: 0.00 user: 0.01 sys: 0.00
+    SES comp.  #fac.  #edg. #s_edg. #vert. #s_vert. R_h C_h genus
+         0     2071   4155     21    2086       32   0   0    0
+ANALYTICAL SURFACE AREA :
+    Comp. probe_radius,   reent,    toric,   contact    SES       SAS
+      0       1.400     418.510   887.048   870.736  2176.294  2864.671
+TRIANGULATION...
+    Component 0
+      0       1.400     418.510   887.048   870.736  2176.294  2864.671
+TRIANGULATION...
+    Component 0
+    component#, vertices,  edges,  faces, genus, density
+        0           3020    9054    6036    0     1.388
+        Time Triangulation real: 0.04 user: 0.04 sys: 0.01
+    component#, vertices,  edges,  faces, genus, density
+        0           3020    9054    6036    0     1.388
+        Time Triangulation real: 0.04 user: 0.04 sys: 0.00
+NUMERICAL VOLUMES AND AREA
+    Comp. probe_radius SES_volume SES_area)
+       0      1.40     4573.667   2076.440
+    Total ses_volume:  4573.667
+MSMS terminated normally
+Total Time real: 0.21 user: 0.18 sys: 0.01
+NUMERICAL VOLUMES AND AREA
+    Comp. probe_radius SES_volume SES_area)
+       0      1.40     4573.667   2076.440
+    Total ses_volume:  4573.667
+MSMS terminated normally
+Total Time real: 0.20 user: 0.18 sys: 0.01
+test_proteins/1ajj.vert
+nspt=3020, natm=519, den=1.000000, prob=1.400000
+test_proteins/1ajj.vert
+nspt=3020, natm=519, den=1.000000, prob=1.400000
+finish reading vertices file...
+nface=6036, natm=519, den=1.000000, prob=1.400000
+finish reading vertices file...
+nface=6036, natm=519, den=1.000000, prob=1.400000
+finish reading face file...
+finish reading face file...
+finish reading position file...
+finish reading position file...
+finish reading charge file...
+The 518 th triangle has small area:0.000000e+00
+The 763 th triangle has small area:0.000000e+00
+The 764 th triangle has small area:0.000000e+00
+finish reading charge file...
+The 1967 th triangle has small area:0.000000e+00
+The 518 th triangle has small area:0.000000e+00
+The 763 th triangle has small area:0.000000e+00
+The 764 th triangle has small area:0.000000e+00
+The 1967 th triangle has small area:0.000000e+00
+The 4415 th triangle has small area:0.000000e+00
+particles 4623 and 4622 are too close: 3.140185e-16
+The 5000 th triangle has small area:4.974937e-06
+The 5046 th triangle has small area:6.800735e-06
+The 5612 th triangle has small area:0.000000e+00
+The 4415 th triangle has small area:0.000000e+00
+particles 4623 and 4622 are too close: 3.140185e-16
+9 faces are deleted
+The 5000 th triangle has small area:4.974937e-06
+The 5046 th triangle has small area:6.800735e-06
+The 5612 th triangle has small area:0.000000e+00
+9 faces are deleted
+total area = 2075.998214
+total area = 2075.998214
+12054	0.007176	0.000000	10	12054	0.007176	0.0000010	12054	11	100	0.000100
+12054	11	100	0.000100
+ COUNTER = 1
+ MYID = 1
+ COUNTER = 1
+ MYID = 0
+iteration no.=1, error=8.819008e-02
+ COUNTER = 2
+ MYID = 1
+iteration no.=1, error=7.079932e-02
+ COUNTER = 2
+ MYID = 0
+iteration no.=2, error=2.074575e-02
+ COUNTER = 3
+ MYID = 1
+iteration no.=2, error=1.319586e-02
+ COUNTER = 3
+ MYID = 0
+iteration no.=3, error=5.167222e-03
+ COUNTER = 4
+ MYID = 1
+iteration no.=3, error=3.883915e-03
+ COUNTER = 4
+ MYID = 0
+iteration no.=4, error=1.548906e-03
+ COUNTER = 5
+ MYID = 1
+iteration no.=4, error=1.760698e-03
+ COUNTER = 5
+ MYID = 0
+iteration no.=5, error=6.973306e-04
+ COUNTER = 6
+ MYID = 1
+iteration no.=5, error=8.912237e-04
+ COUNTER = 6
+ MYID = 0
+iteration no.=6, error=6.025220e-04
+ COUNTER = 7
+ MYID = 1
+iteration no.=6, error=4.861765e-04
+ COUNTER = 7
+ MYID = 0
+iteration no.=7, error=5.874816e-04
+ COUNTER = 8
+ MYID = 1
+iteration no.=7, error=3.646081e-04
+ COUNTER = 8
+ MYID = 0
+iteration no.=8, error=5.669884e-04
+ COUNTER = 9
+ MYID = 1
+iteration no.=8, error=3.179189e-04
+ COUNTER = 9
+ MYID = 0
+iteration no.=9, error=4.241167e-04
+ COUNTER = 10
+ MYID = 1
+iteration no.=9, error=3.072436e-04
+ COUNTER = 10
+ MYID = 0
+iteration no.=10, error=1.785528e-04
+ COUNTER = 11
+ MYID = 1
+iteration no.=10, error=2.951644e-04
+ COUNTER = 11
+ MYID = 0
+ COUNTER = 12
+ MYID = 1
+ COUNTER = 12
+ MYID = 0
+iteration no.=11, error=7.662832e-02
+ COUNTER = 13
+ MYID = 1
+iteration no.=11, error=7.626552e-02
+ COUNTER = 13
+ MYID = 0
+iteration no.=12, error=1.536567e-02
+ COUNTER = 14
+ MYID = 1
+iteration no.=12, error=1.107413e-02
+ COUNTER = 14
+ MYID = 0
+iteration no.=13, error=2.952238e-03
+ COUNTER = 15
+ MYID = 1
+iteration no.=13, error=2.508590e-03
+ COUNTER = 15
+ MYID = 0
+iteration no.=14, error=7.041584e-04
+ COUNTER = 16
+ MYID = 1
+iteration no.=14, error=1.026174e-03
+ COUNTER = 16
+ MYID = 0
+iteration no.=15, error=1.875067e-04
+ COUNTER = 17
+ MYID = 1
+iteration no.=15, error=4.146513e-04
+ COUNTER = 17
+ MYID = 0
+iteration no.=16, error=4.607382e-05
+iteration no.=16, error=2.081159e-04
+ COUNTER = 18
+ MYID = 0
+iteration no.=17, error=8.847473e-05
+solvation energy = -3506.698123 kcal/mol
+TOTAL_TIME 97.849512
+ solvation energy = -2644.056123 kcal/mol
+TOTAL_TIME 97.883450
+ [xiny@k005 bimpb]$ 
