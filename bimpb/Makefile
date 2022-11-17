@@ -26,7 +26,7 @@ bimpb.exe: main.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.
 # 	$(NVCC) -o -lm -o $@ $^
 bimpb_omp.exe: main.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_omp.o pp_timer.o
 	$(CC) $(OMPFLAGS) -lm -p -o $@ $^
-bimpb_mpi.exe: main_mpi.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_mpi.o pp_timer.o
+bimpb_mpi.exe: main_mpi.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres_mpi.o matvec_mpi.o pp_timer.o
 	$(MPICC) -lm -o $@ $^
 pp_timer.o: pp_timer.c
 	$(CC) $(CFLAGS) pp_timer.c
@@ -48,6 +48,9 @@ matvec_mpi.o: matvec_mpi.c
 	$(MPICC) $(CFLAGS) matvec_mpi.c
 main_mpi.o: main_mpi.c
 	$(MPICC) $(CFLAGS) main_mpi.c
+gmres_mpi.o: gmres_mpi.c
+	$(MPICC) $(CFLAGS) gmres/gmres_mpi.c
+
 d_sign.o: gmres/d_sign.c
 	$(CC) $(CFLAGS) gmres/d_sign.c
 daxpy.o: gmres/daxpy.c
