@@ -91,14 +91,14 @@ int main(int argc, char *argv[]) {
 
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
 	
+	// /* finalize MPI */
+	int ierr = MPI_Finalize();
 
 	soleng=0.0;
 
 	comp_soleng_wrapper(soleng); //wraps the solvation energy computation
 	timer_end();
 
-	// /* finalize MPI */
-	// int ierr = MPI_Finalize();
 
 
 	/* free memory */
