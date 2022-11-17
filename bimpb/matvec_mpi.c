@@ -11,6 +11,8 @@
 #include "mpi.h"
 
 /* Prototypes */
+extern int argc;
+extern char *argv[];
 int *matvec(double *alpha, double *x, double *beta, double *y);
 // int *matvec(double *alpha, double *x, double *beta, double *y, int argc, char *argv[]);
 void comp_soleng_wrapper(double soleng);
@@ -20,8 +22,6 @@ void comp_pot(const double* xvct, double *atmchr, double *chrpos, double *ptl,
 void comp_source( double* bvct, double *atmchr, double *chrpos, 
 	double *tr_xyz, double *tr_q, int nface, int nchr);
 
-extern int argc;
-extern char *argv[];
 
 void matvecmul(const double *x, double *y, double *q, int nface, 
 	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta) {
