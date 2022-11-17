@@ -79,10 +79,10 @@ void matvecmul(const double *x, double *y, double *q, int nface,
   	is = ((int) (1.0*nface/numprocs))*myid;
   	ie = ((int) (1.0*nface/numprocs))*(myid+1);
   	if (myid == numprocs-1)  ie = nface;
-
+  	printf("is and ie IS NOW = %d, %d, %d\n", is,ie,myid);
     // for (i=0; i<nface; i++) {
     for (i=is; i<ie; i++) {
-    	printf("MYID IS NOW = %d\n", myid);
+
     	/* repeat calculation for mpi */
     	double pre1=0.50*(1.0+eps); /* const eps=80.0 */
     	double pre2=0.50*(1.0+1.0/eps);
