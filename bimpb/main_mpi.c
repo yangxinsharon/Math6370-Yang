@@ -45,12 +45,6 @@ int main(int argc, char *argv[]) {
    extern void timer_start(char *n); // yang
    extern void timer_end(void); // yang
 
-	int ierr = MPI_Init(&argc, &argv);
-	printf("ARGC = %d %s %s %s \n",argc, argv[0], argv[1], argv[2]);
-	if (ierr != MPI_SUCCESS) {
-	  printf("Error in MPI_Init = %i\n",ierr);
-	  return 1;
-	}
 
 	timer_start("TOTAL_TIME");
 	printf("%d %s %s %s \n", argc, argv[0], argv[1], argv[2]);
@@ -79,14 +73,28 @@ int main(int argc, char *argv[]) {
 	work=(double *) calloc (ldw*(RESTRT+4), sizeof(double));
 	h=(double *) calloc (ldh*(RESTRT+2), sizeof(double));
 
+
+	int ierr = MPI_Init(&argc, &argv);
+	printf("ARGC = %d %s %s %s \n",argc, argv[0], argv[1], argv[2]);
+	if (ierr != MPI_SUCCESS) {
+	  printf("Error in MPI_Init = %i\n",ierr);
+	  return 1;
+	}
+	
+
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
+	
+	/* finalize MPI */
+	ierr = MPI_Finalize();
+	
 
 	soleng=0.0;
 
 	comp_soleng_wrapper(soleng); //wraps the solvation energy computation
 	timer_end();
 
-	
+
+
 
 	/* free memory */
 	for(i=0;i<3;i++) {
