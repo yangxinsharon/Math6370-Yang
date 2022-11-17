@@ -147,7 +147,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	
 
 }
-static counter;
+static int counter;
 
 
 /* This subroutine wraps the matrix-vector multiplication */
