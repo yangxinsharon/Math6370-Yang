@@ -31,33 +31,6 @@ int main(int argc, char *argv[]) {
 	char fname[16], density[16];
 	extern void readin(char fname[16], char density[16]);
 
-	/*intialize MPI*/
-	int ierr, numprocs, myid;
-	ierr = MPI_Init(&argc, &argv);
-	if (ierr != MPI_SUCCESS) {
-	  printf("Error in MPI_Init = %i\n",ierr);
-	  return -1;
-	}
-	ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
-	if (ierr != MPI_SUCCESS) {
-	  printf("Error in MPI_Comm_size = %i\n",ierr);
-	  return -1;
-	}
-	ierr = MPI_Comm_rank(MPI_COMM_WORLD, &myid);
-	if (ierr != MPI_SUCCESS) {
-	  printf("Error in MPI_Comm_rank = %i\n",ierr);
-	  return -1;
-	
-	/* check whether we have enough processors */
-	if (numprocs < 2) {
-	  printf("master/worker example, requires > 1 proc! Exiting\n");
-	  ierr = MPI_Abort(MPI_COMM_WORLD, -1);
-	  return -1;
-	
-
-
-
-
 	/*GMRES related variables*/
 	static long int info;
 	long int RESTRT, ldw, ldh, iter, N;
@@ -71,6 +44,13 @@ int main(int argc, char *argv[]) {
 
    extern void timer_start(char *n); // yang
    extern void timer_end(void); // yang
+
+	int ierr = MPI_Init(&argc, &argv);
+	if (ierr != MPI_SUCCESS) {
+	  printf("Error in MPI_Init = %i\n",ierr);
+	  return -1;
+	}
+
 	timer_start("TOTAL_TIME");
 	printf("%d %s %s %s \n", argc, argv[0], argv[1], argv[2]);
 
