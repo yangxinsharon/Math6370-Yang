@@ -129,6 +129,7 @@ int gmres_(n, b, x, restrt, work, ldw, h, ldh, iter, resid, matvec, psolve,
    integer *n, *restrt, *ldw, *ldh, *iter, *info;
    doublereal *b, *x, *work, *h, *resid;
    int (*matvec) (), (*psolve) ();
+   printf("in gmres_ ");
 {
     // yang {
     int ierr, numprocs;

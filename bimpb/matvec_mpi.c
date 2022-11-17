@@ -61,12 +61,6 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 
 	/* declarations for matvecmul */
 	int i, j;
-	// double area, rs, irs, sumrs;
-	// double G0, kappa_rs, exp_kappa_rs, Gk;
-	// double cos_theta, cos_theta0, tp1, tp2, dot_tqsq;
-	// double G10, G20, G1, G2, G3, G4;
-	// double L1, L2, L3, L4;
-
 
     double pre1=0.50*(1.0+eps); /* const eps=80.0 */
     double pre2=0.50*(1.0+1.0/eps);
