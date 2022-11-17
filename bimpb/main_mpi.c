@@ -46,6 +46,7 @@ int main(int argc, char *argv[]) {
    extern void timer_end(void); // yang
 
 	int ierr = MPI_Init(&argc, &argv);
+	printf("ARGC = %d %s %s %s \n",argc, argv[0], argv[1], argv[2]);
 	if (ierr != MPI_SUCCESS) {
 	  printf("Error in MPI_Init = %i\n",ierr);
 	  return 1;
@@ -86,8 +87,6 @@ int main(int argc, char *argv[]) {
 	timer_end();
 
 	
-	/* finalize MPI */
-	ierr = MPI_Finalize();
 
 	/* free memory */
 	for(i=0;i<3;i++) {
