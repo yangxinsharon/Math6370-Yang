@@ -32,10 +32,10 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	int ierr, myid;
 
 
-	static int counter;
-	counter =0;
-	printf(" COUNTER IS %i\n",counter);
-	++counter;
+	// static int counter;
+	// counter =0;
+	// printf(" COUNTER IS %i\n",counter);
+	// ++counter;
 
 	// ierr = MPI_Init(&argc, &argv);
 	// // ierr = MPI_Init(NULL,NULL);
@@ -155,8 +155,9 @@ int *matvec(double *alpha, double *x, double *beta, double *y) {
 
 	int numprocs;
 
-	int ierr = MPI_Init(&argc, &argv);
-	printf("ARGC = %d %s %s %s \n",argc, argv[0], argv[1], argv[2]);
+	// int ierr = MPI_Init(&argc, &argv);
+	int ierr = MPI_Init(NULL, NULL);
+	// printf("ARGC = %d %s %s %s \n",argc, argv[0], argv[1], argv[2]);
 	if (ierr != MPI_SUCCESS) {
 	  printf("Error in MPI_Init = %i\n",ierr);
 	  MPI_Abort(MPI_COMM_WORLD, 1);
