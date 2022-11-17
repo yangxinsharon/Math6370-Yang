@@ -28,11 +28,14 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	int ierr, numprocs, myid;
   	
 	ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
+	printf(" NUMPROCS = %i\n",numprocs);
 	if (ierr != 0) {
 	  printf(" error in MPI_Comm_size = %i\n",ierr);
 	  MPI_Abort(MPI_COMM_WORLD, 1);
 	}
+
 	ierr = MPI_Comm_rank(MPI_COMM_WORLD, &myid);
+	printf(" MYID = %i\n",myid);
 	if (ierr != 0) {
 	  printf(" error in MPI_Comm_rank = %i\n",ierr);
 	  MPI_Abort(MPI_COMM_WORLD, 1);
@@ -119,7 +122,9 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 		y[i] = y[i]*beta + (pre1*x[i]-peng[0])*alpha;
 		y[nface+i] = y[nface+i]*beta + (pre2*x[nface+i]-peng[1])*alpha;
 	}
-
+	
+	/* finalize MPI */
+	ierr = MPI_Finalize();
 
 
 }
