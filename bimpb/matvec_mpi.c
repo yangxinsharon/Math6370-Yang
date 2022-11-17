@@ -27,16 +27,16 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	int is, ie;
 	int ierr, numprocs, myid;
   	
-  	ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
-  	if (ierr != MPI_SUCCESS) {
-  	  std::cerr << " error in MPI_Comm_size = " << ierr << "\n";
-  	  MPI_Abort(MPI_COMM_WORLD, 1);
-  	}
-  	ierr = MPI_Comm_rank(MPI_COMM_WORLD, &myid);
-  	if (ierr != MPI_SUCCESS) {
-  	  std::cerr << " error in MPI_Comm_rank = " << ierr << "\n";
-  	  MPI_Abort(MPI_COMM_WORLD, 1);
-  	}
+	ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
+	if (ierr != 0) {
+	  printf(" error in MPI_Comm_size = %i\n",ierr);
+	  MPI_Abort(MPI_COMM_WORLD, 1);
+	}
+	ierr = MPI_Comm_rank(MPI_COMM_WORLD, &myid);
+	if (ierr != 0) {
+	  printf(" error in MPI_Comm_rank = %i\n",ierr);
+	  MPI_Abort(MPI_COMM_WORLD, 1);
+	}
 
 	/* declarations for matvecmul */
 	int i, j;

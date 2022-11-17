@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
 	int ierr = MPI_Init(&argc, &argv);
 	if (ierr != MPI_SUCCESS) {
 	  printf("Error in MPI_Init = %i\n",ierr);
-	  return -1;
+	  return 1;
 	}
 
 	timer_start("TOTAL_TIME");
