@@ -74,6 +74,7 @@ int main(int argc, char *argv[]) {
    sprintf(density, "1");
    // sprintf(fname,"%s",argv[1]);
    // sprintf(density,"%s",argv[2]);
+   extern double *rece_buf;
    rece_buf = (double *) calloc(N, sizeof(double));
 	readin(fname, density);
 
