@@ -8,7 +8,6 @@
 #include <math.h>
 #include "gl_variables.h"
 #include "gl_constants.h"
-#include "pp_timer.h" //yang
 
 /* Prototypes */
 int *matvec(double *alpha, double *x, double *beta, double *y);
@@ -32,9 +31,6 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 
     pre1=0.50*(1.0+eps); /* const eps=80.0 */
     pre2=0.50*(1.0+1.0/eps);
-    extern void timer_start(char *n); // yang
-   	extern void timer_end(void); // yang
-    timer_start("loop time");
     for (i=0; i<nface; i++) {
     	double tp[3] = {tr_xyz[3*i], tr_xyz[3*i+1], tr_xyz[3*i+2]};
 		double tq[3] = {tr_q[3*i], tr_q[3*i+1], tr_q[3*i+2]};
@@ -84,7 +80,6 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 		y[i] = y[i]*beta + (pre1*x[i]-peng[0])*alpha;
 		y[nface+i] = y[nface+i]*beta + (pre2*x[nface+i]-peng[1])*alpha;
 	}
-	timer_end(); //yang
 
 }
 
