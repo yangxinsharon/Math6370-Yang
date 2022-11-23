@@ -22,7 +22,7 @@ extern double *work, *h;
 extern double *h_pot;
 extern double *dev_xp, *dev_yp, *dev_zp, *dev_q, *dev_pot;
 extern const double eps;
-extern double *rece_buf;
+// extern double *rece_buf;
 
 int main(int argc, char *argv[]) {
 	/*variables local to main*/
@@ -74,8 +74,8 @@ int main(int argc, char *argv[]) {
    sprintf(density, "1");
    // sprintf(fname,"%s",argv[1]);
    // sprintf(density,"%s",argv[2]);
-   extern double *rece_buf;
-   rece_buf = (double *) calloc(N, sizeof(double));
+   // extern double *rece_buf;
+   // rece_buf = (double *) calloc(N, sizeof(double));
 	readin(fname, density);
 
 	comp_source_wrapper(); //wraps the solvation energy computation
