@@ -25,10 +25,25 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta) {
 	/* declarations for mpi */
 	int is, ie;
+	int ierr, numprocs, myid;
 
 	int N = 2*nface;
 	/* declarations for matvecmul */
 	int i, j;
+	
+	ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
+	printf(" NUMPROCS = %i\n",numprocs);
+	if (ierr != 0) {
+	  printf(" error in MPI_Comm_size = %i\n",ierr);
+	  MPI_Abort(MPI_COMM_WORLD, 1);
+	}
+
+	ierr = MPI_Comm_rank(MPI_COMM_WORLD, &myid);
+	printf(" MYID = %i\n",myid);
+	if (ierr != 0) {
+	  printf(" error in MPI_Comm_rank = %i\n",ierr);
+	  MPI_Abort(MPI_COMM_WORLD, 1);
+	}
 
 	/* determine this processor's interval */
   	is = ((int) (1.0*nface/numprocs))*myid;
