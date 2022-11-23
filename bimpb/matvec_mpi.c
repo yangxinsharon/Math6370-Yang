@@ -25,11 +25,8 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
 void matvecmul(const double *x, double *y, double *q, int nface, 
 	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta) {
 	/* declarations for mpi */
-	int is, ie;
+	int is, ie, j;
 	int ierr, numprocs, myid;
-
-	/* declarations for matvecmul */
-	int i, j;
 
 	ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
 	if (ierr != 0) {
@@ -52,11 +49,12 @@ void matvecmul(const double *x, double *y, double *q, int nface,
   	ie = ((int) (1.0*nface/numprocs))*(myid+1);
   	if (myid == numprocs-1)  ie = nface;
 
-  	// int scount = (ie-is)*(myid+1)+nface;
   	int chunk=ie-is;
-  	// int scount = (ie-is)+nface;
-  	int N = 2*nface;
-    for (i=is; i<ie; i++) {
+  	double *sbuf_y1, *sbuf_y2;
+  	sbuf_y1 = (double *) calloc(chunk, sizeof(double));
+	sbuf_y2 = (double *) calloc(chunk, sizeof(double));
+
+    for (i=is; i<ie; i++) { 
 
     	double tp[3] = {tr_xyz[3*i], tr_xyz[3*i+1], tr_xyz[3*i+2]};
 		double tq[3] = {tr_q[3*i], tr_q[3*i+1], tr_q[3*i+2]};
@@ -103,8 +101,10 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 				peng[1] = peng[1] + (L3*peng_old[0] + L4*peng_old[1]) * area;
         	}
 		}
-		y[i] = y[i]*beta + (pre1*x[i]-peng[0])*alpha;
-  		y[nface+i] = y[nface+i]*beta + (pre2*x[nface+i]-peng[1])*alpha;
+		// y[i] = y[i]*beta + (pre1*x[i]-peng[0])*alpha;
+  		// y[nface+i] = y[nface+i]*beta + (pre2*x[nface+i]-peng[1])*alpha;
+  		sbuf_y1[i-myid*chunk] = y[i]*beta + (pre1*x[i]-peng[0])*alpha;
+  		sbuf_y2[i-myid*chunk] = y[nface+i]*beta + (pre2*x[nface+i]-peng[1])*alpha;
 	}
 
 	// double ftime = MPI_Wtime();
@@ -125,12 +125,13 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	rece_buf1 = (double *) calloc(nface, sizeof(double));
 	rece_buf2 = (double *) calloc(nface, sizeof(double));
 
-	ierr = MPI_Allgather(y+myid*chunk, chunk, MPI_DOUBLE, rece_buf1, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
+	ierr = MPI_Allgather(sbuf_y1, chunk, MPI_DOUBLE, rece_buf1, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
+	// ierr = MPI_Allgatherv(isend, iscnt, MPI_INT, irecv, ircnt, idisp, MPI_INT, MPI_COMM_WORLD);
   	if (ierr != MPI_SUCCESS) {
   	   	printf("Error in MPI_Allgather1 = %i\n",ierr);
   	}
 
-	ierr = MPI_Allgather(y+myid*chunk+nface, chunk, MPI_DOUBLE, rece_buf2, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
+	ierr = MPI_Allgather(sbuf_y2, chunk, MPI_DOUBLE, rece_buf2, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
   	if (ierr != MPI_SUCCESS) {
   	   	printf("Error in MPI_Allgather2 = %i\n",ierr);
   	}
