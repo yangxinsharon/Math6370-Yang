@@ -11,8 +11,6 @@
 #include "mpi.h"
 
 /* Prototypes */
-extern int numprocs；
-extern int myid;
 int *matvec(double *alpha, double *x, double *beta, double *y);
 void comp_soleng_wrapper(double soleng);
 void comp_source_wrapper();
@@ -21,23 +19,32 @@ void comp_pot(const double* xvct, double *atmchr, double *chrpos, double *ptl,
 void comp_source( double* bvct, double *atmchr, double *chrpos, 
 	double *tr_xyz, double *tr_q, int nface, int nchr);
 
- 
+
+// void matvecmul(const double *x, double *y, double *q, int nface, 
+// 	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta) {
 void matvecmul(const double *x, double *y, double *q, int nface, 
-	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta) {
+	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta, int numprocs, int myid) {
+
 	/* declarations for mpi */
 	int is, ie;
+	int ierr, myid;
 
-	int N = 2*nface;
+
+
 	/* declarations for matvecmul */
 	int i, j;
 
-	/* determine this processor's interval */
+    // double pre1=0.50*(1.0+eps); /* const eps=80.0 */
+    // double pre2=0.50*(1.0+1.0/eps);
+
+	// /* determine this processor's interval */
   	is = ((int) (1.0*nface/numprocs))*myid;
   	ie = ((int) (1.0*nface/numprocs))*(myid+1);
   	if (myid == numprocs-1)  ie = nface;
-
+  	printf("is and ie IS NOW = %d, %d, %d\n", is,ie,myid);
     // for (i=0; i<nface; i++) {
     for (i=is; i<ie; i++) {
+
     	/* repeat calculation for mpi */
     	double pre1=0.50*(1.0+eps); /* const eps=80.0 */
     	double pre2=0.50*(1.0+1.0/eps);
@@ -91,24 +98,37 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 		y[i] = y[i]*beta + (pre1*x[i]-peng[0])*alpha;
 		y[nface+i] = y[nface+i]*beta + (pre2*x[nface+i]-peng[1])*alpha;
 	}
-	int MPI_Allgather(y, 2, MPI_DOUBLE, y, N, MPI_DOUBLE,MPI_COMM_WORLD)
+	/* MPI Allgather */
+	MPI_Allgather(void* sbuf, int scount, MPI_Datatype stype,void* rbuf, int rcount, MPI_Datatype rtype,MPI_Comm comm)
+
 }
 
 
 
 /* This subroutine wraps the matrix-vector multiplication */
 int *matvec(double *alpha, double *x, double *beta, double *y) {
-    matvecmul(x, y, tr_q, nface, tr_xyz, tr_q, tr_area, *alpha, *beta);
+	/* MPI */
+	int ierr;
+	ierr = MPI_Comm_rank(MPI_COMM_WORLD, &myid);
+	if (ierr != MPI_SUCCESS) {
+	   std::cerr << "Error in calling MPI_Comm_rank\n";
+	   return 1;
+	}	
+    // matvecmul(x, y, tr_q, nface, tr_xyz, tr_q, tr_area, *alpha, *beta);
+
+    matvecmul(x, y, tr_q, nface, tr_xyz, tr_q, tr_area, *alpha, *beta, numprocs, myid);
+
     return NULL;
 }
+
 
 /* This subroutine wraps the solvation energy computation */
 void comp_soleng_wrapper(double soleng) {
     int i;
 	double *chrptl;
 	double units_para = 2.0;
-    units_para = units_para *units_coef;
-    units_para = units_para*pi;
+    units_para = units_para * units_coef;
+    units_para = units_para * pi;
 
 	if ((chrptl=(double *) malloc(nface*sizeof(double)))==NULL) {
 		printf("error in allcating chrptl");
@@ -124,7 +144,7 @@ void comp_soleng_wrapper(double soleng) {
 
 
 /* This subroutine calculates the element-wise potential */
-void comp_pot(const double* xvct, double *atmchr, double *chrpos, double *ptl, 
+void comp_pot(const double *xvct, double *atmchr, double *chrpos, double *ptl, 
 	double *tr_xyz, double *tr_q, double *tr_area, int nface, int nchr) {
 	int i, j;
     double sumrs, irs, rs, G0, Gk, kappa_rs, exp_kappa_rs;
@@ -149,7 +169,7 @@ void comp_pot(const double* xvct, double *atmchr, double *chrpos, double *ptl,
         	cos_theta = (v[0]*r_s[0]+v[1]*r_s[1]+v[2]*r_s[2]) * irs;
 
         	tp1 = G0*irs;
-        	tp2 = (1.0+kappa_rs)*exp_kappa_rs;
+        	tp2 = (1.0+kappa_rs) * exp_kappa_rs;
 
         	G1 = cos_theta*tp1;
         	G2 = tp2*G1;
@@ -168,11 +188,11 @@ void comp_source_wrapper() {
 }
 
 
-/* This subroutine calculates the source term of the integral equation */
+/* This subroutine calculaates the source term of the integral equation */
 /* atmchr=atom charge   chrpos=charge position */
 /* bvct be located at readin.c */
-void comp_source( double* bvct, double *atmchr, double *chrpos, 
-	double *tr_xyz,double *tr_q, int nface, int nchr) {
+void comp_source(double *bvct, double *atmchr, double *chrpos, 
+	double *tr_xyz, double *tr_q, int nface, int nchr) {
 	int i, j;
 	double sumrs, cos_theta, irs, G0, G1, tp1;
 	for (i=0; i<nface; i++) {
@@ -183,15 +203,14 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
             	chrpos[3*j+2]-tr_xyz[3*i+2]};
 			sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2]; 
             cos_theta = tr_q[3*i]*r_s[0] + tr_q[3*i+1]*r_s[1] + tr_q[3*i+2]*r_s[2];
-			irs = 1.0/sqrt(sumrs) ;//rsqrt(sumrs);//returns reciprocal square root of scalars and vectors.
+			irs = 1.0/sqrt(sumrs); //rsqrt(sumrs);//returns reciprocal square root of scalars and vectors.
             cos_theta = cos_theta*irs;
-            G0 = one_over_4pi;//constant
+            G0 = one_over_4pi; //constant
             G0 = G0*irs;
             tp1 = G0*irs;
             G1 = cos_theta*tp1;
-            bvct[i] = bvct[i]+atmchr[j]*G0;
-            bvct[nface+i] = bvct[nface+i]+atmchr[j]*G1;
+            bvct[i] = bvct[i] + atmchr[j]*G0;
+            bvct[nface+i] = bvct[nface+i] + atmchr[j]*G1;
         }
-
     }
 }

@@ -39,12 +39,31 @@ int main(int argc, char *argv[]) {
 	extern void comp_soleng_wrapper(double soleng);	// yang
 	extern int *matvec(double *alpha, double *x, double *beta, double *y); // yang
 	extern int *psolve(double *z, double *r); // yang
-	extern int gmres_(long int *n, double *b, double *x, long int *restrt, double *work, long int *ldw, double *h, 
-		long int *ldh, long int *iter, double *resid, int *matvec (), int *psolve (), long int *info);
+	extern int gmres_(long int *n, double *b, double *x, long int *restrt, double *work, long int *ldw, 
+		double *h, long int *ldh, long int *iter, double *resid, int *matvec (), int *psolve (), long int *info);
 
    extern void timer_start(char *n); // yang
    extern void timer_end(void); // yang
 
+  	// initialize MPI
+  	int ierr, numprocs, myid;
+  	ierr = MPI_Init(&argc, &argv);
+  	if (ierr != MPI_SUCCESS) {
+  	   printf("Error in MPI_Init = %i\n",ierr);
+  	   return 1;
+  	}
+
+	ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
+	if (ierr != MPI_SUCCESS) {
+	   printf("Error in MPI_Comm_size = %i\n",ierr);
+	   return 1;
+	}
+
+	ierr = MPI_Comm_rank(MPI_COMM_WORLD, &myid);
+	if (ierr != MPI_SUCCESS) {
+	   printf("Error in MPI_Comm_rank = %i\n",ierr);
+	   return 1;
+	}
 
 	timer_start("TOTAL_TIME");
 	printf("%d %s %s %s \n", argc, argv[0], argv[1], argv[2]);
@@ -56,7 +75,6 @@ int main(int argc, char *argv[]) {
    // sprintf(density,"%s",argv[2]);
 	readin(fname, density);
 	comp_source_wrapper(); //wraps the solvation energy computation
-
 
 	/* parameters for GMRES */
 	RESTRT=10;
@@ -70,27 +88,12 @@ int main(int argc, char *argv[]) {
 	work=(double *) calloc (ldw*(RESTRT+4), sizeof(double));
 	h=(double *) calloc (ldh*(RESTRT+2), sizeof(double));
 
-
-	int ierr = MPI_Init(&argc, &argv);
-	printf("ARGC = %d %s %s %s \n",argc, argv[0], argv[1], argv[2]);
-	if (ierr != MPI_SUCCESS) {
-	  printf("Error in MPI_Init = %i\n",ierr);
-	  return 1;
-	}
-
-	// int ierr = MPI_Init(NULL,NULL);
-	
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
-	
-	// /* finalize MPI */
-	ierr = MPI_Finalize();
 
 	soleng=0.0;
 
 	comp_soleng_wrapper(soleng); //wraps the solvation energy computation
 	timer_end();
-
-
 
 	/* free memory */
 	for(i=0;i<3;i++) {
@@ -131,6 +134,9 @@ int main(int argc, char *argv[]) {
 	free(xvct);
 	free(atmchr);
 	free(chrpos);
+
+	// finalize MPI
+  	ierr = MPI_Finalize();
 
    return 0;
 }
