@@ -58,7 +58,6 @@ void matvecmul(const double *x, double *y, double *q, int nface,
   	int chunk=ie-is;
   	int scount = (ie-is)+nface;
   	int N = 2*nface;
-    // for (i=0; i<nface; i++) {
   	double stime = MPI_Wtime();
     for (i=is; i<ie; i++) {
 
@@ -107,9 +106,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 				peng[1] = peng[1] + (L3*peng_old[0] + L4*peng_old[1]) * area;
         	}
 		}
-		// printf("y[i] before = %f\n",y[i]);
 		y[i] = y[i]*beta + (pre1*x[i]-peng[0])*alpha;
-		// printf("y[i] after = %f\n",y[i]);
   		y[nface+i] = y[nface+i]*beta + (pre2*x[nface+i]-peng[1])*alpha;
 	}
 
@@ -118,9 +115,9 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	printf("looptime = %f\n",looptime);
 
 	double *rece_buf1,*rece_buf2;
-	rece_buf1 = (double *) calloc(2*N, sizeof(double));
-	// rece_buf1 = (double *) calloc(N, sizeof(double));
-	// rece_buf2 = (double *) calloc(N, sizeof(double));
+	// rece_buf1 = (double *) calloc(2*N, sizeof(double));
+	rece_buf1 = (double *) calloc(N, sizeof(double));
+	rece_buf2 = (double *) calloc(N, sizeof(double));
 
 
 	stime = MPI_Wtime();
@@ -129,7 +126,12 @@ void matvecmul(const double *x, double *y, double *q, int nface,
   	   	printf("Error in MPI_Allgather1 = %i\n",ierr);
   	}
 
-	ierr = MPI_Allgather(y+myid*chunk+nface, chunk, MPI_DOUBLE, rece_buf1+nface, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
+	// ierr = MPI_Allgather(y+myid*chunk+nface, chunk, MPI_DOUBLE, rece_buf1+nface, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
+  	// if (ierr != MPI_SUCCESS) {
+  	//    	printf("Error in MPI_Allgather2 = %i\n",ierr);
+  	// }
+
+	ierr = MPI_Allgather(y+myid*chunk+nface, chunk, MPI_DOUBLE, rece_buf2, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
   	if (ierr != MPI_SUCCESS) {
   	   	printf("Error in MPI_Allgather2 = %i\n",ierr);
   	}
@@ -137,25 +139,18 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	ftime = MPI_Wtime();
 	double commtime = ftime-stime;
 	printf("commtime = %f\n",commtime);
-
-
-	// ierr = MPI_Allgather(y+myid*chunk+nface, chunk, MPI_DOUBLE, rece_buf2, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
-  	// if (ierr != MPI_SUCCESS) {
-  	//    	printf("Error in MPI_Allgather2 = %i\n",ierr);
-  	// }
-
 	
 	printf("nface = %i\n",nface);
+
 
 	stime = MPI_Wtime();
   	for (i=0; i<nface; i++) {
   		y[i] = rece_buf1[i];
-  		y[nface+i] = rece_buf1[i+nface];
-  		// y[nface+i] = rece_buf2[i];
+  		// y[nface+i] = rece_buf1[i+nface];
+  		y[nface+i] = rece_buf2[i];
   		// printf("y[i] = %f\n",y[i]);
   	}
 
-	
 	// memcpy(y,rece_buf1,sizeof(y));
 	ftime = MPI_Wtime();
 	double cpytime = ftime -stime;
