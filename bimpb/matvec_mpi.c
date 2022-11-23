@@ -30,7 +30,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	int N = 2*nface;
 	/* declarations for matvecmul */
 	int i, j;
-	
+
 	ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
 	printf(" NUMPROCS = %i\n",numprocs);
 	if (ierr != 0) {
@@ -108,7 +108,6 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	ierr = MPI_Allgather(y, 2, MPI_DOUBLE, y, N, MPI_DOUBLE,MPI_COMM_WORLD);
   	if (ierr != MPI_SUCCESS) {
   	   printf("Error in MPI_Allgather = %i\n",ierr);
-  	   return 1;
   	}
 }
 
