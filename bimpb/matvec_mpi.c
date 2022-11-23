@@ -126,7 +126,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 
 /* This subroutine wraps the matrix-vector multiplication */
 int *matvec(double *alpha, double *x, double *beta, double *y) {
-    matvecmul(x, y, tr_q, nface, tr_xyz, tr_q, tr_area, *alpha, *beta, double *rece_buf);
+    matvecmul(x, y, tr_q, nface, tr_xyz, tr_q, tr_area, *alpha, *beta, rece_buf);
     // 
     return NULL;
 }
