@@ -139,12 +139,13 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 
 	
 	printf("nface = %i\n",nface);
-	
+
 	stime = MPI_Wtime();
   	for (i=0; i<nface; i++) {
   		y[i] = rece_buf1[i];
-  		y[nface+i] = rece_buf2[i];
-  		printf("y[i] = %f\n",y[i]);
+  		y[nface+i] = rece_buf1[i+nface];
+  		// y[nface+i] = rece_buf2[i];
+  		// printf("y[i] = %f\n",y[i]);
   	}
 
 	
