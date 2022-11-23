@@ -129,6 +129,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
   	for (i=0; i<nface; i++) {
   		y[i] = rece_buf1[i];
   		y[nface+i] = rece_buf2[i];
+  		printf("y[i] = %f\n",y[i]);
   	}
 
 	// memcpy(y,rece_buf1+N*numprocs*sizeof(double),sizeof(y));
