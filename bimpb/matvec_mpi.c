@@ -129,7 +129,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 
 
 	// stime = MPI_Wtime(); y+myid*chunk
-	ierr = MPI_Allgather(send_buf1, chunk, MPI_DOUBLE, rece_buf1, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
+	ierr = MPI_Allgather(send_buf1, chunk, MPI_DOUBLE, rece_buf1, chunk, MPI_DOUBLE, MPI_COMM comm1);
   	if (ierr != MPI_SUCCESS) {
   	   	printf("Error in MPI_Allgather1 = %i\n",ierr);
   	}
@@ -139,7 +139,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
   	//    	printf("Error in MPI_Allgather2 = %i\n",ierr);
   	// } y+myid*chunk+nface
 
-	ierr = MPI_Allgather(send_buf2, chunk, MPI_DOUBLE, rece_buf2, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
+	ierr = MPI_Allgather(send_buf2, chunk, MPI_DOUBLE, rece_buf2, chunk, MPI_DOUBLE, MPI_COMM comm2);
   	if (ierr != MPI_SUCCESS) {
   	   	printf("Error in MPI_Allgather2 = %i\n",ierr);
   	}
