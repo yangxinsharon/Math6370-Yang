@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
    extern void timer_end(void); // yang
 
   	// initialize MPI
-  	int ierr, numprocs, myid;
+  	int ierr;
   	ierr = MPI_Init(&argc, &argv);
   	if (ierr != MPI_SUCCESS) {
   	   printf("Error in MPI_Init = %i\n",ierr);

@@ -8,7 +8,6 @@
 #include <math.h>
 #include "gl_variables.h"
 #include "gl_constants.h"
-#include "mpi.h"
 #include <string.h>
 
 /* Prototypes */
@@ -32,7 +31,6 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	int i, j;
 
 	ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
-	// printf(" NUMPROCS = %i\n",numprocs);
 	if (ierr != 0) {
 	  printf(" error in MPI_Comm_size = %i\n",ierr);
 	  MPI_Abort(MPI_COMM_WORLD, 1);
@@ -45,7 +43,6 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	  MPI_Abort(MPI_COMM_WORLD, 1);
 	}
 
-
     double pre1=0.50*(1.0+eps); /* const eps=80.0 */
     double pre2=0.50*(1.0+1.0/eps);
 
@@ -56,9 +53,8 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 
   	// int scount = (ie-is)*(myid+1)+nface;
   	int chunk=ie-is;
-  	int scount = (ie-is)+nface;
+  	// int scount = (ie-is)+nface;
   	int N = 2*nface;
-  	double stime = MPI_Wtime();
     for (i=is; i<ie; i++) {
 
     	double tp[3] = {tr_xyz[3*i], tr_xyz[3*i+1], tr_xyz[3*i+2]};
@@ -110,18 +106,29 @@ void matvecmul(const double *x, double *y, double *q, int nface,
   		y[nface+i] = y[nface+i]*beta + (pre2*x[nface+i]-peng[1])*alpha;
 	}
 
-	double ftime = MPI_Wtime();
-	double looptime = ftime-stime;
-	printf("looptime = %f\n",looptime);
+	// double ftime = MPI_Wtime();
+	// double looptime = ftime-stime;
+	// printf("looptime = %f\n",looptime);
+
+	
+	double *send_buf1, *send_buf2;
+	send_buf1 = (double *) calloc(chunk, sizeof(double));
+	send_buf2 = (double *) calloc(chunk, sizeof(double));
+
+  	for (i=0; i<chunk; i++) {
+		send_buf1[i]=y[is+i];
+		send_buf2[i]=y[nface+is+i];
+  	}
+
 
 	double *rece_buf1,*rece_buf2;
-	// rece_buf1 = (double *) calloc(2*N, sizeof(double));
+	// rece_buf1 = (double *) calloc(N, sizeof(double));
 	rece_buf1 = (double *) calloc(nface, sizeof(double));
 	rece_buf2 = (double *) calloc(nface, sizeof(double));
 
 
 	// stime = MPI_Wtime(); y+myid*chunk
-	ierr = MPI_Allgather(y+myid*chunk, chunk, MPI_DOUBLE, rece_buf1, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
+	ierr = MPI_Allgather(send_buf1, chunk, MPI_DOUBLE, rece_buf1, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
   	if (ierr != MPI_SUCCESS) {
   	   	printf("Error in MPI_Allgather1 = %i\n",ierr);
   	}
@@ -131,7 +138,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
   	//    	printf("Error in MPI_Allgather2 = %i\n",ierr);
   	// } y+myid*chunk+nface
 
-	ierr = MPI_Allgather(y+myid*chunk+nface, chunk, MPI_DOUBLE, rece_buf2, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
+	ierr = MPI_Allgather(send_buf2, chunk, MPI_DOUBLE, rece_buf2, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
   	if (ierr != MPI_SUCCESS) {
   	   	printf("Error in MPI_Allgather2 = %i\n",ierr);
   	}
