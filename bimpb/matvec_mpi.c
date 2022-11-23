@@ -115,13 +115,15 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	}
 
 
-	ierr = MPI_Allgather(y[is], scount, MPI_DOUBLE, rece_buf, N, MPI_DOUBLE, MPI_COMM_WORLD);
+	ierr = MPI_Allgather(y, scount, MPI_DOUBLE, rece_buf, N, MPI_DOUBLE, MPI_COMM_WORLD);
   	if (ierr != MPI_SUCCESS) {
   	   	printf("Error in MPI_Allgather = %i\n",ierr);
   	}
 
+  	printf("scount %i\n",scount);
+  	printf("rece_buf[scount] = %f\n",rece_buf[scount]);
   	memcpy(y,rece_buf,sizeof(y));
-
+	printf("y[scount] = %f\n",y[scount]);
 }
 
 
