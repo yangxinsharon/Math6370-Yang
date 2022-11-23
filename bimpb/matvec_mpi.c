@@ -110,45 +110,39 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	// double ftime = MPI_Wtime();
 	// double looptime = ftime-stime;
 	// printf("looptime = %f\n",looptime);
-
-	printf("chunk = %i\n",chunk);
+	// printf("chunk = %i\n",chunk);
 	
-	double *send_buf1, *send_buf2;
-	send_buf1 = (double *) calloc(chunk, sizeof(double));
-	send_buf2 = (double *) calloc(chunk, sizeof(double));
-
-  	for (i=0; i<chunk; i++) {
-		send_buf1[i]=y[is+i];
-		// printf("send_buf1[%i] = %f\n",i,send_buf1[i]);
-		// printf("y[%i] = %f\n",i,y[i+is]);
-		send_buf2[i]=y[nface+is+i];
-  	}
-  	printf("send_buf1[1] = %f\n",send_buf1[1]);
+	// double *send_buf1, *send_buf2;
+	// send_buf1 = (double *) calloc(chunk, sizeof(double));
+	// send_buf2 = (double *) calloc(chunk, sizeof(double));
+  	// for (i=0; i<chunk; i++) {
+	// 	send_buf1[i]=y[is+i];
+	// 	send_buf2[i]=y[nface+is+i];
+  	// }
 
 
 	double *rece_buf1,*rece_buf2;
-	// rece_buf1 = (double *) calloc(N, sizeof(double));
 	rece_buf1 = (double *) calloc(nface, sizeof(double));
 	rece_buf2 = (double *) calloc(nface, sizeof(double));
 
-	// printf("rece_buf1[chunk] = %f\n",rece_buf1[chunk]);
-
-	// stime = MPI_Wtime(); y+myid*chunk
-	// MPI_COMM 
-	ierr = MPI_Allgather(send_buf1, chunk, MPI_DOUBLE, rece_buf1, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
+	ierr = MPI_Allgather(y+myid*chunk, chunk, MPI_DOUBLE, rece_buf1, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
   	if (ierr != MPI_SUCCESS) {
   	   	printf("Error in MPI_Allgather1 = %i\n",ierr);
   	}
 
+	ierr = MPI_Allgather(y+myid*chunk+nface, chunk, MPI_DOUBLE, rece_buf2, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
+  	if (ierr != MPI_SUCCESS) {
+  	   	printf("Error in MPI_Allgather2 = %i\n",ierr);
+  	}
 	// ierr = MPI_Allgather(y+myid*chunk+nface, chunk, MPI_DOUBLE, rece_buf1+nface, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
   	// if (ierr != MPI_SUCCESS) {
   	//    	printf("Error in MPI_Allgather2 = %i\n",ierr);
   	// } y+myid*chunk+nface
 
-	ierr = MPI_Allgather(send_buf2, chunk, MPI_DOUBLE, rece_buf2, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
-  	if (ierr != MPI_SUCCESS) {
-  	   	printf("Error in MPI_Allgather2 = %i\n",ierr);
-  	}
+	// ierr = MPI_Allgather(send_buf2, chunk, MPI_DOUBLE, rece_buf2, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
+  	// if (ierr != MPI_SUCCESS) {
+  	//    	printf("Error in MPI_Allgather2 = %i\n",ierr);
+  	// }
 
 	// ftime = MPI_Wtime();
 	// double commtime = ftime-stime;
