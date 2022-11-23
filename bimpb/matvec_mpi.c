@@ -12,7 +12,7 @@
 #include <string.h>
 
 /* Prototypes */
-extern double *rece_buf;
+// extern double *rece_buf;
 int *matvec(double *alpha, double *x, double *beta, double *y);
 void comp_soleng_wrapper(double soleng);
 void comp_source_wrapper();
@@ -23,7 +23,7 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
 
  
 void matvecmul(const double *x, double *y, double *q, int nface, 
-	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta, double *rece_buf) {
+	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta) {
 	/* declarations for mpi */
 	int is, ie;
 	int ierr, numprocs, myid;
@@ -111,7 +111,8 @@ void matvecmul(const double *x, double *y, double *q, int nface,
   		y[nface+i] = y[nface+i]*beta + (pre2*x[nface+i]-peng[1])*alpha;
 	}
 
-
+	double *rece_buf;
+	rece_buf = (double *) calloc(N, sizeof(double));
 	ierr = MPI_Allgather(y, scount, MPI_DOUBLE, rece_buf, scount, MPI_DOUBLE, MPI_COMM_WORLD);
   	if (ierr != MPI_SUCCESS) {
   	   	printf("Error in MPI_Allgather = %i\n",ierr);
@@ -127,7 +128,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 
 /* This subroutine wraps the matrix-vector multiplication */
 int *matvec(double *alpha, double *x, double *beta, double *y) {
-    matvecmul(x, y, tr_q, nface, tr_xyz, tr_q, tr_area, *alpha, *beta, rece_buf);
+    matvecmul(x, y, tr_q, nface, tr_xyz, tr_q, tr_area, *alpha, *beta);
     // 
     return NULL;
 }
