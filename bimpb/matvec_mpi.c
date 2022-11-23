@@ -11,8 +11,7 @@
 #include "mpi.h"
 
 /* Prototypes */
-extern int numprocs;
-extern int myid;
+extern int ierr,numprocs, myid;
 int *matvec(double *alpha, double *x, double *beta, double *y);
 void comp_soleng_wrapper(double soleng);
 void comp_source_wrapper();
@@ -91,7 +90,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 		y[i] = y[i]*beta + (pre1*x[i]-peng[0])*alpha;
 		y[nface+i] = y[nface+i]*beta + (pre2*x[nface+i]-peng[1])*alpha;
 	}
-	ierr = MPI_Allgather(y, 2, MPI_DOUBLE, y, N, MPI_DOUBLE,MPI_COMM_WORLD)
+	ierr = MPI_Allgather(y, 2, MPI_DOUBLE, y, N, MPI_DOUBLE,MPI_COMM_WORLD);
   	if (ierr != MPI_SUCCESS) {
   	   printf("Error in MPI_Allgather = %i\n",ierr);
   	   return 1;
