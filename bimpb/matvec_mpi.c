@@ -113,26 +113,34 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	}
 
 	double *rece_buf1,*rece_buf2;
-	rece_buf1 = (double *) calloc(N, sizeof(double));
-	rece_buf2 = (double *) calloc(N, sizeof(double));
+	rece_buf1 = (double *) calloc(2*N, sizeof(double));
+	// rece_buf1 = (double *) calloc(N, sizeof(double));
+	// rece_buf2 = (double *) calloc(N, sizeof(double));
 
 	ierr = MPI_Allgather(y+myid*chunk, chunk, MPI_DOUBLE, rece_buf1, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
   	if (ierr != MPI_SUCCESS) {
   	   	printf("Error in MPI_Allgather1 = %i\n",ierr);
   	}
 
-	ierr = MPI_Allgather(y+myid*chunk+nface, chunk, MPI_DOUBLE, rece_buf2, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
+	ierr = MPI_Allgather(y+myid*chunk+nface, chunk, MPI_DOUBLE, rece_buf1+nface, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
   	if (ierr != MPI_SUCCESS) {
   	   	printf("Error in MPI_Allgather2 = %i\n",ierr);
   	}
 
-  	for (i=0; i<nface; i++) {
-  		y[i] = rece_buf1[i];
-  		y[nface+i] = rece_buf2[i];
-  		printf("y[i] = %f\n",y[i]);
-  	}
+	// ierr = MPI_Allgather(y+myid*chunk+nface, chunk, MPI_DOUBLE, rece_buf2, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
+  	// if (ierr != MPI_SUCCESS) {
+  	//    	printf("Error in MPI_Allgather2 = %i\n",ierr);
+  	// }
 
-	// memcpy(y,rece_buf1+N*numprocs*sizeof(double),sizeof(y));
+	printf("nface = %i\n",nface);
+
+  	// for (i=0; i<nface; i++) {
+  	// 	y[i] = rece_buf1[i];
+  	// 	y[nface+i] = rece_buf2[i];
+  	// 	printf("y[i] = %f\n",y[i]);
+  	// }
+
+	memcpy(y,rece_buf1,sizeof(y));
 
   	// printf("scount %i\n",scount);
   	// printf("rece_buf[N*numprocs] = %f\n",rece_buf[N*numprocs]);
