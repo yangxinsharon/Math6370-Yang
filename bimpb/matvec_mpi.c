@@ -107,7 +107,6 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 		y[i] = y[i]*beta + (pre1*x[i]-peng[0])*alpha;
 		y[nface+i] = y[nface+i]*beta + (pre2*x[nface+i]-peng[1])*alpha;
 	}
-	int 
 	ierr = MPI_Allgather(y, scount, MPI_DOUBLE, y, N, MPI_DOUBLE,MPI_COMM_WORLD);
   	if (ierr != MPI_SUCCESS) {
   	   printf("Error in MPI_Allgather = %i\n",ierr);
