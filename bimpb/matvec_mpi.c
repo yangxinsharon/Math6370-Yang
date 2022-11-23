@@ -27,7 +27,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	int is, ie;
 	int ierr, numprocs, myid;
 
-	int N = 2*nface;
+
 	/* declarations for matvecmul */
 	int i, j;
 
@@ -50,6 +50,8 @@ void matvecmul(const double *x, double *y, double *q, int nface,
   	ie = ((int) (1.0*nface/numprocs))*(myid+1);
   	if (myid == numprocs-1)  ie = nface;
 
+  	int scount = 2*(ie -is);
+  	int N = 2*nface;
     // for (i=0; i<nface; i++) {
     for (i=is; i<ie; i++) {
     	/* repeat calculation for mpi */
@@ -105,7 +107,8 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 		y[i] = y[i]*beta + (pre1*x[i]-peng[0])*alpha;
 		y[nface+i] = y[nface+i]*beta + (pre2*x[nface+i]-peng[1])*alpha;
 	}
-	ierr = MPI_Allgather(y, 2, MPI_DOUBLE, y, N, MPI_DOUBLE,MPI_COMM_WORLD);
+	int 
+	ierr = MPI_Allgather(y, scount, MPI_DOUBLE, y, N, MPI_DOUBLE,MPI_COMM_WORLD);
   	if (ierr != MPI_SUCCESS) {
   	   printf("Error in MPI_Allgather = %i\n",ierr);
   	}
