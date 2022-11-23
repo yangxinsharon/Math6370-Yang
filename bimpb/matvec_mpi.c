@@ -59,6 +59,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
   	int scount = (ie-is)+nface;
   	int N = 2*nface;
     // for (i=0; i<nface; i++) {
+  	double stime = MPI_Wtime();
     for (i=is; i<ie; i++) {
 
     	double tp[3] = {tr_xyz[3*i], tr_xyz[3*i+1], tr_xyz[3*i+2]};
@@ -112,6 +113,10 @@ void matvecmul(const double *x, double *y, double *q, int nface,
   		y[nface+i] = y[nface+i]*beta + (pre2*x[nface+i]-peng[1])*alpha;
 	}
 
+	double ftime = MPI_Wtime();
+	double looptime = ftime-stime;
+	printf("looptime = %f\n",looptime);
+
 	double *rece_buf1,*rece_buf2;
 	rece_buf1 = (double *) calloc(2*N, sizeof(double));
 	// rece_buf1 = (double *) calloc(N, sizeof(double));
@@ -140,7 +145,11 @@ void matvecmul(const double *x, double *y, double *q, int nface,
   	// 	printf("y[i] = %f\n",y[i]);
   	// }
 
+	stime = MPI_Wtime();
 	memcpy(y,rece_buf1,sizeof(y));
+	ftime = MPI_Wtime();
+	double cpytime = ftime -stime;
+	printf("cpytime = %f\n",cpytime);
 
   	// printf("scount %i\n",scount);
   	// printf("rece_buf[N*numprocs] = %f\n",rece_buf[N*numprocs]);
