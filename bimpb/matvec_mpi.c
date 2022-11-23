@@ -126,7 +126,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
   	   	printf("Error in MPI_Allgather2 = %i\n",ierr);
   	}
 
-  	for (i=0; i<2*N; i++) {
+  	for (i=0; i<nface; i++) {
   		y[i] = rece_buf1[i];
   		y[nface+i] = rece_buf2[i];
   	}
