@@ -111,6 +111,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	// double looptime = ftime-stime;
 	// printf("looptime = %f\n",looptime);
 
+	printf("chunk = %i\n",chunk);
 	
 	double *send_buf1, *send_buf2;
 	send_buf1 = (double *) calloc(chunk, sizeof(double));
@@ -118,8 +119,8 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 
   	for (i=0; i<chunk; i++) {
 		send_buf1[i]=y[is+i];
-		printf("send_buf1[%i] = %f\n",i,send_buf1[i]);
-		printf("y[%i] = %f\n",i,y[i+is]);
+		// printf("send_buf1[%i] = %f\n",i,send_buf1[i]);
+		// printf("y[%i] = %f\n",i,y[i+is]);
 		send_buf2[i]=y[nface+is+i];
   	}
 
@@ -128,7 +129,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	// rece_buf1 = (double *) calloc(N, sizeof(double));
 	rece_buf1 = (double *) calloc(nface, sizeof(double));
 	rece_buf2 = (double *) calloc(nface, sizeof(double));
-	// printf("send_buf1[chunk] = %f\n",send_buf1[chunk]);
+	printf("send_buf1[%i] = %f\n",chunk,send_buf1[chunk]);
 	// printf("rece_buf1[chunk] = %f\n",rece_buf1[chunk]);
 
 	// stime = MPI_Wtime(); y+myid*chunk
