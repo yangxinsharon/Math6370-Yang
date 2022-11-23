@@ -13,7 +13,7 @@
 
 /* Prototypes */
 extern int ierr,numprocs, myid;
-// extern double *rece_buf;
+extern double *rece_buf;
 int *matvec(double *alpha, double *x, double *beta, double *y);
 void comp_soleng_wrapper(double soleng);
 void comp_source_wrapper();
