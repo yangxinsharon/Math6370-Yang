@@ -74,6 +74,7 @@ int main(int argc, char *argv[]) {
    sprintf(density, "1");
    // sprintf(fname,"%s",argv[1]);
    // sprintf(density,"%s",argv[2]);
+   rece_buf = (double *) calloc(N, sizeof(double));
 	readin(fname, density);
 
 	comp_source_wrapper(); //wraps the solvation energy computation
@@ -90,7 +91,7 @@ int main(int argc, char *argv[]) {
 	h=(double *) calloc (ldh*(RESTRT+2), sizeof(double));
 
 
-	rece_buf = (double *) calloc(N, sizeof(double));
+	// rece_buf = (double *) calloc(N, sizeof(double));
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
 
 	soleng=0.0;
