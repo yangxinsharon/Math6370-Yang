@@ -117,7 +117,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
   	if (ierr != MPI_SUCCESS) {
   	   	printf("Error in MPI_Allgather = %i\n",ierr);
   	}
-  	y = N;
+  	y = rece_buf;
 
 }
 
