@@ -126,7 +126,8 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	// rece_buf1 = (double *) calloc(N, sizeof(double));
 	rece_buf1 = (double *) calloc(nface, sizeof(double));
 	rece_buf2 = (double *) calloc(nface, sizeof(double));
-
+	printf("send_buf1[chunk] = %f\n",send_buf1[chunk]);
+	printf("rece_buf1[chunk] = %f\n",rece_buf1[chunk]);
 
 	// stime = MPI_Wtime(); y+myid*chunk
 	// MPI_COMM 
