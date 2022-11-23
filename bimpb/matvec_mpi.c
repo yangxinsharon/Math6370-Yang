@@ -25,7 +25,7 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
 void matvecmul(const double *x, double *y, double *q, int nface, 
 	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta) {
 	/* declarations for mpi */
-	int is, ie, i,j;
+	int is, ie, i, j;
 	int ierr, numprocs, myid;
 
 	ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
@@ -125,16 +125,24 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	rece_buf1 = (double *) calloc(nface, sizeof(double));
 	rece_buf2 = (double *) calloc(nface, sizeof(double));
 
-	ierr = MPI_Allgather(sbuf_y1, chunk, MPI_DOUBLE, rece_buf1, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
-	// ierr = MPI_Allgatherv(isend, iscnt, MPI_INT, irecv, ircnt, idisp, MPI_INT, MPI_COMM_WORLD);
+	int irecv[numprocs];
+	for (i=0; i<numprocs-1, i++){
+		irecv[i] = int (nface/numprocs);
+		
+	}
+
+
+	// ierr = MPI_Allgather(sbuf_y1, chunk, MPI_DOUBLE, rece_buf1, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
+	ierr = MPI_Allgatherv(sbuf_y1, chunk, MPI_DOUBLE, rece_buf1, irecv, idisp, MPI_DOUBLE, MPI_COMM_WORLD);
   	if (ierr != MPI_SUCCESS) {
   	   	printf("Error in MPI_Allgather1 = %i\n",ierr);
   	}
 
-	ierr = MPI_Allgather(sbuf_y2, chunk, MPI_DOUBLE, rece_buf2, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
-  	if (ierr != MPI_SUCCESS) {
-  	   	printf("Error in MPI_Allgather2 = %i\n",ierr);
-  	}
+	// ierr = MPI_Allgather(sbuf_y2, chunk, MPI_DOUBLE, rece_buf2, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
+  	// if (ierr != MPI_SUCCESS) {
+  	//    	printf("Error in MPI_Allgather2 = %i\n",ierr);
+  	// }
+
 	// ierr = MPI_Allgather(y+myid*chunk+nface, chunk, MPI_DOUBLE, rece_buf1+nface, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
   	// if (ierr != MPI_SUCCESS) {
   	//    	printf("Error in MPI_Allgather2 = %i\n",ierr);
