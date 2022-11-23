@@ -9,10 +9,11 @@
 #include "gl_variables.h"
 #include "gl_constants.h"
 #include "mpi.h"
+#include <string.h>
 
 /* Prototypes */
 extern int ierr,numprocs, myid;
-extern *rece_buf;
+extern double *rece_buf;
 int *matvec(double *alpha, double *x, double *beta, double *y);
 void comp_soleng_wrapper(double soleng);
 void comp_source_wrapper();
