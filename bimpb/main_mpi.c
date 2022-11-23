@@ -75,6 +75,7 @@ int main(int argc, char *argv[]) {
    // sprintf(fname,"%s",argv[1]);
    // sprintf(density,"%s",argv[2]);
 	readin(fname, density);
+
 	comp_source_wrapper(); //wraps the solvation energy computation
 
 	/* parameters for GMRES */

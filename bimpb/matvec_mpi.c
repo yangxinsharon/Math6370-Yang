@@ -12,8 +12,6 @@
 #include <string.h>
 
 /* Prototypes */
-extern int ierr,numprocs, myid;
-extern double *rece_buf;
 int *matvec(double *alpha, double *x, double *beta, double *y);
 void comp_soleng_wrapper(double soleng);
 void comp_source_wrapper();
@@ -24,11 +22,10 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
 
  
 void matvecmul(const double *x, double *y, double *q, int nface, 
-	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta) {
+	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta, double *rece_buf) {
 	/* declarations for mpi */
 	int is, ie;
 	int ierr, numprocs, myid;
-
 
 	/* declarations for matvecmul */
 	int i, j;
@@ -47,6 +44,10 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	  MPI_Abort(MPI_COMM_WORLD, 1);
 	}
 
+
+    double pre1=0.50*(1.0+eps); /* const eps=80.0 */
+    double pre2=0.50*(1.0+1.0/eps);
+
 	/* determine this processor's interval */
   	is = ((int) (1.0*nface/numprocs))*myid;
   	ie = ((int) (1.0*nface/numprocs))*(myid+1);
@@ -55,13 +56,8 @@ void matvecmul(const double *x, double *y, double *q, int nface,
   	// int scount = (ie-is)*(myid+1)+nface;
   	int scount = (ie-is)+nface;
   	int N = 2*nface;
-  	// double *myy;
-  	// myy = (double *) calloc(scount, sizeof(double));
     // for (i=0; i<nface; i++) {
     for (i=is; i<ie; i++) {
-    	/* repeat calculation for mpi */
-    	double pre1=0.50*(1.0+eps); /* const eps=80.0 */
-    	double pre2=0.50*(1.0+1.0/eps);
 
     	double tp[3] = {tr_xyz[3*i], tr_xyz[3*i+1], tr_xyz[3*i+2]};
 		double tq[3] = {tr_q[3*i], tr_q[3*i+1], tr_q[3*i+2]};
@@ -115,7 +111,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	}
 
 
-	ierr = MPI_Allgather(y, scount, MPI_DOUBLE, rece_buf, N, MPI_DOUBLE, MPI_COMM_WORLD);
+	ierr = MPI_Allgather(y, scount, MPI_DOUBLE, rece_buf, scount, MPI_DOUBLE, MPI_COMM_WORLD);
   	if (ierr != MPI_SUCCESS) {
   	   	printf("Error in MPI_Allgather = %i\n",ierr);
   	}
