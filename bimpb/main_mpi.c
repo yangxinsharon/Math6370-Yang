@@ -23,7 +23,6 @@ extern double *h_pot;
 extern double *dev_xp, *dev_yp, *dev_zp, *dev_q, *dev_pot;
 extern const double eps;
 extern double *rece_buf;
-extern rece_buf = (double *) calloc(N, sizeof(double));
 
 int main(int argc, char *argv[]) {
 	/*variables local to main*/
@@ -86,12 +85,11 @@ int main(int argc, char *argv[]) {
 	iter=100;
 	resid=1e-4;
 	xvct=(double *) calloc(N, sizeof(double));
-
 	work=(double *) calloc (ldw*(RESTRT+4), sizeof(double));
 	h=(double *) calloc (ldh*(RESTRT+2), sizeof(double));
 
 
-
+	rece_buf = (double *) calloc(N, sizeof(double));
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
 
 	soleng=0.0;
