@@ -137,16 +137,18 @@ void matvecmul(const double *x, double *y, double *q, int nface,
   	//    	printf("Error in MPI_Allgather2 = %i\n",ierr);
   	// }
 
+	
 	printf("nface = %i\n",nface);
-
-  	// for (i=0; i<nface; i++) {
-  	// 	y[i] = rece_buf1[i];
-  	// 	y[nface+i] = rece_buf2[i];
-  	// 	printf("y[i] = %f\n",y[i]);
-  	// }
-
+	
 	stime = MPI_Wtime();
-	memcpy(y,rece_buf1,sizeof(y));
+  	for (i=0; i<nface; i++) {
+  		y[i] = rece_buf1[i];
+  		y[nface+i] = rece_buf2[i];
+  		printf("y[i] = %f\n",y[i]);
+  	}
+
+	
+	// memcpy(y,rece_buf1,sizeof(y));
 	ftime = MPI_Wtime();
 	double cpytime = ftime -stime;
 	printf("cpytime = %f\n",cpytime);
