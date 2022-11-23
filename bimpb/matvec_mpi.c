@@ -105,8 +105,9 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 				peng[1] = peng[1] + (L3*peng_old[0] + L4*peng_old[1]) * area;
         	}
 		}
-
+		printf("y[i] before = %f\n",y[i]);
 		y[i] = y[i]*beta + (pre1*x[i]-peng[0])*alpha;
+		printf("y[i] after = %f\n",y[i])
   		y[nface+i] = y[nface+i]*beta + (pre2*x[nface+i]-peng[1])*alpha;
 	}
 
