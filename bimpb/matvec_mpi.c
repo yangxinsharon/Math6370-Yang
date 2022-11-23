@@ -32,7 +32,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	int i, j;
 
 	ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
-	printf(" NUMPROCS = %i\n",numprocs);
+	// printf(" NUMPROCS = %i\n",numprocs);
 	if (ierr != 0) {
 	  printf(" error in MPI_Comm_size = %i\n",ierr);
 	  MPI_Abort(MPI_COMM_WORLD, 1);
@@ -120,7 +120,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	rece_buf2 = (double *) calloc(N, sizeof(double));
 
 
-	stime = MPI_Wtime();
+	// stime = MPI_Wtime();
 	ierr = MPI_Allgather(y+myid*chunk, chunk, MPI_DOUBLE, rece_buf1, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
   	if (ierr != MPI_SUCCESS) {
   	   	printf("Error in MPI_Allgather1 = %i\n",ierr);
@@ -136,25 +136,29 @@ void matvecmul(const double *x, double *y, double *q, int nface,
   	   	printf("Error in MPI_Allgather2 = %i\n",ierr);
   	}
 
-	ftime = MPI_Wtime();
-	double commtime = ftime-stime;
-	printf("commtime = %f\n",commtime);
+	// ftime = MPI_Wtime();
+	// double commtime = ftime-stime;
+	// printf("commtime = %f\n",commtime);
 	
-	printf("nface = %i\n",nface);
+	// printf("nface = %i\n",nface);
 
 
-	stime = MPI_Wtime();
+	// stime = MPI_Wtime();
   	for (i=0; i<nface; i++) {
   		y[i] = rece_buf1[i];
   		// y[nface+i] = rece_buf1[i+nface];
   		y[nface+i] = rece_buf2[i];
-  		// printf("y[i] = %f\n",y[i]);
   	}
 
 	// memcpy(y,rece_buf1,sizeof(y));
-	ftime = MPI_Wtime();
-	double cpytime = ftime -stime;
-	printf("cpytime = %f\n",cpytime);
+
+
+
+	// ftime = MPI_Wtime();
+	// double cpytime = ftime -stime;
+	// printf("cpytime = %f\n",cpytime);
+
+
 
   	// printf("scount %i\n",scount);
   	// printf("rece_buf[N*numprocs] = %f\n",rece_buf[N*numprocs]);
