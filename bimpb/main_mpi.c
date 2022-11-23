@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <math.h>
 #include "pp_timer.h"
+#include "mpi.h"
 
 extern int nface, nspt, natm, nchr;			// number of faces, points, atoms, and charges
 extern int **extr_v;								// [3][nspt]
@@ -133,7 +134,7 @@ int main(int argc, char *argv[]) {
 	free(xvct);
 	free(atmchr);
 	free(chrpos);
-	
+
 	// finalize MPI
   	ierr = MPI_Finalize();
 
