@@ -50,7 +50,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
   	ie = ((int) (1.0*nface/numprocs))*(myid+1);
   	if (myid == numprocs-1)  ie = nface;
 
-  	int scount = 2*(ie -is);
+  	int scount = (ie-is)*(myid+1)+nface;
   	int N = 2*nface;
   	// double *myy;
   	// myy = (double *) calloc(scount, sizeof(double));
@@ -105,16 +105,20 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 				peng[1] = peng[1] + (L3*peng_old[0] + L4*peng_old[1]) * area;
         	}
 		}
-		printf("y[i] before = %f\n",y[i]);
+		// printf("y[i] before = %f\n",y[i]);
 		y[i] = y[i]*beta + (pre1*x[i]-peng[0])*alpha;
-		printf("y[i] after = %f\n",y[i]);
+		// printf("y[i] after = %f\n",y[i]);
   		y[nface+i] = y[nface+i]*beta + (pre2*x[nface+i]-peng[1])*alpha;
 	}
 
-	// ierr = MPI_Allgather(y, N, MPI_DOUBLE, y, N, MPI_DOUBLE, MPI_COMM_WORLD);
-  	// if (ierr != MPI_SUCCESS) {
-  	//    	printf("Error in MPI_Allgather = %i\n",ierr);
-  	// }
+	double *rece_buf;
+	rece_buf = (double *) calloc(N, sizeof(double));
+	ierr = MPI_Allgather(y, scount, MPI_DOUBLE, rece_buf, N, MPI_DOUBLE, MPI_COMM_WORLD);
+  	if (ierr != MPI_SUCCESS) {
+  	   	printf("Error in MPI_Allgather = %i\n",ierr);
+  	}
+  	y = N;
+
 }
 
 
