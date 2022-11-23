@@ -25,7 +25,7 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
 void matvecmul(const double *x, double *y, double *q, int nface, 
 	double *tr_xyz, double *tr_q, double *tr_area, double alpha, double beta) {
 	/* declarations for mpi */
-	int is, ie, j;
+	int is, ie, i,j;
 	int ierr, numprocs, myid;
 
 	ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
