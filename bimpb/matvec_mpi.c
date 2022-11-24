@@ -126,9 +126,16 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	rece_buf2 = (double *) calloc(nface, sizeof(double));
 
 	int irecv[numprocs];
-	for (i=0; i<numprocs-1, i++){
-		irecv[i] = int (nface/numprocs);
-		
+	for (i=0; i<numprocs-1; i++) {
+		irecv[i] = ((int) (1.0*nface/numprocs));
+	}
+	irecv[numprocs-1]=nface-((int) (1.0*nface/numprocs))*(numprocs-2);
+
+	int idisp[numprocs];
+	int sumtmp=0;
+	for (i = 0; i <numprocs; i++) {
+		idisp[i] = 0 + sumtmp;
+		sumtmp = sumtmp+irecv[i];
 	}
 
 
