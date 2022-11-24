@@ -217,7 +217,7 @@ exit:	ichanged=nface-nfacenew;
 			}
 		}
         nfacenew=nfacenew-1;
-
+		printf("nface in exit is %d\n",nface);
 	}
 
 	printf("%d faces are deleted\n",nface-nfacenew);
