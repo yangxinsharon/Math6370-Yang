@@ -60,7 +60,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 		irecv[i] = ((int) (1.0*nface/numprocs));
 	}
 	irecv[numprocs-1]=nface-((int) (1.0*nface/numprocs))*(numprocs-1);
-	printf(" irecv[%i] = %i\n",numprocs-1,irecv[numprocs-1]);
+	// printf(" irecv[%i] = %i\n",numprocs-1,irecv[numprocs-1]);
 
 	// if (myid != 0){
 	// 	int pchunk = irecv[myid-1];
@@ -72,7 +72,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 		idisp[i] = 0 + sumtmp;
 		sumtmp = sumtmp+irecv[i];
 	}
-	printf(" idisp[%i] = %i\n",myid,idisp[myid]);
+	// printf(" idisp[%i] = %i\n",myid,idisp[myid]);
 
   	double *sbuf_y1, *sbuf_y2;
   	sbuf_y1 = (double *) calloc(chunk, sizeof(double));
