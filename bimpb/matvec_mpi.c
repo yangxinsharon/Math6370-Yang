@@ -42,7 +42,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 
     double pre1=0.50*(1.0+eps); /* const eps=80.0 */
     double pre2=0.50*(1.0+1.0/eps);
-
+	printf(" nface = %i\n",nface);
 	/* determine this processor's interval */
   	is = ((int) (1.0*nface/numprocs))*myid;
   	ie = ((int) (1.0*nface/numprocs))*(myid+1);
@@ -50,6 +50,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 
 	printf(" is = %i\n",is);
 	printf(" ie = %i\n",ie);
+	printf(" nface = %i\n",nface);
 
 
   	int chunk=ie-is;
