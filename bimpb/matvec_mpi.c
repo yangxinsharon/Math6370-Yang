@@ -42,19 +42,38 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 
     double pre1=0.50*(1.0+eps); /* const eps=80.0 */
     double pre2=0.50*(1.0+1.0/eps);
-	printf(" nface = %i\n",nface);
+	// printf(" nface = %i\n",nface);
+
 	/* determine this processor's interval */
   	is = ((int) (1.0*nface/numprocs))*myid;
   	ie = ((int) (1.0*nface/numprocs))*(myid+1);
   	if (myid == numprocs-1)  ie = nface;
 
-	printf(" is = %i\n",is);
-	printf(" ie = %i\n",ie);
-	printf(" nface = %i\n",nface);
-
+	// printf(" is = %i\n",is);
+	// printf(" ie = %i\n",ie);
+	// printf(" nface = %i\n",nface);
 
   	int chunk=ie-is;
-  	printf(" chunk = %i\n",chunk);
+  	// printf(" chunk = %i\n",chunk);
+  	int irecv[numprocs];
+	for (i=0; i<numprocs-1; i++) {
+		irecv[i] = ((int) (1.0*nface/numprocs));
+	}
+	irecv[numprocs-1]=nface-((int) (1.0*nface/numprocs))*(numprocs-1);
+	printf(" irecv[%i] = %i\n",numprocs-1,irecv[numprocs-1]);
+
+	// if (myid != 0){
+	// 	int pchunk = irecv[myid-1];
+	// }
+
+	int idisp[numprocs];
+	int sumtmp=0;
+	for (i = 0; i <numprocs; i++) {
+		idisp[i] = 0 + sumtmp;
+		sumtmp = sumtmp+irecv[i];
+	}
+	printf(" idisp[%i] = %i\n",myid,idisp[myid]);
+
   	double *sbuf_y1, *sbuf_y2;
   	sbuf_y1 = (double *) calloc(chunk, sizeof(double));
 	sbuf_y2 = (double *) calloc(chunk, sizeof(double));
@@ -108,8 +127,8 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 		}
 		// y[i] = y[i]*beta + (pre1*x[i]-peng[0])*alpha;
   		// y[nface+i] = y[nface+i]*beta + (pre2*x[nface+i]-peng[1])*alpha;
-  		sbuf_y1[i-myid*chunk] = y[i]*beta + (pre1*x[i]-peng[0])*alpha;
-  		sbuf_y2[i-myid*chunk] = y[nface+i]*beta + (pre2*x[nface+i]-peng[1])*alpha;
+  		sbuf_y1[i-idisp[myid]] = y[i]*beta + (pre1*x[i]-peng[0])*alpha;
+  		sbuf_y2[i-idisp[myid]] = y[nface+i]*beta + (pre2*x[nface+i]-peng[1])*alpha;
 	}
 
 	// double ftime = MPI_Wtime();
@@ -130,18 +149,18 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	rece_buf1 = (double *) calloc(nface, sizeof(double));
 	rece_buf2 = (double *) calloc(nface, sizeof(double));
 
-	int irecv[numprocs];
-	for (i=0; i<numprocs-1; i++) {
-		irecv[i] = ((int) (1.0*nface/numprocs));
-	}
-	irecv[numprocs-1]=nface-((int) (1.0*nface/numprocs))*(numprocs-1);
+	// int irecv[numprocs];
+	// for (i=0; i<numprocs-1; i++) {
+	// 	irecv[i] = ((int) (1.0*nface/numprocs));
+	// }
+	// irecv[numprocs-1]=nface-((int) (1.0*nface/numprocs))*(numprocs-1);
 
-	int idisp[numprocs];
-	int sumtmp=0;
-	for (i = 0; i <numprocs; i++) {
-		idisp[i] = 0 + sumtmp;
-		sumtmp = sumtmp+irecv[i];
-	}
+	// int idisp[numprocs];
+	// int sumtmp=0;
+	// for (i = 0; i <numprocs; i++) {
+	// 	idisp[i] = 0 + sumtmp;
+	// 	sumtmp = sumtmp+irecv[i];
+	// }
 
 
 	// ierr = MPI_Allgather(sbuf_y1, chunk, MPI_DOUBLE, rece_buf1, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
