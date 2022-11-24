@@ -34,7 +34,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	}
 
 	ierr = MPI_Comm_rank(MPI_COMM_WORLD, &myid);
-	printf(" MYID = %i\n",myid);
+	// printf(" MYID = %i\n",myid);
 	if (ierr != 0) {
 	  printf(" error in MPI_Comm_rank = %i\n",ierr);
 	  MPI_Abort(MPI_COMM_WORLD, 1);
