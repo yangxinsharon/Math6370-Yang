@@ -50,6 +50,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
   	if (myid == numprocs-1)  ie = nface;
 
   	int chunk=ie-is;
+  	printf(" chunk = %i\n",chunk);
   	double *sbuf_y1, *sbuf_y2;
   	sbuf_y1 = (double *) calloc(chunk, sizeof(double));
 	sbuf_y2 = (double *) calloc(chunk, sizeof(double));
@@ -129,7 +130,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	for (i=0; i<numprocs-1; i++) {
 		irecv[i] = ((int) (1.0*nface/numprocs));
 	}
-	irecv[numprocs-1]=nface-((int) (1.0*nface/numprocs))*(numprocs-2);
+	irecv[numprocs-1]=nface-((int) (1.0*nface/numprocs))*(numprocs-1);
 
 	int idisp[numprocs];
 	int sumtmp=0;
@@ -177,8 +178,10 @@ void matvecmul(const double *x, double *y, double *q, int nface,
   	}
 
 	// memcpy(y,rece_buf1,sizeof(y));
-
-
+  	free(sbuf_y1);
+  	free(sbuf_y2);
+  	free(rece_buf1);
+  	free(rece_buf2);
 
 	// ftime = MPI_Wtime();
 	// double cpytime = ftime -stime;
