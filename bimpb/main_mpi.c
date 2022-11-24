@@ -22,7 +22,6 @@ extern double *work, *h;
 extern double *h_pot;
 extern double *dev_xp, *dev_yp, *dev_zp, *dev_q, *dev_pot;
 extern const double eps;
-// extern double *rece_buf;
 
 int main(int argc, char *argv[]) {
 	/*variables local to main*/
@@ -54,18 +53,6 @@ int main(int argc, char *argv[]) {
   	   return 1;
   	}
 
-	// ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
-	// if (ierr != MPI_SUCCESS) {
-	//    printf("Error in MPI_Comm_size = %i\n",ierr);
-	//    return 1;
-	// }
-
-	// ierr = MPI_Comm_rank(MPI_COMM_WORLD, &myid);
-	// if (ierr != MPI_SUCCESS) {
-	//    printf("Error in MPI_Comm_rank = %i\n",ierr);
-	//    return 1;
-	// }
-
 	timer_start("TOTAL_TIME");
 	printf("%d %s %s %s \n", argc, argv[0], argv[1], argv[2]);
 
@@ -74,8 +61,6 @@ int main(int argc, char *argv[]) {
    sprintf(density, "1");
    // sprintf(fname,"%s",argv[1]);
    // sprintf(density,"%s",argv[2]);
-   // extern double *rece_buf;
-   // rece_buf = (double *) calloc(N, sizeof(double));
 	readin(fname, density);
 
 	comp_source_wrapper(); //wraps the solvation energy computation

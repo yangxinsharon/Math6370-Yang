@@ -12,7 +12,6 @@
 #include <string.h>
 
 /* Prototypes */
-// extern double *rece_buf;
 int *matvec(double *alpha, double *x, double *beta, double *y);
 void comp_soleng_wrapper(double soleng);
 void comp_source_wrapper();
@@ -48,6 +47,10 @@ void matvecmul(const double *x, double *y, double *q, int nface,
   	is = ((int) (1.0*nface/numprocs))*myid;
   	ie = ((int) (1.0*nface/numprocs))*(myid+1);
   	if (myid == numprocs-1)  ie = nface;
+
+	printf(" is = %i\n",is);
+	printf(" ie = %i\n",ie);
+
 
   	int chunk=ie-is;
   	printf(" chunk = %i\n",chunk);
