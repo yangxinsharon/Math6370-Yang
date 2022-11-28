@@ -215,14 +215,14 @@ int main(int argc, char *argv[]) {
 	// if (myid == 0){
 	// 	timer_end();
 	// }
-	printf("before MPI_Barrier\n");
+	// printf("before MPI_Barrier\n");
 	ierr = MPI_Barrier(MPI_COMM_WORLD);
      if (ierr != 0) {
         printf("Error in MPI_Barrier = %i\n",ierr);
         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
         return 1;
 	}
-	printf("before free memory\n");
+	// printf("before free memory\n");
 
 	/* free memory */
 	if (myid == 0){
