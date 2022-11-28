@@ -135,38 +135,38 @@ int main(int argc, char *argv[]) {
 		printf("Finish Bcast atmchr id = %i\n",myid);
 		printf("Finish Bcast atmchr[0] = %f\t %i\n",atmchr[0], nchr);
 
-		ierr = MPI_Bcast(chrpos, 3*nchr, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-     	if (ierr != 0) {
-         printf("Error in MPI_Bcast chrpos = %i\n",ierr);
-         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
-         return 1;
-		}		
-		printf("Finish Bcast chrpos id = %i\n",myid);
+		// ierr = MPI_Bcast(chrpos, 3*nchr, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+     	// if (ierr != 0) {
+      //    printf("Error in MPI_Bcast chrpos = %i\n",ierr);
+      //    ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+      //    return 1;
+		// }		
+		// printf("Finish Bcast chrpos id = %i\n",myid);
 
-		ierr = MPI_Bcast(tr_xyz, 3*nface, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-     	if (ierr != 0) {
-         printf("Error in MPI_Bcast tr_xyz = %i\n",ierr);
-         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
-         return 1;
-		}
-		printf("Finish Bcast tr_xyz id = %i\n",myid);
+		// ierr = MPI_Bcast(tr_xyz, 3*nface, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+     	// if (ierr != 0) {
+      //    printf("Error in MPI_Bcast tr_xyz = %i\n",ierr);
+      //    ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+      //    return 1;
+		// }
+		// printf("Finish Bcast tr_xyz id = %i\n",myid);
 
-		ierr = MPI_Bcast(tr_q, 3*nface, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-     	if (ierr != 0) {
-         printf("Error in MPI_Bcast tr_q = %i\n",ierr);
-         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
-         return 1;
-		}
-		printf("Finish Bcast tr_q id = %i\n",myid);
+		// ierr = MPI_Bcast(tr_q, 3*nface, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+     	// if (ierr != 0) {
+      //    printf("Error in MPI_Bcast tr_q = %i\n",ierr);
+      //    ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+      //    return 1;
+		// }
+		// printf("Finish Bcast tr_q id = %i\n",myid);
 
 
-		ierr = MPI_Bcast(tr_area, nface, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-     	if (ierr != 0) {
-         printf("Error in MPI_Bcast tr_area = %i\n",ierr);
-         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
-         return 1;
-		}
-		printf("Finish Bcast tr_area id = %i\n",myid);
+		// ierr = MPI_Bcast(tr_area, nface, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+     	// if (ierr != 0) {
+      //    printf("Error in MPI_Bcast tr_area = %i\n",ierr);
+      //    ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+      //    return 1;
+		// }
+		// printf("Finish Bcast tr_area id = %i\n",myid);
 
 		ierr = MPI_Barrier(MPI_COMM_WORLD);
      	if (ierr != 0) {
@@ -215,7 +215,12 @@ int main(int argc, char *argv[]) {
 	// 	timer_end();
 	// }
 
-
+		ierr = MPI_Barrier(MPI_COMM_WORLD);
+     	if (ierr != 0) {
+         printf("Error in MPI_Barrier = %i\n",ierr);
+         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+         return 1;
+		}
 	/* free memory */
 	for(i=0;i<3;i++) {
 		free(extr_v[i]);
