@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
 
 
   	// manager code
-  	if (myid == 0){
+  	// if (myid == 0){
   		// start timer
     	double stime = MPI_Wtime();
 		timer_start("TOTAL_TIME");
@@ -84,8 +84,8 @@ int main(int argc, char *argv[]) {
 		// atmpos
 
 
-		timer_end();
-	}
+		// timer_end();
+	// }
 	
 	comp_source_wrapper(); //wraps the solvation energy computation
 
@@ -107,7 +107,7 @@ int main(int argc, char *argv[]) {
 	soleng=0.0;
 
 	comp_soleng_wrapper(soleng); //wraps the solvation energy computation
-	// timer_end();
+	timer_end();
 
 	/* free memory */
 	for(i=0;i<3;i++) {
