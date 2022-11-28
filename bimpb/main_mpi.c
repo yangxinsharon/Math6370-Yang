@@ -65,14 +65,14 @@ int main(int argc, char *argv[]) {
   	   return 1;
   	}
 
+  	// start timer
+  	double stime = MPI_Wtime();
+  	// bimpb timer
+	timer_start("TOTAL_TIME"); 
 
-
-  	// manager code
+  	// root read in files
   	if (myid == 0) {
-  		// start timer
-    	double stime = MPI_Wtime();
-    	// bimpb timer
-		timer_start("TOTAL_TIME"); 
+
 		printf("%d %s %s %s \n", argc, argv[0], argv[1], argv[2]);
 
 		/* read in structural information */
@@ -81,7 +81,7 @@ int main(int argc, char *argv[]) {
    	// sprintf(fname,"%s",argv[1]);
    	// sprintf(density,"%s",argv[2]);
 		readin(fname, density);
-
+	}
 		// broadcast data from readin
 		ierr = MPI_Bcast(&nface, 1, MPI_INT, 0, MPI_COMM_WORLD);
      	if (ierr != 0) {
@@ -145,7 +145,7 @@ int main(int argc, char *argv[]) {
          ierr = MPI_Abort(MPI_COMM_WORLD, 1);
          return 1;
 		}
-	}
+
 
 
 	comp_source_wrapper(); //wraps the solvation energy computation
