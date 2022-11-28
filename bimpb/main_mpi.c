@@ -110,7 +110,7 @@ int main(int argc, char *argv[]) {
          return 1;
 		}
 
-		ierr = MPI_Bcast(bvct, 3*nface, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+		ierr = MPI_Bcast(bvct, 2*nface, MPI_DOUBLE, 0, MPI_COMM_WORLD);
      	if (ierr != 0) {
          printf("Error in MPI_Bcast bvct = %i\n",ierr);
          ierr = MPI_Abort(MPI_COMM_WORLD, 1);
@@ -169,10 +169,10 @@ int main(int argc, char *argv[]) {
 
 	comp_soleng_wrapper(soleng); //wraps the solvation energy computation
 	
-
-	if (myid == 0){
-		timer_end();
-	}
+	timer_end();
+	// if (myid == 0){
+	// 	timer_end();
+	// }
 
 	/* free memory */
 	for(i=0;i<3;i++) {
