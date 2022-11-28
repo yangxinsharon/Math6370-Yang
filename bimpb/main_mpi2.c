@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
 
 
   	// manager code
-  	// if (myid == 0) {
+  	if (myid == 0) {
   		// start timer
     	double stime = MPI_Wtime();
     	// bimpb timer
@@ -82,70 +82,70 @@ int main(int argc, char *argv[]) {
    	// sprintf(density,"%s",argv[2]);
 		readin(fname, density);
 
-	// 	// broadcast data from readin
-	// 	ierr = MPI_Bcast(&nface, 1, MPI_INT, 0, MPI_COMM_WORLD);
-   //   	if (ierr != 0) {
-   //       printf("Error in MPI_Bcast nface = %i\n",ierr);
-   //       ierr = MPI_Abort(MPI_COMM_WORLD, 1);
-   //       return 1;
-   //    }
-	// 	ierr = MPI_Bcast(&nspt, 1, MPI_INT, 0, MPI_COMM_WORLD);
-   //   	if (ierr != 0) {
-   //       printf("Error in MPI_Bcast nspt = %i\n",ierr);
-   //       ierr = MPI_Abort(MPI_COMM_WORLD, 1);
-   //       return 1;
-	// 	}
-	// 	ierr = MPI_Bcast(&natm, 1, MPI_INT, 0, MPI_COMM_WORLD);
-   //   	if (ierr != 0) {
-   //       printf("Error in MPI_Bcast natm = %i\n",ierr);
-   //       ierr = MPI_Abort(MPI_COMM_WORLD, 1);
-   //       return 1;
-	// 	}
-	// 	ierr = MPI_Bcast(&nchr, 1, MPI_INT, 0, MPI_COMM_WORLD);
-   //   	if (ierr != 0) {
-   //       printf("Error in MPI_Bcast nchr = %i\n",ierr);
-   //       ierr = MPI_Abort(MPI_COMM_WORLD, 1);
-   //       return 1;
-	// 	}
+		// broadcast data from readin
+		ierr = MPI_Bcast(&nface, 1, MPI_INT, 0, MPI_COMM_WORLD);
+     	if (ierr != 0) {
+         printf("Error in MPI_Bcast nface = %i\n",ierr);
+         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+         return 1;
+      }
+		ierr = MPI_Bcast(&nspt, 1, MPI_INT, 0, MPI_COMM_WORLD);
+     	if (ierr != 0) {
+         printf("Error in MPI_Bcast nspt = %i\n",ierr);
+         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+         return 1;
+		}
+		ierr = MPI_Bcast(&natm, 1, MPI_INT, 0, MPI_COMM_WORLD);
+     	if (ierr != 0) {
+         printf("Error in MPI_Bcast natm = %i\n",ierr);
+         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+         return 1;
+		}
+		ierr = MPI_Bcast(&nchr, 1, MPI_INT, 0, MPI_COMM_WORLD);
+     	if (ierr != 0) {
+         printf("Error in MPI_Bcast nchr = %i\n",ierr);
+         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+         return 1;
+		}
 
-	// 	ierr = MPI_Bcast(bvct, 3*nface, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-   //   	if (ierr != 0) {
-   //       printf("Error in MPI_Bcast bvct = %i\n",ierr);
-   //       ierr = MPI_Abort(MPI_COMM_WORLD, 1);
-   //       return 1;
-	// 	}		
-	// 	ierr = MPI_Bcast(atmchr, nchr, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-   //   	if (ierr != 0) {
-   //       printf("Error in MPI_Bcast atmchr = %i\n",ierr);
-   //       ierr = MPI_Abort(MPI_COMM_WORLD, 1);
-   //       return 1;
-	// 	}
-	// 	ierr = MPI_Bcast(chrpos, 3*nchr, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-   //   	if (ierr != 0) {
-   //       printf("Error in MPI_Bcast chrpos = %i\n",ierr);
-   //       ierr = MPI_Abort(MPI_COMM_WORLD, 1);
-   //       return 1;
-	// 	}		
-	// 	ierr = MPI_Bcast(tr_xyz, 3*nface, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-   //   	if (ierr != 0) {
-   //       printf("Error in MPI_Bcast tr_xyz = %i\n",ierr);
-   //       ierr = MPI_Abort(MPI_COMM_WORLD, 1);
-   //       return 1;
-	// 	}
-	// 	ierr = MPI_Bcast(tr_q, 3*nface, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-   //   	if (ierr != 0) {
-   //       printf("Error in MPI_Bcast tr_q = %i\n",ierr);
-   //       ierr = MPI_Abort(MPI_COMM_WORLD, 1);
-   //       return 1;
-	// 	}
+		ierr = MPI_Bcast(bvct, 3*nface, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+     	if (ierr != 0) {
+         printf("Error in MPI_Bcast bvct = %i\n",ierr);
+         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+         return 1;
+		}		
+		ierr = MPI_Bcast(atmchr, nchr, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+     	if (ierr != 0) {
+         printf("Error in MPI_Bcast atmchr = %i\n",ierr);
+         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+         return 1;
+		}
+		ierr = MPI_Bcast(chrpos, 3*nchr, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+     	if (ierr != 0) {
+         printf("Error in MPI_Bcast chrpos = %i\n",ierr);
+         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+         return 1;
+		}		
+		ierr = MPI_Bcast(tr_xyz, 3*nface, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+     	if (ierr != 0) {
+         printf("Error in MPI_Bcast tr_xyz = %i\n",ierr);
+         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+         return 1;
+		}
+		ierr = MPI_Bcast(tr_q, 3*nface, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+     	if (ierr != 0) {
+         printf("Error in MPI_Bcast tr_q = %i\n",ierr);
+         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+         return 1;
+		}
 
-	// 	ierr = MPI_Bcast(tr_area, nface, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-   //   	if (ierr != 0) {
-   //       printf("Error in MPI_Bcast tr_area = %i\n",ierr);
-   //       ierr = MPI_Abort(MPI_COMM_WORLD, 1);
-   //       return 1;
-	// 	}
-	// }
+		ierr = MPI_Bcast(tr_area, nface, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+     	if (ierr != 0) {
+         printf("Error in MPI_Bcast tr_area = %i\n",ierr);
+         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+         return 1;
+		}
+	}
 
 
 	comp_source_wrapper(); //wraps the solvation energy computation
