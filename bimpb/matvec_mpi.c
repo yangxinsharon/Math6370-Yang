@@ -164,13 +164,13 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 
 
 	// ierr = MPI_Allgather(sbuf_y1, chunk, MPI_DOUBLE, rece_buf1, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
-	ierr = MPI_Allgatherv(sbuf_y1, chunk, MPI_DOUBLE, rece_buf1, irecv, idisp, MPI_DOUBLE, MPI_COMM_WORLD);
+	ierr = MPI_Allgatherv(sbuf_y1, chunk, MPI_DOUBLE, rbuf_y1, irecv, idisp, MPI_DOUBLE, MPI_COMM_WORLD);
   	if (ierr != MPI_SUCCESS) {
   	   	printf("Error in MPI_Allgather1 = %i\n",ierr);
   	}
 
 	// ierr = MPI_Allgather(sbuf_y2, chunk, MPI_DOUBLE, rece_buf2, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
-	ierr = MPI_Allgatherv(sbuf_y2, chunk, MPI_DOUBLE, rece_buf2, irecv, idisp, MPI_DOUBLE, MPI_COMM_WORLD);
+	ierr = MPI_Allgatherv(sbuf_y2, chunk, MPI_DOUBLE, rbuf_y2, irecv, idisp, MPI_DOUBLE, MPI_COMM_WORLD);
   	if (ierr != MPI_SUCCESS) {
   	   	printf("Error in MPI_Allgather2 = %i\n",ierr);
   	}
