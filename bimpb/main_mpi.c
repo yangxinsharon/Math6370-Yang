@@ -190,11 +190,12 @@ int main(int argc, char *argv[]) {
 	xvct=(double *) calloc(N, sizeof(double));
 	work=(double *) calloc (ldw*(RESTRT+4), sizeof(double));
 	h=(double *) calloc (ldh*(RESTRT+2), sizeof(double));
-
+	printf("before gmres_\n");
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
 
 	soleng=0.0;
 
+	printf("comp_soleng_wrapper\n");
 	comp_soleng_wrapper(soleng); //wraps the solvation energy computation
 	
 	timer_end();
