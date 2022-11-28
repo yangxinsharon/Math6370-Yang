@@ -53,11 +53,11 @@ int main(int argc, char *argv[]) {
   	   return 1;
   	}
 
-  	// ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
-  	// if (ierr != MPI_SUCCESS) {
-  	//    printf("Error in MPI_Comm_size = %i\n",ierr);
-  	//    return 1;
-  	// }
+  	ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
+  	if (ierr != MPI_SUCCESS) {
+  	   printf("Error in MPI_Comm_size = %i\n",ierr);
+  	   return 1;
+  	}
 
 	ierr = MPI_Comm_rank(MPI_COMM_WORLD, &myid);
   	if (ierr != MPI_SUCCESS) {
@@ -71,7 +71,7 @@ int main(int argc, char *argv[]) {
 	timer_start("TOTAL_TIME"); 
 
   	// root read in files
-  	// if (myid == 0) {
+  	if (myid == 0) {
 
 		printf("%d %s %s %s %s \n", argc, argv[0], argv[1], argv[2], argv[3]);
 
@@ -81,8 +81,9 @@ int main(int argc, char *argv[]) {
    	// sprintf(fname,"%s",argv[1]);
    	// sprintf(density,"%s",argv[2]);
 		readin(fname, density);
-	// }
+	}
 
+	printf("Finish myid = %i\n",myid);
 
 		// broadcast data from readin
 		ierr = MPI_Bcast(&nface, 1, MPI_INT, 0, MPI_COMM_WORLD);
@@ -91,18 +92,24 @@ int main(int argc, char *argv[]) {
          ierr = MPI_Abort(MPI_COMM_WORLD, 1);
          return 1;
       }
+      printf("Finish Bcast nface = %i\n",nface);
+
 		ierr = MPI_Bcast(&nspt, 1, MPI_INT, 0, MPI_COMM_WORLD);
      	if (ierr != 0) {
          printf("Error in MPI_Bcast nspt = %i\n",ierr);
          ierr = MPI_Abort(MPI_COMM_WORLD, 1);
          return 1;
 		}
+		printf("Finish Bcast nspt = %i\n",nspt);
+
 		ierr = MPI_Bcast(&natm, 1, MPI_INT, 0, MPI_COMM_WORLD);
      	if (ierr != 0) {
          printf("Error in MPI_Bcast natm = %i\n",ierr);
          ierr = MPI_Abort(MPI_COMM_WORLD, 1);
          return 1;
 		}
+		printf("Finish Bcast nspt = %i\n",nspt);
+
 		ierr = MPI_Bcast(&nchr, 1, MPI_INT, 0, MPI_COMM_WORLD);
      	if (ierr != 0) {
          printf("Error in MPI_Bcast nchr = %i\n",ierr);
@@ -148,6 +155,12 @@ int main(int argc, char *argv[]) {
          return 1;
 		}
 
+		ierr = MPI_Barrier(MPI_COMM_WORLD);
+     	if (ierr != 0) {
+         printf("Error in MPI_Barrier = %i\n",ierr);
+         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+         return 1;
+		}	
 
 
 	comp_source_wrapper(); //wraps the solvation energy computation
