@@ -20,7 +20,7 @@ extern double **atmpos;							// [3][natm/nchr]
 extern double *atmrad, *atmchr, *chrpos;	// [natm/nchr]
 extern double *work, *h;
 extern double *h_pot;
-extern double *dev_xp, *dev_yp, *dev_zp, *dev_q, *dev_pot;
+// extern double *dev_xp, *dev_yp, *dev_zp, *dev_q, *dev_pot;
 extern const double eps;
 
 int main(int argc, char *argv[]) {
@@ -46,23 +46,47 @@ int main(int argc, char *argv[]) {
    extern void timer_end(void); // yang
 
   	// initialize MPI
-  	int ierr;
+  	int ierr, numprocs, myid;
   	ierr = MPI_Init(&argc, &argv);
   	if (ierr != MPI_SUCCESS) {
   	   printf("Error in MPI_Init = %i\n",ierr);
   	   return 1;
   	}
 
-	timer_start("TOTAL_TIME");
-	printf("%d %s %s %s \n", argc, argv[0], argv[1], argv[2]);
+  	ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
+  	if (ierr != MPI_SUCCESS) {
+  	   std::cerr << "Error in MPI_Comm_size\n";
+  	   return 1;
+  	}
 
-	/* read in structural information */
-   sprintf(fname, "1ajj");
-   sprintf(density, "1");
-   // sprintf(fname,"%s",argv[1]);
-   // sprintf(density,"%s",argv[2]);
-	readin(fname, density);
+	ierr = MPI_Comm_rank(MPI_COMM_WORLD, &myid);
+  	if (ierr != MPI_SUCCESS) {
+  	   std::cerr << "Error in MPI_Comm_rank\n";
+  	   return 1;
+  	}
 
+
+
+  	// manager code
+  	if (myid == 0){
+  		// start timer
+    	double stime = MPI_Wtime();
+		timer_start("TOTAL_TIME");
+		printf("%d %s %s %s \n", argc, argv[0], argv[1], argv[2]);
+
+		/* read in structural information */
+   	sprintf(fname, "1ajj");
+   	sprintf(density, "1");
+   	// sprintf(fname,"%s",argv[1]);
+   	// sprintf(density,"%s",argv[2]);
+		readin(fname, density);
+//fscanf(fp,"%d %d %lf %lf ",&nspt,&natm,&den,&prob_rds); vert snrm extr_v
+		// atmpos
+
+
+		timer_end();
+	}
+	
 	comp_source_wrapper(); //wraps the solvation energy computation
 
 	/* parameters for GMRES */
@@ -83,7 +107,7 @@ int main(int argc, char *argv[]) {
 	soleng=0.0;
 
 	comp_soleng_wrapper(soleng); //wraps the solvation energy computation
-	timer_end();
+	// timer_end();
 
 	/* free memory */
 	for(i=0;i<3;i++) {
@@ -129,7 +153,7 @@ int main(int argc, char *argv[]) {
   	ierr = MPI_Finalize();
 
    return 0;
-}
+} // end main
 
 // ****************************************************************
 int *psolve(double *z, double *r) {
