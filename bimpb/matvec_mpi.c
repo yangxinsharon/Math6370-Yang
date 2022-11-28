@@ -257,47 +257,7 @@ void comp_pot(const double* xvct, double *atmchr, double *chrpos, double *ptl,
     double sumrs, irs, rs, G0, Gk, kappa_rs, exp_kappa_rs;
     double cos_theta, G1, G2, L1, L2, tp1, tp2;
     int js, je, ierr, numprocs, myid;
-
-	ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
-	if (ierr != 0) {
-	  printf(" error in MPI_Comm_size = %i\n",ierr);
-	  MPI_Abort(MPI_COMM_WORLD, 1);
-	}
-
-	ierr = MPI_Comm_rank(MPI_COMM_WORLD, &myid);
-	// printf(" MYID = %i\n",myid);
-	if (ierr != 0) {
-	  printf(" error in MPI_Comm_rank = %i\n",ierr);
-	  MPI_Abort(MPI_COMM_WORLD, 1);
-	}
-
-  	js = ((int) (1.0*nface/numprocs))*myid;
-  	je = ((int) (1.0*nface/numprocs))*(myid+1);
-  	if (myid == numprocs-1)  je = nface;
-
-	int chunk=je-js;
-  	int irecv[numprocs];
-	for (i=0; i<numprocs-1; i++) {
-		irecv[i] = ((int) (1.0*nface/numprocs));
-	}
-	irecv[numprocs-1]=nface-((int) (1.0*nface/numprocs))*(numprocs-1);
-	
-	int idisp[numprocs];
-	int sumtmp=0;
-	for (i = 0; i <numprocs; i++) {
-		idisp[i] = 0 + sumtmp;
-		sumtmp = sumtmp+irecv[i];
-	}
-
-  	double *sbuf_ptl;
-  	sbuf_ptl = (double *) calloc(chunk, sizeof(double));
-
-
-
-
-
-	// for (j=0; j<nface; j++) {
-	for (j=js; j<je; j++) {	
+	for (j=0; j<nface; j++) {
     	ptl[j] = 0.0;
 		double r[3] = {tr_xyz[3*j], tr_xyz[3*j+1], tr_xyz[3*j+2]};
 		double v[3] = {tr_q[3*j], tr_q[3*j+1], tr_q[3*j+2]};
@@ -325,27 +285,96 @@ void comp_pot(const double* xvct, double *atmchr, double *chrpos, double *ptl,
         	L1 = G1-eps*G2;
         	L2 = G0-Gk;
 
-      		// ptl[j] = ptl[j] + atmchr[i] * (L1*xvct[j]+L2*xvct[nface+j]) * tr_area[j];
-      		sbuf_ptl[j-idisp[myid]] = ptl[j] + atmchr[i] * (L1*xvct[j]+L2*xvct[nface+j]) * tr_area[j];
-		
+      		ptl[j] = ptl[j] + atmchr[i] * (L1*xvct[j]+L2*xvct[nface+j]) * tr_area[j];
 		}
     }
 
-    double *rbuf_ptl;
-	rbuf_ptl = (double *) calloc(nface, sizeof(double));
+	// ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
+	// if (ierr != 0) {
+	//   printf(" error in MPI_Comm_size = %i\n",ierr);
+	//   MPI_Abort(MPI_COMM_WORLD, 1);
+	// }
+
+	// ierr = MPI_Comm_rank(MPI_COMM_WORLD, &myid);
+	// // printf(" MYID = %i\n",myid);
+	// if (ierr != 0) {
+	//   printf(" error in MPI_Comm_rank = %i\n",ierr);
+	//   MPI_Abort(MPI_COMM_WORLD, 1);
+	// }
+
+  	// js = ((int) (1.0*nface/numprocs))*myid;
+  	// je = ((int) (1.0*nface/numprocs))*(myid+1);
+  	// if (myid == numprocs-1)  je = nface;
+
+	// int chunk=je-js;
+  	// int irecv[numprocs];
+	// for (i=0; i<numprocs-1; i++) {
+	// 	irecv[i] = ((int) (1.0*nface/numprocs));
+	// }
+	// irecv[numprocs-1]=nface-((int) (1.0*nface/numprocs))*(numprocs-1);
+	
+	// int idisp[numprocs];
+	// int sumtmp=0;
+	// for (i = 0; i <numprocs; i++) {
+	// 	idisp[i] = 0 + sumtmp;
+	// 	sumtmp = sumtmp+irecv[i];
+	// }
+
+  	// double *sbuf_ptl;
+  	// sbuf_ptl = (double *) calloc(chunk, sizeof(double));
 
 
-	ierr = MPI_Allgatherv(sbuf_ptl, chunk, MPI_DOUBLE, rbuf_ptl, irecv, idisp, MPI_DOUBLE, MPI_COMM_WORLD);
-  	if (ierr != MPI_SUCCESS) {
-  	   	printf("Error in MPI_Allgather1 = %i\n",ierr);
-  	}
 
-  	for (i=0; i<nface; i++) {
-  		ptl[i] = rbuf_ptl[i];
-  	}
+	// // for (j=0; j<nface; j++) {
+	// for (j=js; j<je; j++) {	
+    // 	ptl[j] = 0.0;
+	// 	double r[3] = {tr_xyz[3*j], tr_xyz[3*j+1], tr_xyz[3*j+2]};
+	// 	double v[3] = {tr_q[3*j], tr_q[3*j+1], tr_q[3*j+2]};
+    // 	for (i=0; i<nchr; i++) {
+    //     	double s[3] = {chrpos[3*i], chrpos[3*i+1], chrpos[3*i+2]};
+	// 		double r_s[3] = {r[0]-s[0], r[1]-s[1], r[2]-s[2]};
+	// 		sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
+	// 		rs = sqrt(sumrs);
+	// 		irs = 1.0/sqrt(sumrs);
 
-  	free(sbuf_ptl);
-  	free(rbuf_ptl);
+    //     	G0 = one_over_4pi;
+    //     	G0 = G0*irs;
+    //     	kappa_rs = kappa*rs;
+    //     	exp_kappa_rs = exp(-kappa_rs);
+    //     	Gk = exp_kappa_rs*G0;
+
+    //     	cos_theta = (v[0]*r_s[0]+v[1]*r_s[1]+v[2]*r_s[2]) * irs;
+
+    //     	tp1 = G0*irs;
+    //     	tp2 = (1.0+kappa_rs)*exp_kappa_rs;
+
+    //     	G1 = cos_theta*tp1;
+    //     	G2 = tp2*G1;
+
+    //     	L1 = G1-eps*G2;
+    //     	L2 = G0-Gk;
+
+    //   		// ptl[j] = ptl[j] + atmchr[i] * (L1*xvct[j]+L2*xvct[nface+j]) * tr_area[j];
+    //   		sbuf_ptl[j-idisp[myid]] = ptl[j] + atmchr[i] * (L1*xvct[j]+L2*xvct[nface+j]) * tr_area[j];
+		
+	// 	}
+    // }
+
+    // double *rbuf_ptl;
+	// rbuf_ptl = (double *) calloc(nface, sizeof(double));
+
+
+	// ierr = MPI_Allgatherv(sbuf_ptl, chunk, MPI_DOUBLE, rbuf_ptl, irecv, idisp, MPI_DOUBLE, MPI_COMM_WORLD);
+  	// if (ierr != MPI_SUCCESS) {
+  	//    	printf("Error in MPI_Allgather1 = %i\n",ierr);
+  	// }
+
+  	// for (i=0; i<nface; i++) {
+  	// 	ptl[i] = rbuf_ptl[i];
+  	// }
+
+  	// free(sbuf_ptl);
+  	// free(rbuf_ptl);
 
 }
 
