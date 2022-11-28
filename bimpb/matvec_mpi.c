@@ -297,7 +297,7 @@ void comp_pot(const double* xvct, double *atmchr, double *chrpos, double *ptl,
 
 
 	// for (j=0; j<nface; j++) {
-	for (j=is; j<ie; j++) {	
+	for (j=js; j<je; j++) {	
     	ptl[j] = 0.0;
 		double r[3] = {tr_xyz[3*j], tr_xyz[3*j+1], tr_xyz[3*j+2]};
 		double v[3] = {tr_q[3*j], tr_q[3*j+1], tr_q[3*j+2]};
@@ -326,7 +326,7 @@ void comp_pot(const double* xvct, double *atmchr, double *chrpos, double *ptl,
         	L2 = G0-Gk;
 
       		// ptl[j] = ptl[j] + atmchr[i] * (L1*xvct[j]+L2*xvct[nface+j]) * tr_area[j];
-      		sbuf_ptl[i-idisp[myid]] = ptl[j] + atmchr[i] * (L1*xvct[j]+L2*xvct[nface+j]) * tr_area[j];
+      		sbuf_ptl[j-idisp[myid]] = ptl[j] + atmchr[i] * (L1*xvct[j]+L2*xvct[nface+j]) * tr_area[j];
 		
 		}
     }
@@ -382,7 +382,7 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
             bvct[nface+i] = bvct[nface+i]+atmchr[j]*G1;
         }
    }
-   
+
 	// ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
 	// if (ierr != 0) {
 	//   printf(" error in MPI_Comm_size = %i\n",ierr);
