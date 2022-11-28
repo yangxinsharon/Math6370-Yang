@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
   	// root read in files
   	if (myid == 0) {
 
-		printf("%d %s %s %s \n", argc, argv[0], argv[1], argv[2]);
+		printf("%d %s %s %s %s \n", argc, argv[0], argv[1], argv[2], argv[3]);
 
 		/* read in structural information */
    	sprintf(fname, "1ajj");
@@ -82,6 +82,14 @@ int main(int argc, char *argv[]) {
    	// sprintf(density,"%s",argv[2]);
 		readin(fname, density);
 	}
+
+	ierr = MPI_Barrier(MPI_COMM_WORLD);
+	if (ierr != 0) {
+      printf("Error in MPI_Bcast nface = %i\n",ierr);
+      ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+      return 1;
+   }
+
 		// broadcast data from readin
 		ierr = MPI_Bcast(&nface, 1, MPI_INT, 0, MPI_COMM_WORLD);
      	if (ierr != 0) {
