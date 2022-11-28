@@ -55,13 +55,13 @@ int main(int argc, char *argv[]) {
 
   	ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
   	if (ierr != MPI_SUCCESS) {
-  	   std::cerr << "Error in MPI_Comm_size\n";
+  	   printf("Error in MPI_Comm_size = %i\n",ierr);
   	   return 1;
   	}
 
 	ierr = MPI_Comm_rank(MPI_COMM_WORLD, &myid);
   	if (ierr != MPI_SUCCESS) {
-  	   std::cerr << "Error in MPI_Comm_rank\n";
+  	   printf("Error in MPI_Comm_rank = %i\n",ierr);
   	   return 1;
   	}
 
