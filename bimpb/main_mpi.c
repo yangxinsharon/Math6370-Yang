@@ -83,7 +83,7 @@ int main(int argc, char *argv[]) {
 		readin(fname, density);
 	}
 
-	printf("Finish myid = %i\n",myid);
+		// printf("Finish myid = %i\n",myid);
 		ierr = MPI_Barrier(MPI_COMM_WORLD);
      	if (ierr != 0) {
          printf("Error in MPI_Barrier = %i\n",ierr);
@@ -123,16 +123,17 @@ int main(int argc, char *argv[]) {
          ierr = MPI_Abort(MPI_COMM_WORLD, 1);
          return 1;
 		}
-		printf("Finish Bcast nchr = %i\n",nchr);
+		// printf("Finish Bcast nchr = %i\n",nchr);
 
 
-		ierr = MPI_Bcast(atmchr, nchr, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+		ierr = MPI_Bcast(&atmchr, nchr, MPI_DOUBLE, 0, MPI_COMM_WORLD);
      	if (ierr != 0) {
          printf("Error in MPI_Bcast atmchr = %i\n",ierr);
          ierr = MPI_Abort(MPI_COMM_WORLD, 1);
          return 1;
 		}
 		printf("Finish Bcast atmchr id = %i\n",myid);
+		printf("Finish Bcast atmchr[0] = %f\t %i\n",atmchr[0], nchr);
 
 		ierr = MPI_Bcast(chrpos, 3*nchr, MPI_DOUBLE, 0, MPI_COMM_WORLD);
      	if (ierr != 0) {
