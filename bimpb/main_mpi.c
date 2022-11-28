@@ -191,9 +191,9 @@ int main(int argc, char *argv[]) {
 	work=(double *) calloc (ldw*(RESTRT+4), sizeof(double));
 	h=(double *) calloc (ldh*(RESTRT+2), sizeof(double));
 	printf("before gmres_\n");
-	printf("size of bvct = %i\n", sizeof(bvct));
-	printf("size of double  = %i\n", sizeof(double));
-	printf("bvct = %i\t%i\n",bvct[0],sizeof(bvct)/sizeof(double) );
+	printf("size of bvct = %f\n", sizeof(bvct));
+	printf("size of double  = %f\n", sizeof(double));
+	printf("bvct = %f\t%f\n",bvct[0],sizeof(bvct)/sizeof(double) );
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
 
 	soleng=0.0;
