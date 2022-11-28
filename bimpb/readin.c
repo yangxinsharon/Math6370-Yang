@@ -6,8 +6,7 @@
 extern int nface, nspt, natm, nchr;
 extern int **extr_v;						//[3][nspt]
 extern int **extr_f;						//[2][nface]
-// extern int **tr_area, 
-extern int **face_copy;				//[3][nface]
+extern int **face **face_copy;				//[3][nface]
 extern double **vert, **snrm;				//[3][nspt];
 extern double *tr_xyz, *tr_q;				//[3][nface]
 extern double *tr_area, *bvct, *xvct;		//[nface];
