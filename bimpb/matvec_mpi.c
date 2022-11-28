@@ -256,7 +256,7 @@ void comp_pot(const double* xvct, double *atmchr, double *chrpos, double *ptl,
 	int i, j;
     double sumrs, irs, rs, G0, Gk, kappa_rs, exp_kappa_rs;
     double cos_theta, G1, G2, L1, L2, tp1, tp2;
-    int is, ie, ierr, numprocs, myid;
+    int js, je, ierr, numprocs, myid;
 
 	ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
 	if (ierr != 0) {
@@ -271,11 +271,11 @@ void comp_pot(const double* xvct, double *atmchr, double *chrpos, double *ptl,
 	  MPI_Abort(MPI_COMM_WORLD, 1);
 	}
 
-  	is = ((int) (1.0*nface/numprocs))*myid;
-  	ie = ((int) (1.0*nface/numprocs))*(myid+1);
-  	if (myid == numprocs-1)  ie = nface;
+  	js = ((int) (1.0*nface/numprocs))*myid;
+  	je = ((int) (1.0*nface/numprocs))*(myid+1);
+  	if (myid == numprocs-1)  je = nface;
 
-	int chunk=ie-is;
+	int chunk=je-js;
   	int irecv[numprocs];
 	for (i=0; i<numprocs-1; i++) {
 		irecv[i] = ((int) (1.0*nface/numprocs));
@@ -364,43 +364,7 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
 	double sumrs, cos_theta, irs, G0, G1, tp1;
 	int is, ie, ierr, numprocs, myid;
 
-	ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
-	if (ierr != 0) {
-	  printf(" error in MPI_Comm_size = %i\n",ierr);
-	  MPI_Abort(MPI_COMM_WORLD, 1);
-	}
-
-	ierr = MPI_Comm_rank(MPI_COMM_WORLD, &myid);
-	// printf(" MYID = %i\n",myid);
-	if (ierr != 0) {
-	  printf(" error in MPI_Comm_rank = %i\n",ierr);
-	  MPI_Abort(MPI_COMM_WORLD, 1);
-	}
-
-	/* determine this processor's interval */
-  	is = ((int) (1.0*nface/numprocs))*myid;
-  	ie = ((int) (1.0*nface/numprocs))*(myid+1);
-  	if (myid == numprocs-1)  ie = nface;
-
-	int chunk=ie-is;
-  	int irecv[numprocs];
-	for (i=0; i<numprocs-1; i++) {
-		irecv[i] = ((int) (1.0*nface/numprocs));
-	}
-	irecv[numprocs-1]=nface-((int) (1.0*nface/numprocs))*(numprocs-1);
-	
-	int idisp[numprocs];
-	int sumtmp=0;
-	for (i = 0; i <numprocs; i++) {
-		idisp[i] = 0 + sumtmp;
-		sumtmp = sumtmp+irecv[i];
-	}
-
-  	double *sbuf_bvct1, *sbuf_bvct2;
-  	sbuf_bvct1 = (double *) calloc(chunk, sizeof(double));
-	sbuf_bvct2 = (double *) calloc(chunk, sizeof(double));
-
-	for (i=is; i<ie; i++) {
+	for (i=0; i<nface; i++) {
         bvct[i] = 0.0;
         bvct[i+nface] = 0.0;
         for (j=0; j<nchr; j++) {
@@ -414,32 +378,86 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
             G0 = G0*irs;
             tp1 = G0*irs;
             G1 = cos_theta*tp1;
-            // bvct[i] = bvct[i]+atmchr[j]*G0;
-            // bvct[nface+i] = bvct[nface+i]+atmchr[j]*G1;
-            sbuf_bvct1[i-idisp[myid]] = bvct[i]+atmchr[j]*G0;
-			sbuf_bvct2[i-idisp[myid]] = bvct[nface+i]+atmchr[j]*G1;
+            bvct[i] = bvct[i]+atmchr[j]*G0;
+            bvct[nface+i] = bvct[nface+i]+atmchr[j]*G1;
         }
-    }
-    double *rbuf_bvct1,*rbuf_bvct2;
-	rbuf_bvct1 = (double *) calloc(nface, sizeof(double));
-	rbuf_bvct2 = (double *) calloc(nface, sizeof(double));
+   }
+   
+	// ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
+	// if (ierr != 0) {
+	//   printf(" error in MPI_Comm_size = %i\n",ierr);
+	//   MPI_Abort(MPI_COMM_WORLD, 1);
+	// }
 
-	ierr = MPI_Allgatherv(sbuf_bvct1, chunk, MPI_DOUBLE, rbuf_bvct1, irecv, idisp, MPI_DOUBLE, MPI_COMM_WORLD);
-  	if (ierr != MPI_SUCCESS) {
-  	   	printf("Error in MPI_Allgather1 = %i\n",ierr);
-  	}
+	// ierr = MPI_Comm_rank(MPI_COMM_WORLD, &myid);
+	// if (ierr != 0) {
+	//   printf(" error in MPI_Comm_rank = %i\n",ierr);
+	//   MPI_Abort(MPI_COMM_WORLD, 1);
+	// }
 
-  	ierr = MPI_Allgatherv(sbuf_bvct2, chunk, MPI_DOUBLE, rbuf_bvct2, irecv, idisp, MPI_DOUBLE, MPI_COMM_WORLD);
-  	if (ierr != MPI_SUCCESS) {
-  	   	printf("Error in MPI_Allgather2 = %i\n",ierr);
-  	}
-  	for (i=0; i<nface; i++) {
-  		bvct[i] = rbuf_bvct1[i];
-  		bvct[nface+i] = rbuf_bvct2[i];
-  	}
+	// /* determine this processor's interval */
+  	// is = ((int) (1.0*nface/numprocs))*myid;
+  	// ie = ((int) (1.0*nface/numprocs))*(myid+1);
+  	// if (myid == numprocs-1)  ie = nface;
 
-  	free(sbuf_bvct1);
-  	free(sbuf_bvct2);
-  	free(rbuf_bvct1);
-  	free(rbuf_bvct2);
+	// int chunk=ie-is;
+  	// int irecv[numprocs];
+	// for (i=0; i<numprocs-1; i++) {
+	// 	irecv[i] = ((int) (1.0*nface/numprocs));
+	// }
+	// irecv[numprocs-1]=nface-((int) (1.0*nface/numprocs))*(numprocs-1);
+	
+	// int idisp[numprocs];
+	// int sumtmp=0;
+	// for (i = 0; i <numprocs; i++) {
+	// 	idisp[i] = 0 + sumtmp;
+	// 	sumtmp = sumtmp+irecv[i];
+	// }
+
+  	// double *sbuf_bvct1, *sbuf_bvct2;
+  	// sbuf_bvct1 = (double *) calloc(chunk, sizeof(double));
+	// sbuf_bvct2 = (double *) calloc(chunk, sizeof(double));
+
+	// for (i=is; i<ie; i++) {
+    //     bvct[i] = 0.0;
+    //     bvct[i+nface] = 0.0;
+    //     for (j=0; j<nchr; j++) {
+    //         double r_s[3] = {chrpos[3*j]-tr_xyz[3*i], chrpos[3*j+1]-tr_xyz[3*i+1], 
+    //         	chrpos[3*j+2]-tr_xyz[3*i+2]};
+	// 		sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2]; 
+    //         cos_theta = tr_q[3*i]*r_s[0] + tr_q[3*i+1]*r_s[1] + tr_q[3*i+2]*r_s[2];
+	// 		irs = 1.0/sqrt(sumrs) ;//rsqrt(sumrs);//returns reciprocal square root of scalars and vectors.
+    //         cos_theta = cos_theta*irs;
+    //         G0 = one_over_4pi;//constant
+    //         G0 = G0*irs;
+    //         tp1 = G0*irs;
+    //         G1 = cos_theta*tp1;
+    //         // bvct[i] = bvct[i]+atmchr[j]*G0;
+    //         // bvct[nface+i] = bvct[nface+i]+atmchr[j]*G1;
+    //         sbuf_bvct1[i-idisp[myid]] = bvct[i]+atmchr[j]*G0;
+	// 		sbuf_bvct2[i-idisp[myid]] = bvct[nface+i]+atmchr[j]*G1;
+    //     }
+    // }
+    // double *rbuf_bvct1,*rbuf_bvct2;
+	// rbuf_bvct1 = (double *) calloc(nface, sizeof(double));
+	// rbuf_bvct2 = (double *) calloc(nface, sizeof(double));
+
+	// ierr = MPI_Allgatherv(sbuf_bvct1, chunk, MPI_DOUBLE, rbuf_bvct1, irecv, idisp, MPI_DOUBLE, MPI_COMM_WORLD);
+  	// if (ierr != MPI_SUCCESS) {
+  	//    	printf("Error in MPI_Allgather1 = %i\n",ierr);
+  	// }
+
+  	// ierr = MPI_Allgatherv(sbuf_bvct2, chunk, MPI_DOUBLE, rbuf_bvct2, irecv, idisp, MPI_DOUBLE, MPI_COMM_WORLD);
+  	// if (ierr != MPI_SUCCESS) {
+  	//    	printf("Error in MPI_Allgather2 = %i\n",ierr);
+  	// }
+  	// for (i=0; i<nface; i++) {
+  	// 	bvct[i] = rbuf_bvct1[i];
+  	// 	bvct[nface+i] = rbuf_bvct2[i];
+  	// }
+
+  	// free(sbuf_bvct1);
+  	// free(sbuf_bvct2);
+  	// free(rbuf_bvct1);
+  	// free(rbuf_bvct2);
 }
