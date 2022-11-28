@@ -168,17 +168,17 @@ int main(int argc, char *argv[]) {
 		}
 		printf("Finish Bcast tr_area id = %i\n",myid);
 
-		// ierr = MPI_Barrier(MPI_COMM_WORLD);
-     	// if (ierr != 0) {
-      //    printf("Error in MPI_Barrier = %i\n",ierr);
-      //    ierr = MPI_Abort(MPI_COMM_WORLD, 1);
-      //    return 1;
-		// }	
+		ierr = MPI_Barrier(MPI_COMM_WORLD);
+     	if (ierr != 0) {
+         printf("Error in MPI_Barrier = %i\n",ierr);
+         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+         return 1;
+		}	
 
 
-	printf("before comp_source_wrapper");
+	printf("before comp_source_wrapper\n ");
 	comp_source_wrapper(); //wraps the solvation energy computation
-	printf("after comp_source_wrapper");
+	printf("after comp_source_wrapper\n");
 
 	/* parameters for GMRES */
 	RESTRT=10;
