@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) {
   	// bimpb timer
 	timer_start("TOTAL_TIME"); 
 
-  	// root read in files
+  	// root calling readin.c
   	if (myid == 0) {
 
 		printf("%d %s %s %s %s \n", argc, argv[0], argv[1], argv[2], argv[3]);
@@ -81,6 +81,7 @@ int main(int argc, char *argv[]) {
    	// sprintf(fname,"%s",argv[1]);
    	// sprintf(density,"%s",argv[2]);
 		readin(fname, density);
+
 	}
 
 		// printf("Finish myid = %i\n",myid);
@@ -125,6 +126,21 @@ int main(int argc, char *argv[]) {
 		}
 		// printf("Finish Bcast nchr = %i\n",nchr);
 
+	// allocate addresses that has been allocated in readin.c for other processes
+	if (myid != 0){
+		atmchr=(double *) malloc(nchr*sizeof(double));
+		chrpos=(double *) malloc(3*nchr*sizeof(double));
+		tr_xyz=(double *) calloc(3*nface, sizeof(double));
+		tr_q=(double *) calloc(3*nface, sizeof(double));
+		tr_area=(double *) calloc(nface, sizeof(double));
+		bvct=(double *) calloc(2*nface, sizeof(double));
+	}
+		ierr = MPI_Barrier(MPI_COMM_WORLD);
+     	if (ierr != 0) {
+         printf("Error in MPI_Barrier = %i\n",ierr);
+         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+         return 1;
+		}
 
 		ierr = MPI_Bcast(atmchr, nchr, MPI_DOUBLE, 0, MPI_COMM_WORLD);
      	if (ierr != 0) {
@@ -135,38 +151,38 @@ int main(int argc, char *argv[]) {
 		printf("Finish Bcast atmchr id = %i\n",myid);
 		printf("Finish Bcast atmchr[0] = %f\t %i\n",atmchr[0], nchr);
 
-		// ierr = MPI_Bcast(chrpos, 3*nchr, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-     	// if (ierr != 0) {
-      //    printf("Error in MPI_Bcast chrpos = %i\n",ierr);
-      //    ierr = MPI_Abort(MPI_COMM_WORLD, 1);
-      //    return 1;
-		// }		
-		// printf("Finish Bcast chrpos id = %i\n",myid);
+		ierr = MPI_Bcast(chrpos, 3*nchr, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+     	if (ierr != 0) {
+         printf("Error in MPI_Bcast chrpos = %i\n",ierr);
+         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+         return 1;
+		}		
+		printf("Finish Bcast chrpos id = %i\n",myid);
 
-		// ierr = MPI_Bcast(tr_xyz, 3*nface, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-     	// if (ierr != 0) {
-      //    printf("Error in MPI_Bcast tr_xyz = %i\n",ierr);
-      //    ierr = MPI_Abort(MPI_COMM_WORLD, 1);
-      //    return 1;
-		// }
-		// printf("Finish Bcast tr_xyz id = %i\n",myid);
+		ierr = MPI_Bcast(tr_xyz, 3*nface, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+     	if (ierr != 0) {
+         printf("Error in MPI_Bcast tr_xyz = %i\n",ierr);
+         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+         return 1;
+		}
+		printf("Finish Bcast tr_xyz id = %i\n",myid);
 
-		// ierr = MPI_Bcast(tr_q, 3*nface, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-     	// if (ierr != 0) {
-      //    printf("Error in MPI_Bcast tr_q = %i\n",ierr);
-      //    ierr = MPI_Abort(MPI_COMM_WORLD, 1);
-      //    return 1;
-		// }
-		// printf("Finish Bcast tr_q id = %i\n",myid);
+		ierr = MPI_Bcast(tr_q, 3*nface, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+     	if (ierr != 0) {
+         printf("Error in MPI_Bcast tr_q = %i\n",ierr);
+         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+         return 1;
+		}
+		printf("Finish Bcast tr_q id = %i\n",myid);
 
 
-		// ierr = MPI_Bcast(tr_area, nface, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-     	// if (ierr != 0) {
-      //    printf("Error in MPI_Bcast tr_area = %i\n",ierr);
-      //    ierr = MPI_Abort(MPI_COMM_WORLD, 1);
-      //    return 1;
-		// }
-		// printf("Finish Bcast tr_area id = %i\n",myid);
+		ierr = MPI_Bcast(tr_area, nface, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+     	if (ierr != 0) {
+         printf("Error in MPI_Bcast tr_area = %i\n",ierr);
+         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
+         return 1;
+		}
+		printf("Finish Bcast tr_area id = %i\n",myid);
 
 		ierr = MPI_Barrier(MPI_COMM_WORLD);
      	if (ierr != 0) {
