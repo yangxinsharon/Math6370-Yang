@@ -207,7 +207,7 @@ int main(int argc, char *argv[]) {
 
 	soleng=0.0;
 
-	printf("before comp_soleng_wrapper\n");
+	// printf("before comp_soleng_wrapper\n");
 	comp_soleng_wrapper(soleng); //wraps the solvation energy computation
 	
 	double ftime = MPI_Wtime();
@@ -215,14 +215,14 @@ int main(int argc, char *argv[]) {
 	// if (myid == 0){
 	// 	timer_end();
 	// }
-
+	printf("before MPI_Barrier\n");
 	ierr = MPI_Barrier(MPI_COMM_WORLD);
      if (ierr != 0) {
         printf("Error in MPI_Barrier = %i\n",ierr);
         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
         return 1;
 	}
-	
+	printf("before free memory\n");
 	/* free memory */
 	for(i=0;i<3;i++) {
 		free(extr_v[i]);
