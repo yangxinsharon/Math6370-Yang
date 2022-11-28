@@ -126,7 +126,7 @@ int main(int argc, char *argv[]) {
 		// printf("Finish Bcast nchr = %i\n",nchr);
 
 
-		ierr = MPI_Bcast(&atmchr, nchr, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+		ierr = MPI_Bcast(atmchr, nchr, MPI_DOUBLE, 0, MPI_COMM_WORLD);
      	if (ierr != 0) {
          printf("Error in MPI_Bcast atmchr = %i\n",ierr);
          ierr = MPI_Abort(MPI_COMM_WORLD, 1);
