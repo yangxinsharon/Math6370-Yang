@@ -223,45 +223,59 @@ int main(int argc, char *argv[]) {
         return 1;
 	}
 	printf("before free memory\n");
+
 	/* free memory */
-	for(i=0;i<3;i++) {
-		free(extr_v[i]);
+	if (myid == 0){
+
+		for(i=0;i<3;i++) {
+			free(extr_v[i]);
+		}
+		free(extr_v);
+	
+		for(i=0;i<3;i++) {
+			free(vert[i]);
+		}
+		free(vert);
+	
+		for(i=0;i<3;i++) {
+			free(snrm[i]);
+		}
+		free(snrm);
+	
+		for(i=0;i<3;i++) {
+			free(face[i]);
+		}
+		free(face);
+
+		for(i=0;i<3;i++) {
+			free(extr_f[i]);
+		}
+		free(extr_f);
+
+		for(i=0;i<3;i++) {
+			free(atmpos[i]);
+		}
+		free(atmpos);
+
+		free(tr_xyz);
+		free(tr_q);
+
+		free(tr_area);
+		free(bvct);
+		free(xvct);
+		free(atmchr);
+		free(chrpos);
 	}
-	free(extr_v);
+	else	{
+		free(tr_xyz);
+		free(tr_q);
 
-	for(i=0;i<3;i++) {
-		free(vert[i]);
+		free(tr_area);
+		free(bvct);
+		free(xvct);
+		free(atmchr);
+		free(chrpos);
 	}
-	free(vert);
-
-	for(i=0;i<3;i++) {
-		free(snrm[i]);
-	}
-	free(snrm);
-
-	for(i=0;i<3;i++) {
-		free(face[i]);
-	}
-	free(face);
-
-	for(i=0;i<3;i++) {
-		free(extr_f[i]);
-	}
-	free(extr_f);
-
-	for(i=0;i<3;i++) {
-		free(atmpos[i]);
-	}
-	free(atmpos);
-
-	free(tr_xyz);
-	free(tr_q);
-
-	free(tr_area);
-	free(bvct);
-	free(xvct);
-	free(atmchr);
-	free(chrpos);
 
 	// finalize MPI
   	ierr = MPI_Finalize();
