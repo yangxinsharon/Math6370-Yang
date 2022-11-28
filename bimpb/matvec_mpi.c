@@ -389,8 +389,9 @@ void comp_source_wrapper() {
 /* bvct be located at readin.c */
 void comp_source( double* bvct, double *atmchr, double *chrpos, 
 	double *tr_xyz,double *tr_q, int nface, int nchr) {
-	int i, j;
-	int is, ie, ierr, numprocs, myid;
+	/* declarations for mpi */
+	int is, ie, i, j;
+	int ierr, numprocs, myid;
 
 	ierr = MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
 	if (ierr != 0) {
@@ -441,11 +442,11 @@ void comp_source( double* bvct, double *atmchr, double *chrpos,
             G0 = G0*irs;
             double tp1 = G0*irs;
             double G1 = cos_theta*tp1;
-            // bvct[i] = bvct[i]+atmchr[j]*G0;
-            // bvct[nface+i] = bvct[nface+i]+atmchr[j]*G1;
-            sbuf_bvct1[i-idisp[myid]] = bvct[i]+atmchr[j]*G0;
-			sbuf_bvct2[i-idisp[myid]] = bvct[nface+i]+atmchr[j]*G1;
+            bvct[i] = bvct[i]+atmchr[j]*G0;
+            bvct[nface+i] = bvct[nface+i]+atmchr[j]*G1;
         }
+        sbuf_bvct1[i-idisp[myid]] = bvct[i];
+		sbuf_bvct2[i-idisp[myid]] = bvct[nface+i];
     }
     double *rbuf_bvct1,*rbuf_bvct2;
 	rbuf_bvct1 = (double *) calloc(nface, sizeof(double));
