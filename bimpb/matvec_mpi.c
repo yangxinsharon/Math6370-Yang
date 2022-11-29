@@ -34,7 +34,6 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	}
 
 	ierr = MPI_Comm_rank(MPI_COMM_WORLD, &myid);
-	// printf(" MYID = %i\n",myid);
 	if (ierr != 0) {
 	  printf(" error in MPI_Comm_rank = %i\n",ierr);
 	  MPI_Abort(MPI_COMM_WORLD, 1);
@@ -42,29 +41,19 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 
     double pre1=0.50*(1.0+eps); /* const eps=80.0 */
     double pre2=0.50*(1.0+1.0/eps);
-	// printf(" nface = %i\n",nface);
 
 	/* determine this processor's interval */
   	is = ((int) (1.0*nface/numprocs))*myid;
   	ie = ((int) (1.0*nface/numprocs))*(myid+1);
   	if (myid == numprocs-1)  ie = nface;
 
-	// printf(" is = %i\n",is);
-	// printf(" ie = %i\n",ie);
-	// printf(" nface = %i\n",nface);
-
   	int chunk=ie-is;
-  	// printf(" chunk = %i\n",chunk);
   	int irecv[numprocs];
 	for (i=0; i<numprocs-1; i++) {
 		irecv[i] = ((int) (1.0*nface/numprocs));
 	}
 	irecv[numprocs-1]=nface-((int) (1.0*nface/numprocs))*(numprocs-1);
-	// printf(" irecv[%i] = %i\n",numprocs-1,irecv[numprocs-1]);
 
-	// if (myid != 0){
-	// 	int pchunk = irecv[myid-1];
-	// }
 
 	int idisp[numprocs];
 	int sumtmp=0;
@@ -72,7 +61,6 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 		idisp[i] = 0 + sumtmp;
 		sumtmp = sumtmp+irecv[i];
 	}
-	// printf(" idisp[%i] = %i\n",myid,idisp[myid]);
 
   	double *sbuf_y1, *sbuf_y2;
   	sbuf_y1 = (double *) calloc(chunk, sizeof(double));
@@ -131,94 +119,33 @@ void matvecmul(const double *x, double *y, double *q, int nface,
   		sbuf_y2[i-idisp[myid]] = y[nface+i]*beta + (pre2*x[nface+i]-peng[1])*alpha;
 	}
 
-	// double ftime = MPI_Wtime();
-	// double looptime = ftime-stime;
-	// printf("looptime = %f\n",looptime);
-	// printf("chunk = %i\n",chunk);
-	
-	// double *send_buf1, *send_buf2;
-	// send_buf1 = (double *) calloc(chunk, sizeof(double));
-	// send_buf2 = (double *) calloc(chunk, sizeof(double));
-  	// for (i=0; i<chunk; i++) {
-	// 	send_buf1[i]=y[is+i];
-	// 	send_buf2[i]=y[nface+is+i];
-  	// }
-
 
 	double *rbuf_y1,*rbuf_y2;
 	rbuf_y1 = (double *) calloc(nface, sizeof(double));
 	rbuf_y2 = (double *) calloc(nface, sizeof(double));
 
-	// int irecv[numprocs];
-	// for (i=0; i<numprocs-1; i++) {
-	// 	irecv[i] = ((int) (1.0*nface/numprocs));
-	// }
-	// irecv[numprocs-1]=nface-((int) (1.0*nface/numprocs))*(numprocs-1);
-
-	// int idisp[numprocs];
-	// int sumtmp=0;
-	// for (i = 0; i <numprocs; i++) {
-	// 	idisp[i] = 0 + sumtmp;
-	// 	sumtmp = sumtmp+irecv[i];
-	// }
 
 
-	// ierr = MPI_Allgather(sbuf_y1, chunk, MPI_DOUBLE, rece_buf1, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
 	ierr = MPI_Allgatherv(sbuf_y1, chunk, MPI_DOUBLE, rbuf_y1, irecv, idisp, MPI_DOUBLE, MPI_COMM_WORLD);
   	if (ierr != MPI_SUCCESS) {
   	   	printf("Error in MPI_Allgather1 = %i\n",ierr);
   	}
 
-	// ierr = MPI_Allgather(sbuf_y2, chunk, MPI_DOUBLE, rece_buf2, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
 	ierr = MPI_Allgatherv(sbuf_y2, chunk, MPI_DOUBLE, rbuf_y2, irecv, idisp, MPI_DOUBLE, MPI_COMM_WORLD);
   	if (ierr != MPI_SUCCESS) {
   	   	printf("Error in MPI_Allgather2 = %i\n",ierr);
   	}
 
 
-	// ierr = MPI_Allgather(y+myid*chunk+nface, chunk, MPI_DOUBLE, rece_buf1+nface, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
-  	// if (ierr != MPI_SUCCESS) {
-  	//    	printf("Error in MPI_Allgather2 = %i\n",ierr);
-  	// } y+myid*chunk+nface
-
-	// ierr = MPI_Allgather(send_buf2, chunk, MPI_DOUBLE, rece_buf2, chunk, MPI_DOUBLE, MPI_COMM_WORLD);
-  	// if (ierr != MPI_SUCCESS) {
-  	//    	printf("Error in MPI_Allgather2 = %i\n",ierr);
-  	// }
-
-	// ftime = MPI_Wtime();
-	// double commtime = ftime-stime;
-	// printf("commtime = %f\n",commtime);
-	
-	// printf("nface = %i\n",nface);
-
-
-	// stime = MPI_Wtime();
   	for (i=0; i<nface; i++) {
   		y[i] = rbuf_y1[i];
-  		// y[nface+i] = rece_buf1[i+nface];
   		y[nface+i] = rbuf_y2[i];
   	}
 
-	// memcpy(y,rece_buf1,sizeof(y));
   	free(sbuf_y1);
   	free(sbuf_y2);
   	free(rbuf_y1);
   	free(rbuf_y2);
-
-	// ftime = MPI_Wtime();
-	// double cpytime = ftime -stime;
-	// printf("cpytime = %f\n",cpytime);
-
-
-
-  	// printf("scount %i\n",scount);
-  	// printf("rece_buf[N*numprocs] = %f\n",rece_buf[N*numprocs]);
-  	// printf("y[1000] before = %f\n",y[1000]);
-
-  	// memcpy(y,rece_buf+N*numprocs*sizeof(double),sizeof(y));
-  	// printf("y[1000] after = %f\n",y[1000]);
-	// printf("y[scount] = %f\n",y[scount]);
 }
 
 
