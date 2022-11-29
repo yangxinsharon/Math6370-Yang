@@ -133,8 +133,6 @@ int main(int argc, char *argv[]) {
         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
         return 1;
 	}
-		// printf("Finish Bcast atmchr id = %i\n",myid);
-		// printf("Finish Bcast atmchr[0] = %f\t %i\n",atmchr[0], nchr);
 
 	ierr = MPI_Bcast(chrpos, 3*nchr, MPI_DOUBLE, 0, MPI_COMM_WORLD);
      if (ierr != 0) {
@@ -142,7 +140,6 @@ int main(int argc, char *argv[]) {
         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
         return 1;
 	}		
-		// printf("Finish Bcast chrpos id = %i\n",myid);
 
 	ierr = MPI_Bcast(tr_xyz, 3*nface, MPI_DOUBLE, 0, MPI_COMM_WORLD);
      if (ierr != 0) {
@@ -150,7 +147,6 @@ int main(int argc, char *argv[]) {
         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
         return 1;
 	}
-		// printf("Finish Bcast tr_xyz id = %i\n",myid);
 
 	ierr = MPI_Bcast(tr_q, 3*nface, MPI_DOUBLE, 0, MPI_COMM_WORLD);
      if (ierr != 0) {
@@ -158,7 +154,6 @@ int main(int argc, char *argv[]) {
         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
         return 1;
 	}
-		// printf("Finish Bcast tr_q id = %i\n",myid);
 
 
 	ierr = MPI_Bcast(tr_area, nface, MPI_DOUBLE, 0, MPI_COMM_WORLD);
@@ -167,7 +162,6 @@ int main(int argc, char *argv[]) {
         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
         return 1;
 	}
-		// printf("Finish Bcast tr_area id = %i\n",myid);
 
 	ierr = MPI_Barrier(MPI_COMM_WORLD);
      if (ierr != 0) {
@@ -177,17 +171,8 @@ int main(int argc, char *argv[]) {
 	}	
 
 
-	// printf("before comp_source_wrapper\n ");
 	comp_source_wrapper(); //wraps the solvation energy computation
-	// printf("after comp_source_wrapper\n");
 
-	// ierr = MPI_Bcast(bvct, 2*nface, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-   //   if (ierr != 0) {
-   //      printf("Error in MPI_Bcast bvct = %i\n",ierr);
-   //      ierr = MPI_Abort(MPI_COMM_WORLD, 1);
-   //      return 1;
-	// }		
-	// printf("Finish Bcast bvct id = %i\n",myid);
 
 	/* parameters for GMRES */
 	RESTRT=10;
@@ -199,15 +184,11 @@ int main(int argc, char *argv[]) {
 	xvct=(double *) calloc(N, sizeof(double));
 	work=(double *) calloc (ldw*(RESTRT+4), sizeof(double));
 	h=(double *) calloc (ldh*(RESTRT+2), sizeof(double));
-	// printf("before gmres_\n");
-	// printf("size of bvct = %f\n", sizeof(bvct));
-	// printf("size of double  = %f\n", sizeof(double));
-	// printf("bvct = %f\t%f\n",bvct[0],sizeof(bvct)/sizeof(double) );
+
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
 
 	soleng=0.0;
 
-	// printf("before comp_soleng_wrapper\n");
 	comp_soleng_wrapper(soleng); //wraps the solvation energy computation
 	
 	double ftime = MPI_Wtime();
@@ -215,14 +196,12 @@ int main(int argc, char *argv[]) {
 	// if (myid == 0){
 	// 	timer_end();
 	// }
-	// printf("before MPI_Barrier\n");
 	ierr = MPI_Barrier(MPI_COMM_WORLD);
      if (ierr != 0) {
         printf("Error in MPI_Barrier = %i\n",ierr);
         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
         return 1;
 	}
-	// printf("before free memory\n");
 
 	/* free memory */
 	if (myid == 0){

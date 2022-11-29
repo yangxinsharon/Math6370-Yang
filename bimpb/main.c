@@ -19,7 +19,7 @@ extern double **atmpos;							// [3][natm/nchr]
 extern double *atmrad, *atmchr, *chrpos;	// [natm/nchr]
 extern double *work, *h;
 extern double *h_pot;
-extern double *dev_xp, *dev_yp, *dev_zp, *dev_q, *dev_pot;
+// extern double *dev_xp, *dev_yp, *dev_zp, *dev_q, *dev_pot;
 extern const double eps;
 
 int main(int argc, char *argv[]) {
