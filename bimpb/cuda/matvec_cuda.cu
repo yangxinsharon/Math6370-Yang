@@ -1,6 +1,6 @@
 #include<stdio.h>
-#include "gl_variables.h"
-#include "gl_constants.h"
+#include "../gl_variables.h"
+#include "../gl_constants.h"
 
 extern "C" int *matvec(double *alpha, double *x, double *beta, double *y);
 extern "C" void comp_soleng_wrapper(double soleng);
