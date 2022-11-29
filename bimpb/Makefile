@@ -36,10 +36,10 @@ matvec.o: matvec.c
 	$(CC) $(CFLAGS) matvec.c
 main.o: main.c
 	$(CC) $(CFLAGS) main.c
-matvec_cuda.o: cuda/matvec_cuda.cu
-	$(NNCC) $(NVCCFLAGS) cuda/matvec_cuda.cu
-main_cuda.o: cuda/main_cuda.c
-	$(NVCC) $(NVCCFLAGS) cuda/main_cuda.c
+matvec_cuda.o: matvec_cuda.cu
+	$(NNCC) $(NVCCFLAGS) matvec_cuda.cu
+main_cuda.o: main_cuda.c
+	$(NVCC) $(NVCCFLAGS) main_cuda.c
 matvec_omp.o: matvec_omp.c
 	$(CC) $(CFLAGS) $(OMPFLAGS) matvec_omp.c
 # main_omp.o: main_omp.c
