@@ -1,6 +1,0 @@
-/users/xiny/GitHubRepository/Math6370-Yang/lab12-kokkos/CMakeFiles/rebuild_cache.dir
-/users/xiny/GitHubRepository/Math6370-Yang/lab12-kokkos/CMakeFiles/2_views.exe.dir
-/users/xiny/GitHubRepository/Math6370-Yang/lab12-kokkos/CMakeFiles/1_basics.exe.dir
-/users/xiny/GitHubRepository/Math6370-Yang/lab12-kokkos/CMakeFiles/3_data_transfers.exe.dir
-/users/xiny/GitHubRepository/Math6370-Yang/lab12-kokkos/CMakeFiles/edit_cache.dir
-/users/xiny/GitHubRepository/Math6370-Yang/lab12-kokkos/CMakeFiles/4_spaces_layouts.exe.dir
