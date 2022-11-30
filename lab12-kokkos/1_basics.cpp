@@ -119,14 +119,14 @@ int main( int argc, char* argv[] )
   // EXERCISE: Convert outer loop to Kokkos::parallel_for (be certain to use KOKKOS_LAMBDA instead of [=]).
   // for ( int i = 0; i < N; ++i ) {
   Kokkos::parallel_for("init_y", N, KOKKOS_LAMBDA(int i) {
-    y(i) = 1;
+    y[ i ] = 1;
   });
 
   // Initialize x vector.
   // EXERCISE: Convert outer loop to Kokkos::parallel_for (be certain to use KOKKOS_LAMBDA instead of [=]).
   // for ( int i = 0; i < M; ++i ) {
   Kokkos::parallel_for("init_x", M, KOKKOS_LAMBDA(int i) {
-    x(i) = 1;
+    x[ i ] = 1;
   });
 
   // Initialize A matrix, note 2D indexing computation.
@@ -134,7 +134,7 @@ int main( int argc, char* argv[] )
   // for ( int j = 0; j < N; ++j ) {
   Kokkos::parallel_for("init_A", N, KOKKOS_LAMBDA(int j) {
     for ( int i = 0; i < M; ++i ) {
-      A(j * M + i) = 1;
+      A[j * M + i] = 1;
     }
   });
 
@@ -155,10 +155,10 @@ int main( int argc, char* argv[] )
       double temp2 = 0;
 
       for ( int i = 0; i < M; ++i ) {
-        temp2 += A(j * M + i) * x(i);
+        temp2 += A[j * M + i] * x[i];
       }
 
-      my_result += y(j) * temp2;
+      my_result += y[j] * temp2;
     }, result);
 
     // Output result.
