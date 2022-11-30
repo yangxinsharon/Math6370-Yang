@@ -105,34 +105,34 @@ int main( int argc, char* argv[] )
   {
 
   // EXERCISE: Choose execution spaces for both the Host and Device.
-  // typedef Kokkos::Serial   HostExecSpace;
+  typedef Kokkos::Serial   HostExecSpace;
   // typedef Kokkos::Threads  HostExecSpace;
   // typedef Kokkos::OpenMP   HostExecSpace;
   // typedef Kokkos::Cuda     HostExecSpace;
   // typedef Kokkos::Serial   DevExecSpace;
   // typedef Kokkos::Threads  DevExecSpace;
   // typedef Kokkos::OpenMP   DevExecSpace;
-  // typedef Kokkos::Cuda     DevExecSpace;
+  typedef Kokkos::Cuda     DevExecSpace;
 
   // EXERCISE: Choose device memory space.
   // typedef Kokkos::HostSpace     MemSpace;
-  // typedef Kokkos::CudaSpace     MemSpace;
+  typedef Kokkos::CudaSpace     MemSpace;
   // typedef Kokkos::CudaUVMSpace  MemSpace;
 
   // EXERCISE: Choose a Layout.  Note that when this is correctly
   //           implemented, both layout choices will generate the
   //           correct answer (but performance will differ).
   // typedef Kokkos::LayoutLeft   Layout;
-  // typedef Kokkos::LayoutRight  Layout;
+  typedef Kokkos::LayoutRight  Layout;
 
   // EXERCISE: Set range policies for both the Host and Device
-  // typedef Kokkos::RangePolicy<HostExecSpace>  host_range_policy;
-  // typedef Kokkos::RangePolicy<DevExecSpace>   dev_range_policy;
+  typedef Kokkos::RangePolicy<HostExecSpace>  host_range_policy;
+  typedef Kokkos::RangePolicy<DevExecSpace>   dev_range_policy;
 
   // Allocate y, x vectors and Matrix A on device.
   // EXERCISE: Use MemSpace and Layout.
-  typedef Kokkos::View<double*>   ViewVectorType;
-  typedef Kokkos::View<double**>  ViewMatrixType;
+  typedef Kokkos::View<double*, Layout, MemSpace>   ViewVectorType;
+  typedef Kokkos::View<double**, Layout, MemSpace>  ViewMatrixType;
   ViewVectorType y( "y", N );
   ViewVectorType x( "x", M );
   ViewMatrixType A( "A", N, M );
@@ -145,25 +145,25 @@ int main( int argc, char* argv[] )
   // Initialize y vector on host.
   // EXERCISE: Convert to parallel_for using the appropriate range policy
   //           for this memory space.
-  for ( int i = 0; i < N; ++i ) {
+  Kokkos::parallel_for (host_range_policy(0,N), KOKKOS_LAMBDA(int i) {
     h_y( i ) = 1;
-  }
+  });
 
   // Initialize x vector on host.
   // EXERCISE: Convert to parallel_for using the appropriate range policy
   //           for this memory space.
-  for ( int i = 0; i < M; ++i ) {
+  Kokkos::parallel_for (host_range_policy(0,M), KOKKOS_LAMBDA(int i)  {
     h_x( i ) = 1;
-  }
+  });
 
   // Initialize A matrix on host.
   // EXERCISE: Convert to parallel_for using the appropriate range policy
   //           for this memory space.
-  for ( int j = 0; j < N; ++j ) {
+  Kokkos::parallel_for (dev_range_policy(0,N), KOKKOS_LAMBDA(int j) {
     for ( int i = 0; i < M; ++i ) {
       h_A( j, i ) = 1;
     }
-  }
+  });
 
   // Deep copy host views to device views.
   Kokkos::deep_copy( y, h_y );
@@ -179,7 +179,7 @@ int main( int argc, char* argv[] )
 
     // EXERCISE: Use the appropriate range policy to execute parallel_reduce
     //           in the correct space.
-    Kokkos::parallel_reduce( N, KOKKOS_LAMBDA ( int j, double &update ) {
+    Kokkos::parallel_reduce( dev_range_policy( 0, N ), KOKKOS_LAMBDA ( int j, double &update ) {
       double temp2 = 0;
 
       for ( int i = 0; i < M; ++i ) {
