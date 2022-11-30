@@ -111,8 +111,8 @@ int main( int argc, char* argv[] )
   // typedef Kokkos::Cuda     HostExecSpace;
   // typedef Kokkos::Serial   DevExecSpace;
   // typedef Kokkos::Threads  DevExecSpace;
-  typedef Kokkos::OpenMP   DevExecSpace;
-  // typedef Kokkos::Cuda     DevExecSpace;
+  // typedef Kokkos::OpenMP   DevExecSpace;
+  typedef Kokkos::Cuda     DevExecSpace;
 
   // EXERCISE: Choose device memory space.
   // typedef Kokkos::HostSpace     MemSpace;
