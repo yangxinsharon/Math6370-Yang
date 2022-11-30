@@ -61,7 +61,7 @@
 
 // EXERCISE: Include Kokkos_Core.hpp.
 //           cmath library unnecessary after.
-#include <Kokkos_Core.hpp>
+// #include <Kokkos_Core.hpp>
 #include <cmath>
 
 void checkSizes( int &N, int &M, int &S, int &nrepeat );
@@ -106,60 +106,56 @@ int main( int argc, char* argv[] )
 
   // EXERCISE: Initialize Kokkos runtime.
   //           Include braces to encapsulate code between initialize and finalize calls
-  Kokkos::initialize( argc, argv );
-  {
+  // Kokkos::initialize( argc, argv );
+  // {
 
   // Allocate y, x vectors and Matrix A:
   // EXERCISE: Use Kokkos for data allocation in default memory space (replace std::malloc with Kokkos::kokkos_malloc)
-  double* y = static_cast<double*>(Kokkos::kokkos_malloc(N * sizeof(double)));
-  double* x = static_cast<double*>(Kokkos::kokkos_malloc(M * sizeof(double)));
-  double* A = static_cast<double*>(Kokkos::kokkos_malloc(N * M * sizeof(double)));
+  double* y = static_cast<double*>(std::malloc(N * sizeof(double)));
+  double* x = static_cast<double*>(std::malloc(M * sizeof(double)));
+  double* A = static_cast<double*>(std::malloc(N * M * sizeof(double)));
 
   // Initialize y vector.
   // EXERCISE: Convert outer loop to Kokkos::parallel_for (be certain to use KOKKOS_LAMBDA instead of [=]).
-  // for ( int i = 0; i < N; ++i ) {
-  Kokkos::parallel_for("init_y", N, KOKKOS_LAMBDA(int i) {
-    y(i) = 1;
-  });
+  for ( int i = 0; i < N; ++i ) {
+    y[ i ] = 1;
+  }
 
   // Initialize x vector.
   // EXERCISE: Convert outer loop to Kokkos::parallel_for (be certain to use KOKKOS_LAMBDA instead of [=]).
-  // for ( int i = 0; i < M; ++i ) {
-  Kokkos::parallel_for("init_x", M, KOKKOS_LAMBDA(int i) {
-    x(i) = 1;
-  });
+  for ( int i = 0; i < M; ++i ) {
+    x[ i ] = 1;
+  }
 
   // Initialize A matrix, note 2D indexing computation.
   // EXERCISE: Convert outer loop to Kokkos::parallel_for (be certain to use KOKKOS_LAMBDA instead of [=]).
-  // for ( int j = 0; j < N; ++j ) {
-  Kokkos::parallel_for("init_A", N, KOKKOS_LAMBDA(int j) {
+  for ( int j = 0; j < N; ++j ) {
     for ( int i = 0; i < M; ++i ) {
-      A(j * M + i) = 1;
+      A[ j * M + i ] = 1;
     }
-  });
+  }
 
   // Timer products.
   // EXERCISE: Switch over to using the Kokkos timer (remove "begin" and "end" entirely).
-  Kokkos::Timer timer;
-  // struct timeval begin, end;
+  //Kokkos::Timer timer;
+  struct timeval begin, end;
 
-  // gettimeofday( &begin, NULL );
+  gettimeofday( &begin, NULL );
 
   for ( int repeat = 0; repeat < nrepeat; repeat++ ) {
     // Application: <y,Ax> = y^T*A*x
     double result = 0;
 
     // EXERCISE: Convert outer loop to Kokkos::parallel_reduce.
-    // for ( int j = 0; j < N; ++j ) {
-    Kokkos::parallel_reduce("reduce", N, KOKKOS_LAMBDA(int j, double &my_result) {
+    for ( int j = 0; j < N; ++j ) {
       double temp2 = 0;
 
       for ( int i = 0; i < M; ++i ) {
-        temp2 += A(j * M + i) * x(i);
+        temp2 += A[ j * M + i ] * x[ i ];
       }
 
-      my_result += y(j) * temp2;
-    }, result);
+      result += y[ j ] * temp2;
+    }
 
     // Output result.
     if ( repeat == ( nrepeat - 1 ) ) {
@@ -173,13 +169,13 @@ int main( int argc, char* argv[] )
     }
   }
 
-  // gettimeofday( &end, NULL );
+  gettimeofday( &end, NULL );
 
   // Calculate time.
   // EXERCISE: Extract the elapsed time from the Kokkos timer.
-  double time = timer.seconds();
-  // double time = 1.0 * ( end.tv_sec - begin.tv_sec ) +
-  //               1.0e-6 * ( end.tv_usec - begin.tv_usec );
+  //double time = timer.seconds();
+  double time = 1.0 * ( end.tv_sec - begin.tv_sec ) +
+                1.0e-6 * ( end.tv_usec - begin.tv_usec );
 
   // Calculate bandwidth.
   // Each matrix A row (each of length M) is read once.
@@ -192,13 +188,13 @@ int main( int argc, char* argv[] )
           N, M, nrepeat, Gbytes * 1000, time, Gbytes * nrepeat / time );
 
   // EXERCISE: free data from default memory space using Kokkos::kokkos_free
-  Kokkos::kokkos_free(A);
-  Kokkos::kokkos_free(y);
-  Kokkos::kokkos_free(x);
+  std::free(A);
+  std::free(y);
+  std::free(x);
 
   // EXERCISE: finalize Kokkos runtime
-  }
-  Kokkos::finalize();
+  // }
+  // Kokkos::finalize();
 
   return 0;
 }
