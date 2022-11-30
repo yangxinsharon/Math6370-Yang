@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "../pp_timer.h"
+#include "pp_timer.h"
 
 extern int nface, nspt, natm, nchr;
 extern int **extr_v; //[3][nspt]
@@ -40,8 +40,8 @@ int main(int argc, char *argv[]) {
 	printf("%d %s %s \n",argc,argv[0],argv[1]);
 
 	/* read in structural information */
-    sprintf(fname,"1a63");
-    sprintf(density,"10");
+    sprintf(fname,"1ajj");
+    sprintf(density,"1");
 //    sprintf(fname,argv[0]);
 //    sprintf(density,argv[1]);
 	readin(fname,density);

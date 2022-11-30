@@ -18,7 +18,7 @@ NVCCFLAGS = -c -O3 -arch=sm_61 -use_fast_math	# for -arch=sm_xx check http://doc
 OMPFLAGS = -fopenmp
 
 # makefile targets
-all: bimpb.exe bimpb_omp.exe bimpb_mpi.exe bimpb_cuda.exe 
+all: bimpb.exe bimpb_omp.exe bimpb_mpi.exe #bimpb_cuda.exe 
 
 bimpb.exe: main.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec.o pp_timer.o
 	$(CC) -lm -p -o $@ $^
@@ -47,9 +47,9 @@ main_mpi.o: main_mpi.c
 	$(MPICC) $(CFLAGS) main_mpi.c
 
 matvec_cuda.o: matvec_cuda.cu
-	$(NVCC) $(CFLAGS) matvec_cuda.cu
+	$(NVCC) $(NVCCFLAGS) matvec_cuda.cu
 main_cuda.o: main_cuda.c
-	$(NVCC) $(CFLAGS) main_cuda.c
+	$(NVCC) $(NVCCFLAGS) main_cuda.c
 d_sign.o: gmres/d_sign.c
 	$(CC) $(CFLAGS) gmres/d_sign.c
 daxpy.o: gmres/daxpy.c
