@@ -105,9 +105,9 @@ int main( int argc, char* argv[] )
   {
 
   // EXERCISE: Choose execution spaces for both the Host and Device.
-  typedef Kokkos::Serial   HostExecSpace;
+  // typedef Kokkos::Serial   HostExecSpace;
   // typedef Kokkos::Threads  HostExecSpace;
-  // typedef Kokkos::OpenMP   HostExecSpace;
+  typedef Kokkos::OpenMP   HostExecSpace;
   // typedef Kokkos::Cuda     HostExecSpace;
   // typedef Kokkos::Serial   DevExecSpace;
   // typedef Kokkos::Threads  DevExecSpace;
@@ -122,8 +122,8 @@ int main( int argc, char* argv[] )
   // EXERCISE: Choose a Layout.  Note that when this is correctly
   //           implemented, both layout choices will generate the
   //           correct answer (but performance will differ).
-  typedef Kokkos::LayoutLeft   Layout;
-  // typedef Kokkos::LayoutRight  Layout;
+  // typedef Kokkos::LayoutLeft   Layout;
+  typedef Kokkos::LayoutRight  Layout;
 
   // EXERCISE: Set range policies for both the Host and Device
   typedef Kokkos::RangePolicy<HostExecSpace>  host_range_policy;
