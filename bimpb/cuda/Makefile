@@ -3,7 +3,7 @@ comp = nvcc
 flag = -c -O3 -arch=sm_61 -use_fast_math
 # for -arch=sm_xx check http://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html#gpu-feature-list
 bimpb_cuda.exe: main_cuda.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_cuda.o pp_timer.o
-	$(comp) -o md_cuda.exe *.o -lm
+	$(comp) -o bimpb_cuda.exe *.o -lm
 matvec_cuda.o: matvec_cuda.cu
 	$(comp) $(flag) matvec_cuda.cu
 pp_timer.o: pp_timer.c
