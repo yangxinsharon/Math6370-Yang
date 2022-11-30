@@ -115,8 +115,8 @@ int main( int argc, char* argv[] )
   typedef Kokkos::Cuda     DevExecSpace;
 
   // EXERCISE: Choose device memory space.
-  // typedef Kokkos::HostSpace     MemSpace;
-  typedef Kokkos::CudaSpace     MemSpace;
+  typedef Kokkos::HostSpace     MemSpace;
+  // typedef Kokkos::CudaSpace     MemSpace;
   // typedef Kokkos::CudaUVMSpace  MemSpace;
 
   // EXERCISE: Choose a Layout.  Note that when this is correctly
@@ -152,14 +152,14 @@ int main( int argc, char* argv[] )
   // Initialize x vector on host.
   // EXERCISE: Convert to parallel_for using the appropriate range policy
   //           for this memory space.
-  Kokkos::parallel_for (host_range_policy(0,M), KOKKOS_LAMBDA(int i)  {
+  Kokkos::parallel_for (host_range_policy(0,M), KOKKOS_LAMBDA(int i) {
     h_x( i ) = 1;
   });
 
   // Initialize A matrix on host.
   // EXERCISE: Convert to parallel_for using the appropriate range policy
   //           for this memory space.
-  Kokkos::parallel_for (dev_range_policy(0,N), KOKKOS_LAMBDA(int j) {
+  Kokkos::parallel_for (host_range_policy(0,N), KOKKOS_LAMBDA(int j) {
     for ( int i = 0; i < M; ++i ) {
       h_A( j, i ) = 1;
     }
