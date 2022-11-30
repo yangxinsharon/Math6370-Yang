@@ -105,18 +105,18 @@ int main( int argc, char* argv[] )
   {
 
   // EXERCISE: Choose execution spaces for both the Host and Device.
-  // typedef Kokkos::Serial   HostExecSpace;
+  typedef Kokkos::Serial   HostExecSpace;
   // typedef Kokkos::Threads  HostExecSpace;
-  typedef Kokkos::OpenMP   HostExecSpace;
+  // typedef Kokkos::OpenMP   HostExecSpace;
   // typedef Kokkos::Cuda     HostExecSpace;
-  typedef Kokkos::Serial   DevExecSpace;
+  // typedef Kokkos::Serial   DevExecSpace;
   // typedef Kokkos::Threads  DevExecSpace;
-  // typedef Kokkos::OpenMP   DevExecSpace;
+  typedef Kokkos::OpenMP   DevExecSpace;
   // typedef Kokkos::Cuda     DevExecSpace;
 
   // EXERCISE: Choose device memory space.
-  typedef Kokkos::HostSpace     MemSpace;
-  // typedef Kokkos::CudaSpace     MemSpace;
+  // typedef Kokkos::HostSpace     MemSpace;
+  typedef Kokkos::CudaSpace     MemSpace;
   // typedef Kokkos::CudaUVMSpace  MemSpace;
 
   // EXERCISE: Choose a Layout.  Note that when this is correctly
