@@ -47,7 +47,7 @@ main_mpi.o: main_mpi.c
 	$(MPICC) $(CFLAGS) main_mpi.c
 
 matvec_cuda.o: matvec_cuda.cu
-	$(NNCC) $(CFLAGS) matvec_cuda.cu
+	$(NVCC) $(CFLAGS) matvec_cuda.cu
 main_cuda.o: main_cuda.c
 	$(NVCC) $(CFLAGS) main_cuda.c
 d_sign.o: gmres/d_sign.c
