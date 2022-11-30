@@ -115,8 +115,8 @@ int main( int argc, char* argv[] )
   typedef Kokkos::Cuda     DevExecSpace;
 
   // EXERCISE: Choose device memory space.
-  typedef Kokkos::HostSpace     MemSpace;
-  // typedef Kokkos::CudaSpace     MemSpace;
+  // typedef Kokkos::HostSpace     MemSpace;
+  typedef Kokkos::CudaSpace     MemSpace;
   // typedef Kokkos::CudaUVMSpace  MemSpace;
 
   // EXERCISE: Choose a Layout.  Note that when this is correctly
