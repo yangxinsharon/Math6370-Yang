@@ -145,14 +145,14 @@ int main( int argc, char* argv[] )
   // Initialize y vector on host.
   // EXERCISE: Convert to parallel_for using the appropriate range policy
   //           for this memory space.
-  Kokkos::parallel_for (host_range_policy(0,N), KOKKOS_LAMBDA(int i) {
+  Kokkos::parallel_for ( host_range_policy(0,N), KOKKOS_LAMBDA(int i) {
     h_y( i ) = 1;
   });
 
   // Initialize x vector on host.
   // EXERCISE: Convert to parallel_for using the appropriate range policy
   //           for this memory space.
-  Kokkos::parallel_for (host_range_policy(0,M), KOKKOS_LAMBDA(int i) {
+  Kokkos::parallel_for ( host_range_policy(0,M), KOKKOS_LAMBDA(int i) {
     h_x( i ) = 1;
   });
 
