@@ -109,15 +109,15 @@ int main( int argc, char* argv[] )
   // typedef Kokkos::Threads  HostExecSpace;
   typedef Kokkos::OpenMP   HostExecSpace;
   // typedef Kokkos::Cuda     HostExecSpace;
-  // typedef Kokkos::Serial   DevExecSpace;
+  typedef Kokkos::Serial   DevExecSpace;
   // typedef Kokkos::Threads  DevExecSpace;
   // typedef Kokkos::OpenMP   DevExecSpace;
-  typedef Kokkos::Cuda     DevExecSpace;
+  // typedef Kokkos::Cuda     DevExecSpace;
 
   // EXERCISE: Choose device memory space.
-  // typedef Kokkos::HostSpace     MemSpace;
+  typedef Kokkos::HostSpace     MemSpace;
   // typedef Kokkos::CudaSpace     MemSpace;
-  typedef Kokkos::CudaUVMSpace  MemSpace;
+  // typedef Kokkos::CudaUVMSpace  MemSpace;
 
   // EXERCISE: Choose a Layout.  Note that when this is correctly
   //           implemented, both layout choices will generate the
