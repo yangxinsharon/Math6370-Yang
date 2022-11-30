@@ -25,10 +25,9 @@ extern const double eps;
 
 int main(int argc, char *argv[]) {
 	/*variables local to main*/
-	int i;
-	// double s[3], pot=0.0, sum=0.0, pot_temp=0.0;	// potential
-	double soleng;
-	// double ptl, soleng, t1, t2;
+	int i,j ;
+	double s[3], pot=0.0, sum=0.0, pot_temp=0.0;	// potential
+	double ptl, soleng, t1, t2;
 	char fname[16], density[16];
 	extern void readin(char fname[16], char density[16]);
 
