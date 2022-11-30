@@ -62,7 +62,7 @@
 // EXERCISE: Include Kokkos_Core.hpp.
 //           cmath library unnecessary after.
 #include <Kokkos_Core.hpp>
-#include <cmath>
+// #include <cmath>
 
 void checkSizes( int &N, int &M, int &S, int &nrepeat );
 
@@ -117,24 +117,23 @@ int main( int argc, char* argv[] )
 
   // Initialize y vector.
   // EXERCISE: Convert outer loop to Kokkos::parallel_for (be certain to use KOKKOS_LAMBDA instead of [=]).
-  // for ( int i = 0; i < N; ++i ) {
-  Kokkos::parallel_for("init_y", N, KOKKOS_LAMBDA(int i) {
+  Kokkos::parallel_for ("init_y", N, KOKKOS_LAMBDA(int i) {
     y(i) = 1;
   });
 
   // Initialize x vector.
   // EXERCISE: Convert outer loop to Kokkos::parallel_for (be certain to use KOKKOS_LAMBDA instead of [=]).
-  for ( int i = 0; i < M; ++i ) {
-    x[ i ] = 1;
-  }
+  Kokkos::parallel_for ("init_x", M, KOKKOS_LAMBDA(int i) {
+    x(i) = 1;
+  });
 
   // Initialize A matrix, note 2D indexing computation.
   // EXERCISE: Convert outer loop to Kokkos::parallel_for (be certain to use KOKKOS_LAMBDA instead of [=]).
-  for ( int j = 0; j < N; ++j ) {
+  Kokkos::parallel_for ("init_A", N, KOKKOS_LAMBDA(int j) {
     for ( int i = 0; i < M; ++i ) {
-      A[ j * M + i ] = 1;
+      A( j * M + i ) = 1;
     }
-  }
+  });
 
   // Timer products.
   // EXERCISE: Switch over to using the Kokkos timer (remove "begin" and "end" entirely).
@@ -148,15 +147,15 @@ int main( int argc, char* argv[] )
     double result = 0;
 
     // EXERCISE: Convert outer loop to Kokkos::parallel_reduce.
-    for ( int j = 0; j < N; ++j ) {
+    Kokkos::parallel_reduce(N, KOKKOS_LAMBDA(int j, double &my_result) {
       double temp2 = 0;
 
       for ( int i = 0; i < M; ++i ) {
-        temp2 += A[ j * M + i ] * x[ i ];
+        temp2 += A( j * M + i ) * x( i );
       }
 
-      result += y[ j ] * temp2;
-    }
+      my_result += y(j) * temp2;
+    },result);
 
     // Output result.
     if ( repeat == ( nrepeat - 1 ) ) {
