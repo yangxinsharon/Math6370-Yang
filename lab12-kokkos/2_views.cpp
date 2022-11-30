@@ -104,30 +104,30 @@ int main( int argc, char* argv[] )
   // Allocate y, x vectors and Matrix A:
   // EXERCISE: Create views of the right size in GPU memory, while remaining accessible to the CPU
   //           (so-called "Unified Virtual Memory", UVM, or "managed memory")
-  // typedef Kokkos::View<double*,  Kokkos::CudaUVMSpace>  ViewVectorType;
-  // typedef Kokkos::View<double**, Kokkos::CudaUVMSpace>  ViewMatrixType;
-  // ViewVectorType y( "y", N );
-  // ViewVectorType x( "x", M );
-  // ViewMatrixType A( "A", N, M );
+  typedef Kokkos::View<double*,  Kokkos::CudaUVMSpace>  ViewVectorType;
+  typedef Kokkos::View<double**, Kokkos::CudaUVMSpace>  ViewMatrixType;
+  ViewVectorType y( "y", N );
+  ViewVectorType x( "x", M );
+  ViewMatrixType A( "A", N, M );
 
   // EXERCISE: This no longer needs allocation after views introduced...
   //   Hint: If arrays are not allocated, they also do not need to be deallocated below
-  double * const y = new double[ N ];
-  double * const x = new double[ M ];
-  double * const A = new double[ N * M ];
+  // double * const y = new double[ N ];
+  // double * const x = new double[ M ];
+  // double * const A = new double[ N * M ];
 
   // Initialize y vector on host.
   // EXERCISE: Convert y to 1D View's member access API: x(i)
   // (Optional: convert to parallel_for with [=] replaced by KOKKOS_LAMBDA to execute on GPU)
   for ( int i = 0; i < N; ++i ) {
-    y[ i ] = 1;
+    y(i) = 1;
   }
 
   // Initialize x vector on host.
   // EXERCISE: Convert x to 1D View's member access API: x(i)
   // (Optional: convert to parallel_for with [=] replaced by KOKKOS_LAMBDA to execute on GPU)
   for ( int i = 0; i < M; ++i ) {
-    x[ i ] = 1;
+    x(i) = 1;
   }
 
   // Initialize A matrix on host, note 2D indexing computation.
@@ -135,7 +135,7 @@ int main( int argc, char* argv[] )
   // (Optional: convert to parallel_for with [=] replaced by KOKKOS_LAMBDA to execute on GPU)
   for ( int j = 0; j < N; ++j ) {
     for ( int i = 0; i < M; ++i ) {
-      A[ j * M + i ] = 1;
+      A(j,i) = 1;
     }
   }
 
@@ -151,10 +151,10 @@ int main( int argc, char* argv[] )
 
       // EXERCISE: Replace access with view access operators.
       for ( int i = 0; i < M; ++i ) {
-        temp2 += A[ j * M + i ] * x[ i ];
+        temp2 += A(j,i) * x(i);
       }
 
-      update += y[ j ] * temp2;
+      update += y(j) * temp2;
     }, result );
 
     // Output result.
@@ -183,9 +183,9 @@ int main( int argc, char* argv[] )
   printf( "  N( %d ) M( %d ) nrepeat ( %d ) problem( %g MB ) time( %g s ) bandwidth( %g GB/s )\n",
           N, M, nrepeat, Gbytes * 1000, time, Gbytes * nrepeat / time );
 
-  delete [] y;  //EXERCISE hint: ...
-  delete [] x;  //EXERCISE hint: ...
-  delete [] A;  //EXERCISE hint: ...
+  // delete [] y;  //EXERCISE hint: ...
+  // delete [] x;  //EXERCISE hint: ...
+  // delete [] A;  //EXERCISE hint: ...
 
   }
   Kokkos::finalize();

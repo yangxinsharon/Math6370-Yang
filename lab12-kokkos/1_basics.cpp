@@ -62,7 +62,7 @@
 // EXERCISE: Include Kokkos_Core.hpp.
 //           cmath library unnecessary after.
 #include <Kokkos_Core.hpp>
-#include <cmath>
+// #include <cmath>
 
 void checkSizes( int &N, int &M, int &S, int &nrepeat );
 
@@ -134,7 +134,7 @@ int main( int argc, char* argv[] )
   // for ( int j = 0; j < N; ++j ) {
   Kokkos::parallel_for("init_A", N, KOKKOS_LAMBDA(int j) {
     for ( int i = 0; i < M; ++i ) {
-      A[j * M + i] = 1;
+      A[ j * M + i ] = 1;
     }
   });
 
