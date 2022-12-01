@@ -6,12 +6,12 @@ bimpb_cuda.exe: main_cuda.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnr
 	$(comp) -o bimpb_cuda.exe *.o -lm
 matvec_cuda.o: matvec_cuda.cu
 	$(comp) $(flag) matvec_cuda.cu
-pp_timer.o: pp_timer.c
-	$(comp) $(flag) pp_timer.c
+pp_timer.o: ../pp_timer.c
+	$(comp) $(flag) ../pp_timer.c
 main_cuda.o: main_cuda.c
 	$(comp) $(flag) main_cuda.c
-readin.o: readin.c
-	$(comp) $(flag) readin.c
+readin.o: ../readin.c
+	$(comp) $(flag) ../readin.c
 d_sign.o: ../gmres/d_sign.c
 	$(comp) $(flag) ../gmres/d_sign.c
 daxpy.o: ../gmres/daxpy.c

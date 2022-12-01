@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
-#include "gl_functions.h"
-#include "gl_constants.h"
+#include "../gl_functions.h"
+#include "../gl_constants.h"
 
 extern int nface, nspt, natm, nchr;
 extern int **extr_v; //[3][nspt]
