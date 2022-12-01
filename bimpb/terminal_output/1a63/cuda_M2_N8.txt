@@ -1,0 +1,82 @@
+[xiny@login04 cuda]$ srun -p v100x8 --gres=gpu:8 ./bimpb_cuda.exe 
+srun: A Friendly reminder: It is a good practice to request an amount of memory by using the --mem=<mem_in_GB> flag. Without the --mem flag not all available memory will be allocated for your job. Explicitly requesting memory for your job helps with maximum utilization of the cluster.
+srun: job 39338874 queued and waiting for resources
+srun: job 39338874 has been allocated resources
+MSMS 2.6.1 started on va001
+Copyright M.F. Sanner (1994)
+Compilation flags -O2 -DVERBOSE -DTIMING
+input file 1a63.xyzr couldn't be open ... Bye
+1 /users/xiny/GitHubRepository/Math6370-Yang/bimpb/cuda/./bimpb_cuda.exe (null) 
+./msms -if 1a63.xyzr -prob 1.4 -dens 10 -of 1a63 
+../test_proteins/1a63.vert
+nspt=10134, natm=2065, den=1.000000, prob=1.400000
+finish reading vertices file...
+nface=20264, natm=2065, den=1.000000, prob=1.400000
+finish reading face file...
+finish reading position file...
+finish reading charge file...
+The 777 th triangle has small area:0.000000e+00
+The 1122 th triangle has small area:0.000000e+00
+The 1123 th triangle has small area:0.000000e+00
+The 1124 th triangle has small area:0.000000e+00
+The 2208 th triangle has small area:0.000000e+00
+The 2209 th triangle has small area:0.000000e+00
+The 3271 th triangle has small area:0.000000e+00
+The 5494 th triangle has small area:0.000000e+00
+The 5495 th triangle has small area:0.000000e+00
+The 5512 th triangle has small area:0.000000e+00
+The 5513 th triangle has small area:0.000000e+00
+The 5846 th triangle has small area:0.000000e+00
+The 5847 th triangle has small area:0.000000e+00
+The 6174 th triangle has small area:0.000000e+00
+The 6175 th triangle has small area:0.000000e+00
+The 14747 th triangle has small area:0.000000e+00
+The 14754 th triangle has small area:0.000000e+00
+The 15507 th triangle has small area:7.071068e-07
+The 15518 th triangle has small area:0.000000e+00
+The 15852 th triangle has small area:7.071068e-07
+The 15854 th triangle has small area:0.000000e+00
+The 16259 th triangle has small area:0.000000e+00
+The 16260 th triangle has small area:7.921490e-06
+The 17556 th triangle has small area:2.915476e-06
+The 17699 th triangle has small area:0.000000e+00
+The 17708 th triangle has small area:0.000000e+00
+The 17956 th triangle has small area:0.000000e+00
+The 17982 th triangle has small area:4.123106e-06
+The 18163 th triangle has small area:0.000000e+00
+The 18166 th triangle has small area:5.000000e-07
+The 18187 th triangle has small area:0.000000e+00
+The 18195 th triangle has small area:0.000000e+00
+The 18406 th triangle has small area:0.000000e+00
+The 18594 th triangle has small area:0.000000e+00
+The 18706 th triangle has small area:2.236068e-06
+The 18707 th triangle has small area:2.236068e-06
+36 faces are deleted
+total area = 6697.263965
+40456	-0.049665	0.000000	10	40456	11	100	0.000100
+iteration no.=1, error=2.049184e-01
+iteration no.=2, error=6.055709e-02
+iteration no.=3, error=3.501075e-02
+iteration no.=4, error=1.622615e-02
+iteration no.=5, error=9.895325e-03
+iteration no.=6, error=9.625065e-03
+iteration no.=7, error=8.047203e-03
+iteration no.=8, error=6.643667e-03
+iteration no.=9, error=4.234999e-03
+iteration no.=10, error=2.899094e-03
+iteration no.=11, error=2.371491e-03
+iteration no.=12, error=2.336903e-03
+iteration no.=13, error=2.141409e-03
+iteration no.=14, error=1.869326e-03
+iteration no.=15, error=1.591029e-03
+iteration no.=16, error=1.363237e-03
+iteration no.=17, error=1.277407e-03
+iteration no.=18, error=9.941748e-04
+iteration no.=19, error=5.974546e-04
+iteration no.=20, error=2.572989e-04
+iteration no.=21, error=1.843733e-04
+iteration no.=22, error=1.313705e-04
+iteration no.=23, error=8.444114e-05
+solvation energy on GPU = -2913.445285 kcal/mol
+TOTAL_TIME 0.975601
+ [xiny@login04 cuda]$ 
