@@ -35,4 +35,6 @@ dtrsv.o: ../gmres/dtrsv.c
 gmres.o: ../gmres/gmres.c
 	$(comp) $(flag) ../gmres/gmres.c
 clean: 
-	\rm -rf *.o bimpb_cuda.exe
+	\rm -rf *.o
+realclean: clean
+	\rm -rf *.exe ../test_proteins/*.face ../test_proteins/*.vert *.face *.vert *~
