@@ -10,8 +10,8 @@ pp_timer.o: ../pp_timer.c
 	$(comp) $(flag) ../pp_timer.c
 main_cuda.o: main_cuda.c
 	$(comp) $(flag) main_cuda.c
-readin.o: ../readin.c
-	$(comp) $(flag) ../readin.c
+readin.o: readin.c
+	$(comp) $(flag) readin.c
 d_sign.o: ../gmres/d_sign.c
 	$(comp) $(flag) ../gmres/d_sign.c
 daxpy.o: ../gmres/daxpy.c
