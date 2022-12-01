@@ -53,7 +53,7 @@ void readin(char fname[16], char density[16]) {
 	/*read in vertices*/
 
 	//sprintf(fpath,"C:\\Users\\wgeng\\Dropbox\\Programs\\bama_pb\\bimpb_ds_cuda\\");
-	sprintf(fpath,"");
+	sprintf(fpath,"../test_proteins/");
 
 	sprintf(fname_tp,"./msms -if %s.xyzr -prob 1.4 -dens %s -of %s ",fname,density,fname);
 	printf("%s\n",fname_tp);
