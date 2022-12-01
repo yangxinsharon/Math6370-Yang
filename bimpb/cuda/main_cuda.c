@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
 	printf("%d %s %s \n",argc,argv[0],argv[1]);
 
 	/* read in structural information */
-    sprintf(fname,"1ajj");
+    sprintf(fname,"1a63");
     // sprintf(density,"10");
 //    sprintf(fname,argv[0]);
    	sprintf(density,argv[1]);
