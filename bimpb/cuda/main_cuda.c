@@ -29,19 +29,22 @@ int main(int argc, char *argv[]) {
 	static long int info;
 	long int RESTRT,ldw,ldh,iter,N;
 	double resid;
-
+	extern void comp_source_wrapper();				// yang
+	extern void comp_soleng_wrapper(double soleng);	// yang
 	extern int *matvec(),*psolve();
 	extern int gmres_(long int *n,double *b,double *x,long int *restrt, double *work,
 	long int *ldw, double *h, long int *ldh, long int *iter,
 	double *resid, int (*matvec) (), int (*psolve) (), long int *info);
 
+   	extern void timer_start(char *n); // yang
+   	extern void timer_end(void); // yang
     timer_start("TOTAL_TIME");
 
 	printf("%d %s %s \n",argc,argv[0],argv[1]);
 
 	/* read in structural information */
-    sprintf(fname,"1a63");
-    sprintf(density,"10");
+    sprintf(fname,"1ajj");
+    sprintf(density,"1");
 //    sprintf(fname,argv[0]);
 //    sprintf(density,argv[1]);
 	readin(fname,density);

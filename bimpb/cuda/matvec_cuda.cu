@@ -1,4 +1,6 @@
 #include<stdio.h>
+#include <stdlib.h>
+#include <math.h>
 #include "gl_variables.h"
 #include "gl_constants.h"
 
