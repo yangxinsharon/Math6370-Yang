@@ -44,10 +44,11 @@ int main(int argc, char *argv[]) {
 
 	/* read in structural information */
     sprintf(fname,"1ajj");
-    // sprintf(density,"20");
+    sprintf(density,"10");
 //    sprintf(fname,argv[0]);
    // sprintf(density,argv[1]);
-    sprintf(density,argv[0]);
+    // sprintf(density,argv[1]);
+
 	readin(fname,density);
 	initGPU(); //locate memory
 	comp_source_wrapper(); //wraps the solvation energy computation
