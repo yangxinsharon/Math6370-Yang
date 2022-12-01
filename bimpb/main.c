@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
 
 	/* read in structural information */
    sprintf(fname, "1ajj");
-   sprintf(density, "1");
+   sprintf(density, "20");
    // sprintf(fname,"%s",argv[1]);
    // sprintf(density,"%s",argv[2]);
 	readin(fname, density);
