@@ -4,13 +4,13 @@ CXX = g++
 flag = -c -O2
 # for -arch=sm_xx check http://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html#gpu-feature-list   #-lstdc++
 bimpb_kokkos.exe: main_kokkos.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_kokkos.o pp_timer.o
-	$(CC) -o bimpb_kokkos.exe *.o -lm
+	$(CXX) -o bimpb_kokkos.exe *.o -lm
 matvec_kokkos.o: matvec_kokkos.cpp
-	$(CC) $(flag) matvec_kokkos.cpp 
+	$(CXX) $(flag) matvec_kokkos.cpp 
 main_kokkos.o: main_kokkos.cpp
-	$(CC) $(flag) main_kokkos.cpp
+	$(CXX) $(flag) main_kokkos.cpp
 readin.o: readin.cpp
-	$(CC) $(flag) readin.cpp
+	$(CXX) $(flag) readin.cpp
 
 pp_timer.o: pp_timer.c
 	$(CC) $(flag) pp_timer.c 
