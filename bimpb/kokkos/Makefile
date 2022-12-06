@@ -1,6 +1,6 @@
 # makefile for screened coulombic potential computation with cuda
 CC = gcc
-CXX = g++
+CXX = gcc
 flag = -c -O2
 AR = ar rc
 #-lstdc++
