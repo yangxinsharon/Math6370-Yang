@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
 	extern int *matvec(double *alpha, double *x, double *beta, double *y); // yang
 	extern int *psolve(double *z, double *r); // yang
 	extern int gmres_(long int *n, double *b, double *x, long int *restrt, double *work, long int *ldw, 
-		double *h, long int *ldh, long int *iter, double *resid, int *matvec (), int *psolve (), long int *info);
+		double *h, long int *ldh, long int *iter, double *resid, int (*matvec) (), int (*psolve) (), long int *info); // int* (*)(double*, double*)
 
    extern void timer_start(char *n); // yang
    extern void timer_end(void); // yang
@@ -48,8 +48,8 @@ int main(int argc, char *argv[]) {
 	printf("%d %s %s %s \n", argc, argv[0], argv[1], argv[2]);
 
 	/* read in structural information */
-   sprintf(fname, "1a63");
-   sprintf(density, "10");
+   sprintf(fname, "1ajj");
+   sprintf(density, "1");
    // sprintf(fname,"%s",argv[1]);
    // sprintf(density,"%s",argv[2]);
 	readin(fname, density);
