@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
-#include "../gl_functions.h"
+#include "gl_functions.h"
+#include "gl_constants.h"
 
 extern int nface, nspt, natm, nchr;
 extern int **extr_v;						//[3][nspt]
@@ -14,6 +15,7 @@ extern double **atmpos;						//[3][natm/nchr];
 extern double *atmrad, *atmchr, *chrpos;	//[natm/nchr]; 
 extern double *work, *h;
 extern double *h_pot;
+extern double *dev_xp, *dev_yp, *dev_zp, *dev_q, *dev_pot;
 
 /* function computing the area of a triangle given vertices coodinates */
 double triangle_area(double v[3][3]) {
@@ -49,7 +51,7 @@ void readin(char fname[16], char density[16]) {
 	double xx[3],yy[3];
 
 	/*read in vertices*/
-	sprintf(fpath,"test_proteins/");
+	sprintf(fpath,"../test_proteins/");
 	sprintf(fname_tp,"./msms -if %s%s.xyzr -prob 1.4 -dens %s -of %s%s ",fpath,fname,density,fpath,fname);
 	printf("%s\n",fname_tp);
 

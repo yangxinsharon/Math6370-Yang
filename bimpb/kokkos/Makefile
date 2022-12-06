@@ -20,8 +20,8 @@ main_kokkos.o: main_kokkos.c
 readin.o: readin.c
 	$(CC) $(flag) readin.c
 
-pp_timer.o: pp_timer.c
-	$(CC) $(flag) pp_timer.c 
+pp_timer.o: ../pp_timer.c
+	$(CC) $(flag) ../pp_timer.c 
 
 d_sign.o: gmres/d_sign.c
 	$(CC) $(flag) gmres/d_sign.c
