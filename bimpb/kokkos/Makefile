@@ -1,6 +1,6 @@
 # makefile for screened coulombic potential computation with cuda
 comp = g++
-flag = -O2
+flag = -c -O2
 # for -arch=sm_xx check http://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html#gpu-feature-list
 bimpb_kokkos.exe: main_kokkos.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_kokkos.o pp_timer.o
 	$(comp) -o bimpb_kokkos.exe *.o -lm
