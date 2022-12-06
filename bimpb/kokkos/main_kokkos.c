@@ -8,6 +8,11 @@
 #include <math.h>
 // #include <cstdio>  //yang for kokkos
 #include "pp_timer.h"
+#include <limits>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <sys/time.h>
 #include <Kokkos_Core.hpp>
 
 extern int nface, nspt, natm, nchr;			// number of faces, points, atoms, and charges
