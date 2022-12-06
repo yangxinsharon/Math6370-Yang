@@ -1,17 +1,24 @@
 # makefile for screened coulombic potential computation with cuda
 CC = gcc
-CXX = gcc
+CXX = g++
 flag = -c -O2
 AR = ar rc
 #-lstdc++
 all: libgmres.a bimpb_kokkos.exe
 
-matvec_kokkos.o: matvec_kokkos.cpp
-	$(CXX) $(flag) matvec_kokkos.cpp 
-main_kokkos.o: main_kokkos.cpp
-	$(CXX) $(flag) main_kokkos.cpp
-readin.o: readin.cpp
-	$(CXX) $(flag) readin.cpp
+# matvec_kokkos.o: matvec_kokkos.cpp
+# 	$(CXX) $(flag) matvec_kokkos.cpp 
+# main_kokkos.o: main_kokkos.cpp
+# 	$(CXX) $(flag) main_kokkos.cpp
+# readin.o: readin.cpp
+# 	$(CXX) $(flag) readin.cpp
+
+matvec_kokkos.o: matvec_kokkos.c
+	$(CC) $(flag) matvec_kokkos.c
+main_kokkos.o: main_kokkos.c
+	$(CC) $(flag) main_kokkos.c
+readin.o: readin.c
+	$(CC) $(flag) readin.c
 
 pp_timer.o: pp_timer.c
 	$(CC) $(flag) pp_timer.c 
