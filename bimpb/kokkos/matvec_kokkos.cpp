@@ -6,9 +6,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+extern "C" {
 #include "../gl_variables.h"
 #include "../gl_constants.h"
-
+}
 /* Prototypes */
 int *matvec(double *alpha, double *x, double *beta, double *y);
 void comp_soleng_wrapper(double soleng);
