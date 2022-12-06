@@ -8,15 +8,15 @@ all: libgmres.a bimpb_kokkos.exe
 
 # matvec_kokkos.o: matvec_kokkos.cpp
 # 	$(CXX) $(flag) matvec_kokkos.cpp 
-# main_kokkos.o: main_kokkos.cpp
-# 	$(CXX) $(flag) main_kokkos.cpp
+main_kokkos.o: main_kokkos.cpp
+	$(CXX) $(flag) main_kokkos.cpp
 # readin.o: readin.cpp
 # 	$(CXX) $(flag) readin.cpp
 
 matvec_kokkos.o: matvec_kokkos.c
 	$(CC) $(flag) matvec_kokkos.c
-main_kokkos.o: main_kokkos.c
-	$(CC) $(flag) main_kokkos.c
+# main_kokkos.o: main_kokkos.c
+# 	$(CC) $(flag) main_kokkos.c
 readin.o: readin.c
 	$(CC) $(flag) readin.c
 

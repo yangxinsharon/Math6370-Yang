@@ -3,14 +3,19 @@
    Project bim-pb with Weihua Geng, Jiahui Chen */
 
 /* Inclusions */
-#include <stdlib.h>
+/* c */
+// #include <stdlib.h>
 // #include <stdio.h>
-#include <cstdio>  //yang for kokkos
-#include <math.h>
-
-extern "C" {
+// #include <math.h>
 #include "pp_timer.h"
-}
+
+/* c++ */
+#include <limits>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+// #include <sys/time.h>
+#include <Kokkos_Core.hpp>
 
 extern int nface, nspt, natm, nchr;			// number of faces, points, atoms, and charges
 extern int **extr_v;								// [3][nspt]
