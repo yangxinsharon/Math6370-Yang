@@ -1,8 +1,8 @@
 # makefile for screened coulombic potential computation with kokkos
-KOKKOS_PATH = ${HOME}/Kokkos/kokkos
+KOKKOS_PATH = /hpc/spack/opt/spack/linux-centos7-broadwell/gcc-9.2.0/kokkos-3.6.01-qu45u5vcjttvscfh76nijf2keukcj5z7
 KOKKOS_DEVICES = "Cuda,OpenMP"
 EXE_NAME = "bimpb_kokkos"
-
+# /hpc/spack/opt/spack/linux-centos7-broadwell/gcc-9.2.0/kokkos-3.6.01-qu45u5vcjttvscfh76nijf2keukcj5z7/bin/nvcc_wrapper
 ifneq (,$(findstring Cuda,$(KOKKOS_DEVICES)))
 CXX = ${KOKKOS_PATH}/bin/nvcc_wrapper
 EXE = ${EXE_NAME}.cuda
