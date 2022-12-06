@@ -3,8 +3,8 @@ CC = gcc
 CXX = g++
 flag = -c -O2
 # for -arch=sm_xx check http://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html#gpu-feature-list   #-lstdc++
-bimpb_kokkos.exe: main_kokkos.o readin.o matvec_kokkos.o pp_timer.o
-	$(CXX) -static -o bimpb_kokkos.exe *.o -lgmres -lm
+# bimpb_kokkos.exe: main_kokkos.o readin.o matvec_kokkos.o pp_timer.o
+# 	$(CXX) -static -o bimpb_kokkos.exe *.o -lgmres -lm
 matvec_kokkos.o: matvec_kokkos.cpp
 	$(CXX) $(flag) matvec_kokkos.cpp 
 main_kokkos.o: main_kokkos.cpp
@@ -37,8 +37,12 @@ dtrsv.o: gmres/dtrsv.c
 	$(CC) $(flag) gmres/dtrsv.c
 gmres.o: gmres/gmres.c
 	$(CC) $(flag) gmres/gmres.c
+
 libgmres.a: d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o
 	ar -r libgmres.a $@ $?
+bimpb_kokkos.exe: main_kokkos.o readin.o matvec_kokkos.o pp_timer.o
+	$(CXX) -static -o bimpb_kokkos.exe *.o -lgmres -lm
+	
 clean: 
 	\rm -rf *.o
 realclean: clean
