@@ -1,10 +1,25 @@
-# makefile for screened coulombic potential computation with cuda
-CC = gcc
+# makefile for screened coulombic potential computation with kokkos
+KOKKOS_PATH = ${HOME}/Kokkos/kokkos
+KOKKOS_DEVICES = "Cuda,OpenMP"
+EXE_NAME = "bimpb_kokkos"
+
+ifneq (,$(findstring Cuda,$(KOKKOS_DEVICES)))
+CXX = ${KOKKOS_PATH}/bin/nvcc_wrapper
+EXE = ${EXE_NAME}.cuda
+KOKKOS_ARCH = "Volta70"
+KOKKOS_CUDA_OPTIONS = "enable_lambda"
+else
 CXX = g++
+EXE = ${EXE_NAME}.host
+KOKKOS_ARCH = "BDW"
+endif
+
+# CXX = g++
+CC = gcc
 flag = -c -O2
 AR = ar rc
 #-lstdc++
-all: libgmres.a bimpb_kokkos.exe
+all: libgmres.a $(EXE)
 
 # matvec_kokkos.o: matvec_kokkos.cpp
 # 	$(CXX) $(flag) matvec_kokkos.cpp 
@@ -48,8 +63,8 @@ gmres.o: gmres/gmres.c
 
 libgmres.a: d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o
 	$(AR) libgmres.a $@ $?
-bimpb_kokkos.exe: main_kokkos.o readin.o matvec_kokkos.o pp_timer.o
-	$(CXX) -static -o bimpb_kokkos.exe *.o -lm -L. -lgmres
+$(EXE): main_kokkos.o readin.o matvec_kokkos.o pp_timer.o
+	$(CXX) -static -o $(EXE) *.o -lm -L. -lgmres
 
 clean: 
 	\rm -rf *.o

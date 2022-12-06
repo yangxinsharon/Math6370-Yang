@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
-// #include <cstdio>  //yang for kokkos
+// #include <cstdio>  //c++
 #include "pp_timer.h"
 
 extern int nface, nspt, natm, nchr;			// number of faces, points, atoms, and charges
