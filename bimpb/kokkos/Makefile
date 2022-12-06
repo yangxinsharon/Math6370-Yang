@@ -6,10 +6,10 @@ flag = -c -O2
 bimpb_kokkos.exe: main_kokkos.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_kokkos.o pp_timer.o
 	$(CXX) -o bimpb_kokkos.exe *.o -lm
 matvec_kokkos.o: matvec_kokkos.cpp
-	$(CXX) $(flag) matvec_kokkos.cpp -lstdc++
+	$(CXX) $(flag) matvec_kokkos.cpp #-lstdc++
 main_kokkos.o: main_kokkos.cpp
-	$(CXX) $(flag) main_kokkos.cpp -lstdc++
-	
+	$(CXX) $(flag) main_kokkos.cpp #-lstdc++
+
 pp_timer.o: ../pp_timer.c
 	$(CC) $(flag) ../pp_timer.c 
 readin.o: readin.c
