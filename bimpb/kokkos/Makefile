@@ -18,7 +18,7 @@ pp_timer.o: pp_timer.c
 	$(CC) $(flag) pp_timer.c 
 
 libgmres.a: d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o
-	$(LIB) -r libgmres.a gmres/*.o
+	$(LIB) -r libgmres.a *.o
 	#$(CC) -shared -o libgmres.so gmres/*.o
 d_sign.o: gmres/d_sign.c
 	$(CC) $(flag) gmres/d_sign.c
