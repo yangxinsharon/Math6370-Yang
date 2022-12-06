@@ -4,9 +4,9 @@
 
 /* Inclusions */
 #include <stdlib.h>
-// #include <stdio.h>
+#include <stdio.h>
 #include <math.h>
-#include <cstdio>  //yang for kokkos
+// #include <cstdio>  //yang for kokkos
 #include "../pp_timer.h"
 
 extern int nface, nspt, natm, nchr;			// number of faces, points, atoms, and charges
@@ -37,9 +37,9 @@ int main(int argc, char *argv[]) {
 	double resid;
 	extern void comp_source_wrapper();				// yang
 	extern void comp_soleng_wrapper(double soleng);	// yang
-	// extern int *matvec(double *alpha, double *x, double *beta, double *y); // yang
-	// extern int *psolve(double *z, double *r); // yang
-	extern int *matvec(),*psolve();
+	extern int *matvec(double *alpha, double *x, double *beta, double *y); // yang
+	extern int *psolve(double *z, double *r); // yang
+	// extern int *matvec(),*psolve();
 	extern int gmres_(long int *n, double *b, double *x, long int *restrt, double *work, long int *ldw, 
 		double *h, long int *ldh, long int *iter, double *resid, int (*matvec) (), int (*psolve) (), long int *info);
 
