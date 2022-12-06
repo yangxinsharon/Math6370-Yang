@@ -76,7 +76,7 @@ int main(int argc, char *argv[]) {
 		printf("%d %s %s %s %s \n", argc, argv[0], argv[1], argv[2], argv[3]);
 
 		/* read in structural information */
-   	sprintf(fname, "1a63");
+   	sprintf(fname, "1ajj");
    	// sprintf(density, "1");
    	// sprintf(fname,"%s",argv[1]);
    	sprintf(density,"%s",argv[1]);
