@@ -1,4 +1,5 @@
-#include <stdio.h>
+// #include <stdio.h>
+#include <cstdio> 
 #include <math.h>
 #include <string.h>
 extern "C" {

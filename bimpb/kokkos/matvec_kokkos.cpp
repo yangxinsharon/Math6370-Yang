@@ -5,6 +5,7 @@
 /* Inclusions */
 #include <stdlib.h>
 #include <stdio.h>
+#include <cstdio>  //yang for kokkos
 #include <math.h>
 extern "C" {
 #include "gl_variables.h"

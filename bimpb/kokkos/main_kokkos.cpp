@@ -4,9 +4,9 @@
 
 /* Inclusions */
 #include <stdlib.h>
-#include <stdio.h>
+// #include <stdio.h>
+#include <cstdio>  //yang for kokkos
 #include <math.h>
-// #include <cstdio>  //yang for kokkos
 
 extern "C" {
 #include "pp_timer.h"
