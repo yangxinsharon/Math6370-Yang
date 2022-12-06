@@ -11,5 +11,8 @@ endif()
 set(Kokkos_DIR "$ENV{Kokkos_ROOT}" CACHE STRING "Kokkos root directory")
 find_package(Kokkos REQUIRED)
 
-add_executable(bimpb_kokkos.exe main.cpp matvec.cpp readin.cpp)
-target_link_libraries(bimpb_kokkos.exe Kokkos::kokkos)
+add_executable(bimpb_kokkos.exe main_kokkos.cpp matvec_kokkos.cpp readin.cpp pp_timer.c)
+target_link_libraries(bimpb_kokkos.exe -lgmres Kokkos::kokkos)
+
+
+
