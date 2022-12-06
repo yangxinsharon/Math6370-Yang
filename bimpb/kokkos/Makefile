@@ -47,4 +47,4 @@ bimpb_kokkos.exe: main_kokkos.o readin.o matvec_kokkos.o pp_timer.o
 clean: 
 	\rm -rf *.o
 realclean: clean
-	\rm -rf *.exe ../test_proteins/*.face ../test_proteins/*.vert *.face *.vert *~
+	\rm -rf *.exe *.a ../test_proteins/*.face ../test_proteins/*.vert *.face *.vert *~
