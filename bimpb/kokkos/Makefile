@@ -1,39 +1,40 @@
 # makefile for screened coulombic potential computation with cuda
-comp = gcc
+CC = gcc
+CXX = g++
 flag = -c -O2
 # for -arch=sm_xx check http://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html#gpu-feature-list
 bimpb_kokkos.exe: main_kokkos.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_kokkos.o pp_timer.o
-	$(comp) -o bimpb_kokkos.exe *.o -lm
+	$(CXX) -o bimpb_kokkos.exe *.o -lm
 matvec_kokkos.o: matvec_kokkos.cpp
-	$(comp) $(flag) matvec_kokkos.cpp -lstdc++
+	$(CXX) $(flag) matvec_kokkos.cpp -lstdc++
 pp_timer.o: ../pp_timer.c
-	$(comp) $(flag) ../pp_timer.c 
+	$(CC) $(flag) ../pp_timer.c 
 main_kokkos.o: main_kokkos.cpp
-	$(comp) $(flag) main_kokkos.cpp -lstdc++
+	$(CXX) $(flag) main_kokkos.cpp -lstdc++
 readin.o: readin.c
-	$(comp) $(flag) readin.c
+	$(CC) $(flag) readin.c
 d_sign.o: gmres/d_sign.c
-	$(comp) $(flag) gmres/d_sign.c
+	$(CC) $(flag) gmres/d_sign.c
 daxpy.o: gmres/daxpy.c
-	$(comp) $(flag) gmres/daxpy.c
+	$(CC) $(flag) gmres/daxpy.c
 dcopy.o: gmres/dcopy.c
-	$(comp) $(flag) gmres/dcopy.c
+	$(CC) $(flag) gmres/dcopy.c
 ddot.o: gmres/ddot.c
-	$(comp) $(flag) gmres/ddot.c
+	$(CC) $(flag) gmres/ddot.c
 dgemv.o: gmres/dgemv.c
-	$(comp) $(flag) gmres/dgemv.c
+	$(CC) $(flag) gmres/dgemv.c
 dnrm2.o: gmres/dnrm2.c
-	$(comp) $(flag) gmres/dnrm2.c
+	$(CC) $(flag) gmres/dnrm2.c
 drot.o: gmres/drot.c
-	$(comp) $(flag) gmres/drot.c
+	$(CC) $(flag) gmres/drot.c
 drotg.o: gmres/drotg.c
-	$(comp) $(flag) gmres/drotg.c
+	$(CC) $(flag) gmres/drotg.c
 dscal.o: gmres/dscal.c
-	$(comp) $(flag) gmres/dscal.c
+	$(CC) $(flag) gmres/dscal.c
 dtrsv.o: gmres/dtrsv.c
-	$(comp) $(flag) gmres/dtrsv.c
+	$(CC) $(flag) gmres/dtrsv.c
 gmres.o: gmres/gmres.c
-	$(comp) $(flag) gmres/gmres.c
+	$(CC) $(flag) gmres/gmres.c
 clean: 
 	\rm -rf *.o
 realclean: clean

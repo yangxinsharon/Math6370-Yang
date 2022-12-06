@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
 	double s[3], pot=0.0, sum=0.0, pot_temp=0.0;	// potential
 	double ptl, soleng, t1, t2;
 	char fname[16], density[16];
-	extern "C" void readin(char fname[16], char density[16]);
+	extern void readin(char fname[16], char density[16]);
 
 	/*GMRES related variables*/
 	static long int info;
