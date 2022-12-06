@@ -19,20 +19,15 @@ NVCCFLAGS = -c -O3 -arch=sm_61 -use_fast_math	# for -arch=sm_xx check http://doc
 OMPFLAGS = -fopenmp
 
 # makefile targets
-all: bimpb.exe bimpb_omp.exe bimpb_mpi.exe #bimpb_kokkos.exe bimpb_cuda.exe 
+all: bimpb.exe bimpb_omp.exe bimpb_mpi.exe 
 
 bimpb.exe: main.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec.o pp_timer.o
-	$(CC) -lm -p -o $@ $^
+	$(CC) -p -o $@ $^ -lm
 bimpb_omp.exe: main.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_omp.o pp_timer.o
-	$(CC) $(OMPFLAGS) -lm -p -o $@ $^
+	$(CC) $(OMPFLAGS) -p -o $@ $^ -lm
 bimpb_mpi.exe: main_mpi.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_mpi.o pp_timer.o 
-	$(MPICC) -lm -o $@ $^
-bimpb_cuda.exe: main_cuda.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_cuda.o pp_timer.o
-	$(NVCC) -o -lm -o $@ $^
+	$(MPICC) -o $@ $^ -lm
 
-# bimpb_kokkos.exe: main_kokkos.o readin.o d_sign.o daxpy.o dcopy.o ddot.o dgemv.o dnrm2.o drot.o drotg.o dscal.o dtrsv.o gmres.o matvec_kokkos.o pp_timer.o
-# 	$(CPP) -o -lm -o $@ $^
-	
 pp_timer.o: pp_timer.c
 	$(CC) $(CFLAGS) pp_timer.c
 readin.o: readin.c
@@ -49,11 +44,6 @@ matvec_mpi.o: matvec_mpi.c
 	$(MPICC) $(CFLAGS) matvec_mpi.c
 main_mpi.o: main_mpi.c
 	$(MPICC) $(CFLAGS) main_mpi.c
-
-# matvec_kokkos.o: matvec_kokkos.cpp
-# 	$(CXX) $(CFLAGS) matvec_kokkos.cpp
-# main_kokkos.o: main_kokkos.cpp
-# 	$(CXX) $(CFLAGS) main_kokkos.cpp
 
 matvec_cuda.o: matvec_cuda.cu
 	$(NVCC) $(NVCCFLAGS) matvec_cuda.cu
