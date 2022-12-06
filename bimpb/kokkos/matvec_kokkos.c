@@ -8,7 +8,7 @@
 #include <math.h>
 #include "gl_variables.h"
 #include "gl_constants.h"
-#include <Kokkos_Core.hpp>
+
 
 /* Prototypes */
 int *matvec(double *alpha, double *x, double *beta, double *y);

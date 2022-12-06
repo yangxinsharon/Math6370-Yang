@@ -11,8 +11,11 @@ endif()
 set(Kokkos_DIR "$ENV{Kokkos_ROOT}" CACHE STRING "Kokkos root directory")
 find_package(Kokkos REQUIRED)
 
-add_executable(bimpb_kokkos.exe main_kokkos.cpp matvec_kokkos.cpp readin.cpp pp_timer.c)
-target_link_libraries(bimpb_kokkos.exe -lgmres Kokkos::kokkos)
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/gmres SRCLIST)
+add_library(libgmres STATIC ${SRCLIST})
+
+add_executable(bimpb_kokkos.exe main_kokkos.cpp matvec_kokkos.c readin.c pp_timer.c)
+target_link_libraries(bimpb_kokkos.exe libgmres Kokkos::kokkos)
 
 
 
