@@ -132,8 +132,8 @@ void readin(char fname[16], char density[16]) {
 	sprintf(fname_tp, "%s%s.xyzr",fpath,fname);
 	fp=fopen(fname_tp,"r");
 
-	// if ((atmrad=(double *) malloc(natm*sizeof(double)))==NULL) {
-	if ((atmrad=(double *) Kokkos::kokkos_malloc(natm*sizeof(double)))==NULL) {
+	if ((atmrad=(double *) malloc(natm*sizeof(double)))==NULL) {
+	// if ((atmrad=(double *) Kokkos::kokkos_malloc(natm*sizeof(double)))==NULL) {
 		printf("error in allcating atmrad");
 	}
 	atmpos=Make2DDoubleArray(3,natm,(char*) "atmpos");
@@ -153,12 +153,12 @@ void readin(char fname[16], char density[16]) {
 	fp=fopen(fname_tp,"r");
 
 	nchr=natm;
-	// if ((atmchr=(double *) malloc(nchr*sizeof(double)))==NULL){
-	if ((atmchr=(double *) Kokkos::kokkos_malloc(nchr*sizeof(double)))==NULL){
+	if ((atmchr=(double *) malloc(nchr*sizeof(double)))==NULL){
+	// if ((atmchr=(double *) Kokkos::kokkos_malloc(nchr*sizeof(double)))==NULL){
 		printf("error in allcating atmchr");
 	}
-	// if ((chrpos=(double *) malloc(3*nchr*sizeof(double)))==NULL){
-	if ((atmchr=(double *) Kokkos::kokkos_malloc(nchr*sizeof(double)))==NULL){
+	if ((chrpos=(double *) malloc(3*nchr*sizeof(double)))==NULL){
+	// if ((atmchr=(double *) Kokkos::kokkos_malloc(nchr*sizeof(double)))==NULL){
 		printf("error in allcating chrpos");
 	}
 
@@ -246,15 +246,15 @@ exit:	ichanged=nface-nfacenew;
 //tr_xyz: The position of the particles on surface
 //tr_q:	  The normail direction at the particle location
 //tr_area: the triangular area of each element
-	// tr_xyz=(double *) calloc(3*nface, sizeof(double));
-	// tr_q=(double *) calloc(3*nface, sizeof(double));
-	// tr_area=(double *) calloc(nface, sizeof(double));
-	// bvct=(double *) calloc(2*nface, sizeof(double));
+	tr_xyz=(double *) calloc(3*nface, sizeof(double));
+	tr_q=(double *) calloc(3*nface, sizeof(double));
+	tr_area=(double *) calloc(nface, sizeof(double));
+	bvct=(double *) calloc(2*nface, sizeof(double));
 
-	tr_xyz=(double *) (Kokkos::kokkos_malloc(3*nface * sizeof(double)));
-	tr_q=(double *) (Kokkos::kokkos_malloc(3*nface * sizeof(double)));
-	tr_area=(double *) (Kokkos::kokkos_malloc(nface * sizeof(double)));
-	bvct=(double *) (Kokkos::kokkos_malloc(2*nface * sizeof(double)));
+	// tr_xyz=(double *) (Kokkos::kokkos_malloc(3*nface * sizeof(double)));
+	// tr_q=(double *) (Kokkos::kokkos_malloc(3*nface * sizeof(double)));
+	// tr_area=(double *) (Kokkos::kokkos_malloc(nface * sizeof(double)));
+	// bvct=(double *) (Kokkos::kokkos_malloc(2*nface * sizeof(double)));
 
     for (i=0;i<nface;i++){
         for (j=0;j<=2;j++){
