@@ -198,8 +198,6 @@ int main(int argc, char *argv[]) {
         return 1;
 	}
 	
-	double ftime = MPI_Wtime();
-	
 	timer_end();
 
 	/* free memory */
@@ -255,6 +253,8 @@ int main(int argc, char *argv[]) {
 		free(chrpos);
 	}
 
+	double ftime = MPI_Wtime();
+	
 	// finalize MPI
   	ierr = MPI_Finalize();
 
