@@ -39,7 +39,7 @@ extern "C"
 
 // int add(const int a, const int b);
 int *matvec(double *alpha, double *x, double *beta, double *y);
-int *psolve(double *z, double *r);
+int *psolve();
 int gmres_(long int *n, double *b, double *x, long int *restrt, double *work, long int *ldw, 
 		double *h, long int *ldh, long int *iter, double *resid, int *matvec (), int *psolve (), long int *info);
 
