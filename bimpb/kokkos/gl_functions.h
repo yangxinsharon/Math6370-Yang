@@ -1,8 +1,12 @@
 #ifndef GL_FUNCTION
 #define GL_FUNCTION
 
-#include <stdlib.h>
-#include <stdio.h>
+// #include <stdlib.h>
+// #include <stdio.h>
+
+#include <cstdlib> 
+#include <cstdio> 
+
 
 /*dynamic allocation of 2d double variables*/
 double** Make2DDoubleArray(int arraySizeX, int arraySizeY, char info[]) {  
