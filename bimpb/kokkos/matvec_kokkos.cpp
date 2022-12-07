@@ -178,40 +178,72 @@ void comp_soleng_wrapper(double soleng) {
 /* This subroutine calculates the element-wise potential */
 void comp_pot(const double* xvct, double *atmchr, double *chrpos, double *ptl, 
 	double *tr_xyz, double *tr_q, double *tr_area, int nface, int nchr) {
-	int i, j;
-    double sumrs, irs, rs, G0, Gk, kappa_rs, exp_kappa_rs;
-    double cos_theta, G1, G2, L1, L2, tp1, tp2;
-	for (j=0; j<nface; j++) {
+	// int i, j;
+    // double sumrs, irs, rs, G0, Gk, kappa_rs, exp_kappa_rs;
+    // double cos_theta, G1, G2, L1, L2, tp1, tp2;
+	// for (j=0; j<nface; j++) {
+    // 	ptl[j] = 0.0;
+	// 	double r[3] = {tr_xyz[3*j], tr_xyz[3*j+1], tr_xyz[3*j+2]};
+	// 	double v[3] = {tr_q[3*j], tr_q[3*j+1], tr_q[3*j+2]};
+    // 	for (i=0; i<nchr; i++) {
+    //     	double s[3] = {chrpos[3*i], chrpos[3*i+1], chrpos[3*i+2]};
+	// 		double r_s[3] = {r[0]-s[0], r[1]-s[1], r[2]-s[2]};
+	// 		sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
+	// 		rs = sqrt(sumrs);
+	// 		irs = 1.0/sqrt(sumrs);
+
+    //     	G0 = one_over_4pi;
+    //     	G0 = G0*irs;
+    //     	kappa_rs = kappa*rs;
+    //     	exp_kappa_rs = exp(-kappa_rs);
+    //     	Gk = exp_kappa_rs*G0;
+
+    //     	cos_theta = (v[0]*r_s[0]+v[1]*r_s[1]+v[2]*r_s[2]) * irs;
+
+    //     	tp1 = G0*irs;
+    //     	tp2 = (1.0+kappa_rs)*exp_kappa_rs;
+
+    //     	G1 = cos_theta*tp1;
+    //     	G2 = tp2*G1;
+
+    //     	L1 = G1-eps*G2;
+    //     	L2 = G0-Gk;
+
+    //   		ptl[j] = ptl[j] + atmchr[i] * (L1*xvct[j]+L2*xvct[nface+j]) * tr_area[j];
+	// 	}
+    // }
+    Kokkos::parallel_for("comp_pot", nface, KOKKOS_LAMBDA(int j) {
     	ptl[j] = 0.0;
 		double r[3] = {tr_xyz[3*j], tr_xyz[3*j+1], tr_xyz[3*j+2]};
 		double v[3] = {tr_q[3*j], tr_q[3*j+1], tr_q[3*j+2]};
-    	for (i=0; i<nchr; i++) {
-        	double s[3] = {chrpos[3*i], chrpos[3*i+1], chrpos[3*i+2]};
+    	for (int i=0; i<nchr; i++) {
+    	   	double s[3] = {chrpos[3*i], chrpos[3*i+1], chrpos[3*i+2]};
 			double r_s[3] = {r[0]-s[0], r[1]-s[1], r[2]-s[2]};
-			sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
-			rs = sqrt(sumrs);
-			irs = 1.0/sqrt(sumrs);
+			double sumrs = r_s[0]*r_s[0] + r_s[1]*r_s[1] + r_s[2]*r_s[2];
+			double rs = sqrt(sumrs);
+			double irs = 1.0/sqrt(sumrs);
 
-        	G0 = one_over_4pi;
-        	G0 = G0*irs;
-        	kappa_rs = kappa*rs;
-        	exp_kappa_rs = exp(-kappa_rs);
-        	Gk = exp_kappa_rs*G0;
+    	   	double G0 = one_over_4pi;
+    	   	G0 = G0*irs;
+    	   	double kappa_rs = kappa*rs;
+    	   	double exp_kappa_rs = exp(-kappa_rs);
+    	   	double Gk = exp_kappa_rs*G0;
 
-        	cos_theta = (v[0]*r_s[0]+v[1]*r_s[1]+v[2]*r_s[2]) * irs;
+    	   	double cos_theta = (v[0]*r_s[0]+v[1]*r_s[1]+v[2]*r_s[2]) * irs;
 
-        	tp1 = G0*irs;
-        	tp2 = (1.0+kappa_rs)*exp_kappa_rs;
+    	   	double tp1 = G0*irs;
+    	   	double tp2 = (1.0+kappa_rs)*exp_kappa_rs;
 
-        	G1 = cos_theta*tp1;
-        	G2 = tp2*G1;
+    	   	double G1 = cos_theta*tp1;
+    	   	double G2 = tp2*G1;
 
-        	L1 = G1-eps*G2;
-        	L2 = G0-Gk;
+    	   	double L1 = G1-eps*G2;
+    	   	double L2 = G0-Gk;
 
-      		ptl[j] = ptl[j] + atmchr[i] * (L1*xvct[j]+L2*xvct[nface+j]) * tr_area[j];
+    	  	ptl[j] = ptl[j] + atmchr[i] * (L1*xvct[j]+L2*xvct[nface+j]) * tr_area[j];
 		}
-    }
+    	});
+    Kokkos::fence();
 }
 
 /* This subroutine wraps the solvation energy computation */
