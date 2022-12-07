@@ -162,7 +162,8 @@ void comp_soleng_wrapper(double soleng) {
     units_para = units_para *units_coef;
     units_para = units_para*pi;
 
-	if ((chrptl=(double *) malloc(nface*sizeof(double)))==NULL) {
+	// if ((chrptl=(double *) malloc(nface*sizeof(double)))==NULL) {
+    if ((chrptl=(double *) (Kokkos::kokkos_malloc(nface*sizeof(double))))==NULL) {
 		printf("error in allcating chrptl");
 	}
 
@@ -242,7 +243,7 @@ void comp_pot(const double* xvct, double *atmchr, double *chrpos, double *ptl,
 
     	  	ptl[j] = ptl[j] + atmchr[i] * (L1*xvct[j]+L2*xvct[nface+j]) * tr_area[j];
 		}
-    	});
+    });
     Kokkos::fence();
 }
 
