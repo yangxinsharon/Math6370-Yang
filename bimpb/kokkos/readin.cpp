@@ -158,7 +158,7 @@ void readin(char fname[16], char density[16]) {
 		printf("error in allcating atmchr");
 	}
 	// if ((chrpos=(double *) malloc(3*nchr*sizeof(double)))==NULL){
-	if ((atmchr=(double *) Kokkos::kokkos_malloc(nchr*sizeof(double)))==NULL){
+	if ((chrpos=(double *) (Kokkos::kokkos_malloc(3*nchr*sizeof(double))))==NULL) { 
 		printf("error in allcating chrpos");
 	}
 
