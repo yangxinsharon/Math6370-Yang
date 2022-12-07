@@ -170,7 +170,7 @@ int main(int argc, char *argv[]) {
 	// free(bvct);
 	// free(xvct);
 	free(atmchr);
-	free(chrpos);
+	// free(chrpos);
 
 	Kokkos::kokkos_free(tr_xyz);
 	Kokkos::kokkos_free(tr_q);
@@ -178,9 +178,10 @@ int main(int argc, char *argv[]) {
 	Kokkos::kokkos_free(tr_area);
 	Kokkos::kokkos_free(bvct);
 	Kokkos::kokkos_free(xvct);
-	
-  	// Kokkos::kokkos_free(y);
-  	// Kokkos::kokkos_free(h);
+
+
+  	// Kokkos::kokkos_free(atmchr);
+  	Kokkos::kokkos_free(chrpos);
 
 	}
 	Kokkos::finalize();
