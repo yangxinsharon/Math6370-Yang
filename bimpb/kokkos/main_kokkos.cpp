@@ -54,7 +54,7 @@ int main(int argc, char *argv[]) {
 
    extern void timer_start(char *n); // yang
    extern void timer_end(void); // yang
-	timer_start("TOTAL_TIME");
+	timer_start((char*) "TOTAL_TIME");
 	printf("%d %s %s %s \n", argc, argv[0], argv[1], argv[2]);
 
 	/* read in structural information */
