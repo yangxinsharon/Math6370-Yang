@@ -126,9 +126,11 @@ int main(int argc, char *argv[]) {
 
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
 
+	Kokkos::fence();
 	soleng=0.0;
 
 	comp_soleng_wrapper(soleng); //wraps the solvation energy computation
+	Kokkos::fence();
 	timer_end();
 
 
