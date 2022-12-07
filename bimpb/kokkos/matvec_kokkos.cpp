@@ -3,14 +3,20 @@
    Project bim-pb with Weihua Geng, Jiahui Chen */
 
 /* Inclusions */
-#include <stdlib.h>
-#include <stdio.h>
-#include <cstdio>  //yang for kokkos
-#include <math.h>
-extern "C" {
+/* c */
+// #include <stdlib.h>
+// #include <stdio.h>
+// #include <math.h>
 #include "gl_variables.h"
 #include "gl_constants.h"
-}
+
+
+/* c++ */
+#include <cstdlib>
+#include <cstdio>
+#include <cmath>
+
+
 /* Prototypes */
 int *matvec(double *alpha, double *x, double *beta, double *y);
 void comp_soleng_wrapper(double soleng);

@@ -1,10 +1,11 @@
 // #include <stdio.h>
-#include <cstdio> 
-#include <math.h>
-#include <string.h>
-extern "C" {
+// #include <math.h>
+// #include <string.h>
 #include "gl_functions.h"
-}
+
+#include <cstdio> 
+#include <cmath>
+#include <cstring>
 
 extern int nface, nspt, natm, nchr;
 extern int **extr_v;						//[3][nspt]
