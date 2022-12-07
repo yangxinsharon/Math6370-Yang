@@ -163,15 +163,22 @@ int main(int argc, char *argv[]) {
 	}
 	free(atmpos);
 
-	free(tr_xyz);
-	free(tr_q);
+	// free(tr_xyz);
+	// free(tr_q);
 
-	free(tr_area);
-	free(bvct);
+	// free(tr_area);
+	// free(bvct);
 	// free(xvct);
 	free(atmchr);
 	free(chrpos);
+
+	Kokkos::kokkos_free(tr_xyz);
+	Kokkos::kokkos_free(tr_q);
+
+	Kokkos::kokkos_free(tr_area);
+	Kokkos::kokkos_free(bvct);
 	Kokkos::kokkos_free(xvct);
+	
   	// Kokkos::kokkos_free(y);
   	// Kokkos::kokkos_free(h);
 
