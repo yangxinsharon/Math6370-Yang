@@ -127,7 +127,7 @@ int gmres_(n, b, x, restrt, work, ldw, h, ldh, iter, resid, matvec, psolve,
            info)
    integer *n, *restrt, *ldw, *ldh, *iter, *info;
    doublereal *b, *x, *work, *h, *resid;
-   int (*matvec) (doublereal *alpha, doublereal *x, doublereal *beta, doublereal *y), (*psolve) ();
+   int (*matvec) (doublereal *, doublereal *, doublereal *, doublereal *), (*psolve) (doublereal *, doublereal *);
 {
 
     /* System generated locals */
