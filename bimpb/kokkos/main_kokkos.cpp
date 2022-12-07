@@ -74,7 +74,7 @@ int main(int argc, char *argv[]) {
    extern void timer_end(void); // yang
 
    Kokkos::initialize(argc, argv);
-
+   {
 
 	timer_start((char*) "TOTAL_TIME");
 	printf("%d %s %s %s \n", argc, argv[0], argv[1], argv[2]);
@@ -107,7 +107,8 @@ int main(int argc, char *argv[]) {
 	timer_end();
 
 
-
+	}
+	Kokkos::finalize();
 	/* free memory */
 	for(i=0;i<3;i++) {
 		free(extr_v[i]);
@@ -148,7 +149,6 @@ int main(int argc, char *argv[]) {
 	free(atmchr);
 	free(chrpos);
 
-	Kokkos::finalize();
    return 0;
 }
 
