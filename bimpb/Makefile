@@ -11,10 +11,9 @@
 CC = gcc # on Linux, i.e., HPC-M2
 MPICC = mpicc
 NVCC = nvcc
-# CXX = g++
 
 # flags
-CFLAGS = -c -O2
+CFLAGS = -c -O3
 NVCCFLAGS = -c -O3 -arch=sm_61 -use_fast_math	# for -arch=sm_xx check http://docs.nvidia.com/cuda/cuda-compiler-driver-nvcc/index.html#gpu-feature-list
 OMPFLAGS = -fopenmp
 
