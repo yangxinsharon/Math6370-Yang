@@ -127,7 +127,7 @@ int gmres_(n, b, x, restrt, work, ldw, h, ldh, iter, resid, matvec, psolve,
            info)
    integer *n, *restrt, *ldw, *ldh, *iter, *info;
    doublereal *b, *x, *work, *h, *resid;
-   int (*matvec) (doublereal *, doublereal *, doublereal *, doublereal *), (*psolve) (doublereal *, doublereal *);
+   int (*matvec) (doublereal *, doublereal *, doublereal *, doublereal *), (*psolve) (doublereal *, doublereal *);  // yang for kokkos version 
 {
 
     /* System generated locals */
