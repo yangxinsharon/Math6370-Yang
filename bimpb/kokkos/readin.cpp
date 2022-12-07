@@ -72,9 +72,9 @@ void readin(char fname[16], char density[16]) {
     fscanf(fp,"%d %d %lf %lf ",&nspt,&natm,&den,&prob_rds);
     printf("nspt=%d, natm=%d, den=%lf, prob=%lf\n", nspt,natm,den,prob_rds);
 	/*allocate variables for vertices file*/
-	extr_v=Make2DIntArray(3,nspt,"extr_v");
-	vert=Make2DDoubleArray(3,nspt,"vert");
-	snrm=Make2DDoubleArray(3,nspt,"snrm");
+	extr_v=Make2DIntArray(3,nspt,(char*) "extr_v");
+	vert=Make2DDoubleArray(3,nspt,(char*) "vert");
+	snrm=Make2DDoubleArray(3,nspt,(char*) "snrm");
 
     for (i=0;i<=nspt-1;i++){
         fscanf(fp,"%lf %lf %lf %lf %lf %lf %d %d %d",&a1,&a2,&a3,&b1,&b2,&b3,&i1,&i2,&i3);
@@ -112,8 +112,8 @@ void readin(char fname[16], char density[16]) {
     fscanf(fp,"%d %d %lf %lf ",&nface,&natm,&den,&prob_rds);
     printf("nface=%d, natm=%d, den=%lf, prob=%lf\n", nface,natm,den,prob_rds);
 
-	extr_f=Make2DIntArray(2,nface,"extr_f");
-	face=Make2DIntArray(3,nface,"face");
+	extr_f=Make2DIntArray(2,nface,(char*) "extr_f");
+	face=Make2DIntArray(3,nface,(char*) "face");
 
 
     for (i=0;i<=nface-1;i++){
@@ -134,7 +134,7 @@ void readin(char fname[16], char density[16]) {
 	if ((atmrad=(double *) malloc(natm*sizeof(double)))==NULL) {
 		printf("error in allcating atmrad");
 	}
-	atmpos=Make2DDoubleArray(3,natm,"atmpos");
+	atmpos=Make2DDoubleArray(3,natm,(char*) "atmpos");
 
 	for (i=0;i<=natm-1;i++){
 		fscanf(fp,"%lf %lf %lf %lf ",&a1,&a2,&a3,&b1);
@@ -170,7 +170,7 @@ void readin(char fname[16], char density[16]) {
 
 	/* delele triangles with extreme small areas and closed to each other */
 	nfacenew=nface;
-	face_copy=Make2DIntArray(3,nface,"face_copy");
+	face_copy=Make2DIntArray(3,nface,(char*) "face_copy");
 	for (i=0;i<3; i++) memcpy(face_copy[i],face[i],nface*sizeof(int));
 
 	for (i=0;i<nface;i++){
@@ -232,7 +232,7 @@ exit:	ichanged=nface-nfacenew;
 	for(i = 0; i < 3; i++) free(face[i]);
 	free(face);
 
-	face=Make2DIntArray(3,nface,"face msms");
+	face=Make2DIntArray(3,nface,(char*) "face msms");
 	for (i=0; i<nface; i++){
 		for (j=0; j<3; j++) face[j][i]=face_copy[j][i];
 	}
