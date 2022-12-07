@@ -76,6 +76,14 @@ int main(int argc, char *argv[]) {
    Kokkos::initialize(argc, argv);
    {
 
+   typedef Kokkos::Serial   HostExecSpace;
+   typedef Kokkos::Cuda     DevExecSpace;
+   typedef Kokkos::CudaSpace    MemSpace;
+   typedef Kokkos::LayoutRight  Layout;
+   typedef Kokkos::RangePolicy<HostExecSpace>  host_range_policy;
+  	typedef Kokkos::RangePolicy<DevExecSpace>   dev_range_policy;
+
+
 	timer_start((char*) "TOTAL_TIME");
 	printf("%d %s %s %s \n", argc, argv[0], argv[1], argv[2]);
 
@@ -87,7 +95,7 @@ int main(int argc, char *argv[]) {
 	readin(fname, density);
 	comp_source_wrapper(); //wraps the solvation energy computation
 	Kokkos::fence();
-	
+
 	/* parameters for GMRES */
 	RESTRT=10;
 	N=2*nface;
@@ -95,10 +103,26 @@ int main(int argc, char *argv[]) {
 	ldh=RESTRT+1;
 	iter=100;
 	resid=1e-4;
-	xvct=(double *) calloc(N, sizeof(double));
 
-	work=(double *) calloc (ldw*(RESTRT+4), sizeof(double));
-	h=(double *) calloc (ldh*(RESTRT+2), sizeof(double));
+	// Allocate y, x vectors and Matrix A on device.
+   // typedef Kokkos::View<double*, Layout, MemSpace>   ViewVectorType;
+   // typedef Kokkos::View<double**, Layout, MemSpace>  ViewMatrixType;
+   // ViewVectorType y( "y", N );
+   // ViewVectorType x( "x", M );
+   // ViewMatrixType A( "A", N, M );
+
+	// xvct=(double *) calloc(N, sizeof(double));
+	// work=(double *) calloc (ldw*(RESTRT+4), sizeof(double));
+	// h=(double *) calloc (ldh*(RESTRT+2), sizeof(double));
+
+	xvct=(double *) (Kokkos::kokkos_malloc(N * sizeof(double)));
+	work=(double *) (Kokkos::kokkos_malloc(ldw*(RESTRT+4) * sizeof(double)));
+	h=(double *) (Kokkos::kokkos_malloc(ldh*(RESTRT+2) * sizeof(double)));
+
+   // Create host mirrors of device views.
+   // ViewVectorType::HostMirror h_y = Kokkos::create_mirror_view( y );
+   // ViewVectorType::HostMirror h_x = Kokkos::create_mirror_view( x );
+   // ViewMatrixType::HostMirror h_A = Kokkos::create_mirror_view( A );
 
 	gmres_(&N, bvct, xvct, &RESTRT, work, &ldw, h, &ldh, &iter, &resid, &matvec, &psolve, &info);
 
@@ -107,8 +131,6 @@ int main(int argc, char *argv[]) {
 	comp_soleng_wrapper(soleng); //wraps the solvation energy computation
 	timer_end();
 
-	}
-	Kokkos::finalize();
 
 	/* free memory */
 	for(i=0;i<3;i++) {
@@ -146,9 +168,16 @@ int main(int argc, char *argv[]) {
 
 	free(tr_area);
 	free(bvct);
-	free(xvct);
+	// free(xvct);
 	free(atmchr);
 	free(chrpos);
+	Kokkos::kokkos_free(xvct);
+  	// Kokkos::kokkos_free(y);
+  	// Kokkos::kokkos_free(h);
+
+	}
+	Kokkos::finalize();
+
 
    return 0;
 }
