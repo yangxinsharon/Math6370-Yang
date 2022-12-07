@@ -107,8 +107,6 @@ int main(int argc, char *argv[]) {
 	timer_end();
 
 
-	}
-	Kokkos::finalize();
 	/* free memory */
 	for(i=0;i<3;i++) {
 		free(extr_v[i]);
@@ -149,6 +147,9 @@ int main(int argc, char *argv[]) {
 	free(atmchr);
 	free(chrpos);
 
+	}
+	Kokkos::finalize();
+	
    return 0;
 }
 
