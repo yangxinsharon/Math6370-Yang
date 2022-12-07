@@ -86,7 +86,8 @@ int main(int argc, char *argv[]) {
    // sprintf(density,"%s",argv[2]);
 	readin(fname, density);
 	comp_source_wrapper(); //wraps the solvation energy computation
-
+	Kokkos::fence();
+	
 	/* parameters for GMRES */
 	RESTRT=10;
 	N=2*nface;
@@ -108,7 +109,7 @@ int main(int argc, char *argv[]) {
 
 	}
 	Kokkos::finalize();
-	
+
 	/* free memory */
 	for(i=0;i<3;i++) {
 		free(extr_v[i]);
