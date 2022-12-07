@@ -16,7 +16,7 @@
 
 /* kokkos */
 // #include <sys/time.h>
-// #include <Kokkos_Core.hpp>
+#include <Kokkos_Core.hpp>
 
 extern int nface, nspt, natm, nchr;			// number of faces, points, atoms, and charges
 extern int **extr_v;								// [3][nspt]
