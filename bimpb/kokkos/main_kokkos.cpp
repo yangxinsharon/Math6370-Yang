@@ -18,28 +18,28 @@
 // #include <sys/time.h>
 // #include <Kokkos_Core.hpp>
 
-extern int nface, nspt, natm, nchr;			// number of faces, points, atoms, and charges
-extern int **extr_v;								// [3][nspt]
-extern int **extr_f;								// [2][nface]
-extern int **face, **face_copy;				// [3][nface]
-extern double **vert, **snrm;					// [3][nspt]
-extern double *tr_xyz, *tr_q;					// [3][nface]
-extern double *tr_area, *bvct, *xvct;		// [nface]
-extern double **atmpos;							// [3][natm/nchr]
-extern double *atmrad, *atmchr, *chrpos;	// [natm/nchr]
-extern double *work, *h;
-extern double *h_pot;
-// extern double *dev_xp, *dev_yp, *dev_zp, *dev_q, *dev_pot;
-extern const double eps;
-
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-// int add(const int a, const int b);
+int nface, nspt, natm, nchr;			// number of faces, points, atoms, and charges
+int **extr_v;								// [3][nspt]
+int **extr_f;								// [2][nface]
+int **face, **face_copy;				// [3][nface]
+double **vert, **snrm;					// [3][nspt]
+double *tr_xyz, *tr_q;					// [3][nface]
+double *tr_area, *bvct, *xvct;		// [nface]
+double **atmpos;							// [3][natm/nchr]
+double *atmrad, *atmchr, *chrpos;	// [natm/nchr]
+double *work, *h;
+double *h_pot;
+// extern double *dev_xp, *dev_yp, *dev_zp, *dev_q, *dev_pot;
+
+
 // int *matvec ();
 // int *psolve ();
+const double eps;
 int gmres_(long int *n, double *b, double *x, long int *restrt, double *work, long int *ldw, 
 		double *h, long int *ldh, long int *iter, double *resid, 
 		int *matvec (double *alpha, double *x, double *beta, double *y), 
