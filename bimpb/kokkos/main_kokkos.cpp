@@ -39,7 +39,7 @@ double *h_pot;
 
 // int *matvec ();
 // int *psolve ();
-const double eps;
+double eps;
 int gmres_(long int *n, double *b, double *x, long int *restrt, double *work, long int *ldw, 
 		double *h, long int *ldh, long int *iter, double *resid, 
 		int *matvec (double *alpha, double *x, double *beta, double *y), 
