@@ -32,6 +32,22 @@ extern double *h_pot;
 // extern double *dev_xp, *dev_yp, *dev_zp, *dev_q, *dev_pot;
 extern const double eps;
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+// int add(const int a, const int b);
+int *matvec()；
+int *psolve();
+int gmres_(long int *n, double *b, double *x, long int *restrt, double *work, long int *ldw, 
+		double *h, long int *ldh, long int *iter, double *resid, int *matvec (), int *psolve (), long int *info);
+
+
+#ifdef __cplusplus
+}
+#endif
+
 int main(int argc, char *argv[]) {
 	/*variables local to main*/
 	int i,j;
@@ -48,8 +64,8 @@ int main(int argc, char *argv[]) {
 	extern void comp_soleng_wrapper(double soleng);	// yang
 	// extern int *matvec(double *alpha, double *x, double *beta, double *y); // yang
 	// extern int *psolve(double *z, double *r); // yang
-	extern "C" int *matvec(),*psolve();
-	extern "C" int gmres_(long int *n, double *b, double *x, long int *restrt, double *work, long int *ldw, 
+	extern int *matvec(),*psolve();
+	extern int gmres_(long int *n, double *b, double *x, long int *restrt, double *work, long int *ldw, 
 		double *h, long int *ldh, long int *iter, double *resid, int *matvec (), int *psolve (), long int *info);
 
    extern void timer_start(char *n); // yang
