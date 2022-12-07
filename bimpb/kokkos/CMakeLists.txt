@@ -14,8 +14,8 @@ find_package(Kokkos REQUIRED)
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/gmres SRCLIST)
 add_library(gmres STATIC ${SRCLIST})
 
-add_executable(bimpb_kokkos.exe main_kokkos.c matvec_kokkos.c readin.c pp_timer.c)
-target_link_libraries(bimpb_kokkos.exe Kokkos::kokkos)
+add_executable(bimpb_kokkos.exe main_kokkos.cpp matvec_kokkos.cpp readin.c pp_timer.cpp)
+target_link_libraries(bimpb_kokkos.exe Kokkos::kokkos gmres)
 
 
 
