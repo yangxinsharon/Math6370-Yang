@@ -19,7 +19,6 @@ extern double **atmpos;							// [3][natm/nchr]
 extern double *atmrad, *atmchr, *chrpos;	// [natm/nchr]
 extern double *work, *h;
 extern double *h_pot;
-// extern double *dev_xp, *dev_yp, *dev_zp, *dev_q, *dev_pot;
 extern const double eps;
 
 int main(int argc, char *argv[]) {
@@ -34,23 +33,23 @@ int main(int argc, char *argv[]) {
 	static long int info;
 	long int RESTRT, ldw, ldh, iter, N;
 	double resid;
-	extern void comp_source_wrapper();				// yang
-	extern void comp_soleng_wrapper(double soleng);	// yang
-	extern int *matvec(double *alpha, double *x, double *beta, double *y); // yang
-	extern int *psolve(double *z, double *r); // yang
+	extern void comp_source_wrapper();				
+	extern void comp_soleng_wrapper(double soleng);	
+	extern int *matvec(double *alpha, double *x, double *beta, double *y); 
+	extern int *psolve(double *z, double *r); 
 	extern int gmres_(long int *n, double *b, double *x, long int *restrt, double *work, long int *ldw, 
 		double *h, long int *ldh, long int *iter, double *resid, int *matvec (), int *psolve (), long int *info);
 
-   extern void timer_start(char *n); // yang
-   extern void timer_end(void); // yang
+   extern void timer_start(char *n); 
+   extern void timer_end(void); 
 	timer_start("TOTAL_TIME");
 	printf("%d %s %s %s \n", argc, argv[0], argv[1], argv[2]);
 
 	/* read in structural information */
    sprintf(fname, "1ajj");
-   sprintf(density, "1");
+   // sprintf(density, "1");
    // sprintf(fname,"%s",argv[1]);
-   // sprintf(density,"%s",argv[2]);
+   sprintf(density,"%s",argv[1]);
 	readin(fname, density);
 	comp_source_wrapper(); //wraps the solvation energy computation
 
