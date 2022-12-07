@@ -39,9 +39,9 @@ extern "C"
 
 // int add(const int a, const int b);
 int *matvec ();
-int (*psolve) ();
+int *psolve ();
 int gmres_(long int *n, double *b, double *x, long int *restrt, double *work, long int *ldw, 
-		double *h, long int *ldh, long int *iter, double *resid, int *matvec (), int (*psolve) (), long int *info);
+		double *h, long int *ldh, long int *iter, double *resid, int *matvec (), int *psolve (), long int *info);
 
 
 #ifdef __cplusplus
