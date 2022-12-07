@@ -143,7 +143,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 	// 	y[i] = y[i]*beta + (pre1*x[i]-peng[0])*alpha;
 	// 	y[nface+i] = y[nface+i]*beta + (pre2*x[nface+i]-peng[1])*alpha;
 	// }
-
+    Kokkos::fence();
 }
 
 
