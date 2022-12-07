@@ -72,6 +72,10 @@ int main(int argc, char *argv[]) {
 
    extern void timer_start(char *n); // yang
    extern void timer_end(void); // yang
+
+   Kokkos::initialize(argc, argv);
+
+
 	timer_start((char*) "TOTAL_TIME");
 	printf("%d %s %s %s \n", argc, argv[0], argv[1], argv[2]);
 
@@ -102,6 +106,9 @@ int main(int argc, char *argv[]) {
 	comp_soleng_wrapper(soleng); //wraps the solvation energy computation
 	timer_end();
 
+
+	Kokkos::finalize();
+	
 	/* free memory */
 	for(i=0;i<3;i++) {
 		free(extr_v[i]);

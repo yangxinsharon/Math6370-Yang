@@ -15,6 +15,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <cmath>
+#include <Kokkos_Core.hpp>
 
 
 /* Prototypes */
@@ -39,7 +40,8 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 
     pre1=0.50*(1.0+eps); /* const eps=80.0 */
     pre2=0.50*(1.0+1.0/eps);
-    for (i=0; i<nface; i++) {
+    Kokkos::parallel_for("matvecmul", nface, KOKKOS_LAMBDA(int i) {
+    // for (i=0; i<nface; i++) {
     	double tp[3] = {tr_xyz[3*i], tr_xyz[3*i+1], tr_xyz[3*i+2]};
 		double tq[3] = {tr_q[3*i], tr_q[3*i+1], tr_q[3*i+2]};
 
@@ -87,7 +89,7 @@ void matvecmul(const double *x, double *y, double *q, int nface,
 
 		y[i] = y[i]*beta + (pre1*x[i]-peng[0])*alpha;
 		y[nface+i] = y[nface+i]*beta + (pre2*x[nface+i]-peng[1])*alpha;
-	}
+	});
 
 }
 

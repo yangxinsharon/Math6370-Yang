@@ -45,6 +45,9 @@ int main(int argc, char *argv[]) {
    extern void timer_start(char *n); // yang
    extern void timer_end(void); // yang
 
+  	// bimpb timer
+	timer_start("TOTAL_TIME"); 
+
   	// initialize MPI
   	int ierr, numprocs, myid;
   	ierr = MPI_Init(&argc, &argv);
@@ -67,8 +70,6 @@ int main(int argc, char *argv[]) {
 
   	// start timer
   	double stime = MPI_Wtime();
-  	// bimpb timer
-	timer_start("TOTAL_TIME"); 
 
   	// root calling readin.c
   	if (myid == 0) {
@@ -191,17 +192,17 @@ int main(int argc, char *argv[]) {
 
 	comp_soleng_wrapper(soleng); //wraps the solvation energy computation
 	
-	double ftime = MPI_Wtime();
-	timer_end();
-	// if (myid == 0){
-	// 	timer_end();
-	// }
+	
 	ierr = MPI_Barrier(MPI_COMM_WORLD);
      if (ierr != 0) {
         printf("Error in MPI_Barrier = %i\n",ierr);
         ierr = MPI_Abort(MPI_COMM_WORLD, 1);
         return 1;
 	}
+	
+	double ftime = MPI_Wtime();
+	
+	timer_end();
 
 	/* free memory */
 	if (myid == 0){
