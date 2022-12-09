@@ -1,0 +1,11 @@
+Files:  looks good
+
+Builds:  successful
+
+Runs:
+* 1_basics.exe:  successful
+* 2_views.exe:  successful
+* 3_data_transfers.exe:  successful
+* 4_spaces_layouts.exe:  successful
+
+Grade:  100
